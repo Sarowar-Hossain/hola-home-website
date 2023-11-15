@@ -1,12 +1,9 @@
 import Link from "next/link";
 import React from "react";
-import { NavLinks } from "@/data/NavLinks";
-import Globe from "@/components/icons/Globe";
-import ArrowDown from "@/components/icons/ArrowDown";
-import Menu from "@/components/icons/Menu";
-import ProfileIcon from "@/components/icons/ProfileIcon";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import { NavLinks } from "data/NavLinks";
+import { ArrowDown, Globe, Menu, ProfileIcon } from "@components/icons";
 const Navbar = () => {
   const router = useRouter();
   return (

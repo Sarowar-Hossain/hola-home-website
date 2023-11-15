@@ -1,22 +1,21 @@
-import React from "react";
-
 const Menu = ({ ...props }) => {
   return (
     <svg
-      width="14"
-      height="11"
-      viewBox="0 0 14 11"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      className="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
       {...props}
     >
       <path
-        d="M0 5.5H14M0 9.5H14M0 1.5H14"
-        stroke="#484C52"
-        stroke-width="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M4 6h16M4 12h16m-7 6h7"
       />
     </svg>
-  );
-};
+  )
+}
 
-export default Menu;
+export default Menu
