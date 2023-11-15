@@ -1,25 +1,25 @@
 {
-  "title": "Tamjid Mostafa",
-  "titleTemplate": "%s - PORTFOLIO",
-  "description": "Tamjid Mostafa | Full Stack Web Developer",
+  "title": "Hola Home",
+  "titleTemplate": "%s - HOLA HOME",
+  "description": "Hola Home",
   "openGraph": {
-    "title": "Tamjid Mostafa",
-    "description": "Tamjid Mostafa | Full Stack Web Developer",
+    "title": "Hola Home",
+    "description": "Hola Home",
     "type": "website",
-    "url": "https://linkedin.com/tamjid-mostafa",
-    "site_name": "Portfolio",
+    "url": "",
+    "site_name": "HOLA HOME",
     "images": [
       {
-        "url": "/card.png",
+        "url": "",
         "width": "800",
         "height": "600",
-        "alt": "Portfolio"
+        "alt": "HOLA HOME"
       }
     ]
   },
   "linkedin": {
-    "handle": "@tamjid-mostafa",
-    "site": "@tamjid-mostafa",
+    "handle": "",
+    "site": "",
     "cardType": "summary_large_image"
   }
 }

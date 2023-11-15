@@ -101,7 +101,7 @@ const Layout = ({ children }) => {
     <>
       <div className={cn(s.root)}>
         <Navbar />
-        <main className="fit">{children}</main>
+        <main className="fit min-h-screen">{children}</main>
         <Footer />
         <ModalUI />
         <SidebarUI links={navBarlinks} />
