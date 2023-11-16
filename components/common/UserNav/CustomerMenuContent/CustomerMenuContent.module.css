@@ -6,7 +6,7 @@
   min-width: 100vw;
 }
 
-@media screen(lg) {
+@media screen(lg){
   .root {
     @apply static;
     min-width: inherit;
@@ -17,7 +17,7 @@
 .link {
   @apply text-primary flex cursor-pointer px-6 py-3
     transition ease-in-out duration-150 leading-6
-    font-medium items-center capitalize w-full box-border outline-0;
+    font-medium items-center capitalize border-b border-[#C4C4C4] box-border outline-0;
 }
 
 .link:hover {

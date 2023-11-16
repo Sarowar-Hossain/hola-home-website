@@ -1,18 +1,17 @@
 const Menu = ({ ...props }) => {
   return (
     <svg
-      xmlns="http://www.w3.org/2000/svg"
-      className="h-6 w-6"
+      width="28"
+      height="18"
+      viewBox="0 0 28 18"
       fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      { ...props }
     >
       <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={2}
-        d="M4 6h16M4 12h16m-7 6h7"
+        d="M0.875 9H27.125M0.875 16.5H27.125M0.875 1.5H27.125"
+        stroke="#222222"
+        stroke-width="1.5"
       />
     </svg>
   )

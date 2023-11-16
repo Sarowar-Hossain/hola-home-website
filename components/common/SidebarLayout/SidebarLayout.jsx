@@ -3,6 +3,8 @@ import { Cross, ChevronLeft } from '@components/icons'
 import { UserNav } from '@components/common'
 import cn from 'clsx'
 import s from './SidebarLayout.module.css'
+import Link from 'next/link'
+import Image from 'next/image'
 
 
 const SidebarLayout = ({
@@ -18,10 +20,11 @@ const SidebarLayout = ({
           <button
             onClick={handleClose}
             aria-label="Close"
-            className="hover:text-accent-5 transition ease-in-out duration-150 flex items-center focus:outline-none mr-6"
+            className="flex flex-1 items-center"
           >
-            <Cross className="h-6 w-6 hover:text-accent-3" />
-            <span className="ml-2 text-accent-7 text-sm ">Close</span>
+            <Link href="/"  aria-label="Logo">
+              <Image src="/navlogo.png" height={53} width={113} alt="Logo" />
+            </Link>
           </button>
         )}
         {handleBack && (

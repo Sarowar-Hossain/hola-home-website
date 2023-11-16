@@ -3,7 +3,6 @@ import s from './Sidebar.module.css'
 import { useEffect, useRef } from 'react'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
-
 const Sidebar = ({ children, onClose }) => {
   const sidebarRef = useRef()
   const contentRef = useRef()
