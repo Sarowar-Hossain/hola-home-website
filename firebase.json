@@ -1,0 +1,11 @@
+{
+	"hosting": {
+		"source": ".",
+		"site": "hola-home",
+		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+		"frameworksBackend": {
+			"region": "us-central1",
+			"maxInstances": 2
+		}
+	}
+}
