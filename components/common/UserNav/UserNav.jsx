@@ -15,6 +15,7 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 
 import Languages from '@components/Language/Languages'
 import Dp from '@components/icons/Dp'
+import Sidebar from '../Sidebar/Sidebar'
 
 const UserNav = ({ className }) => {
   const {
@@ -45,33 +46,10 @@ const UserNav = ({ className }) => {
           <Languages />
         </DropdownMenu.Root>
       </div>
-      
-      <ul className={`${s.list} ml-5 space-x-0 rounded-xl  p-1 lg:border-none`}>
+
+      <ul className={`${s.list} ml-5 space-x-0 rounded-xl lg:border-none`}>
         <li className={s.mobileMenu}>
-          {!displaySidebar ? (
-            <Button
-              className={s.item}
-              aria-label="Menu"
-              variant="naked"
-              onClick={() => {
-                setSidebarView('MOBILE_MENU_VIEW')
-                openSidebar()
-              }}
-            >
-              <Menu className="h-8 w-8" />
-            </Button>
-          ) : (
-            <Button
-              variant="naked"
-              onClick={() => {
-                closeSidebar()
-              }}
-              aria-label="Close"
-              className={`${s.item} flex items-center`}
-            >
-              <Cross className="h-8 w-8 stroke-black" />
-            </Button>
-          )}
+          <Sidebar />
         </li>
 
         <li className={s.item}>
@@ -96,13 +74,6 @@ const UserNav = ({ className }) => {
             </span>
           </div>
         </li>
-
-        {/* <li className={s.item}>
-          <Link href="/auth/LoginView" className="lg:hidden">
-            <span aria-label="Menu" className={`${s.avatarButton}`}>
-            </span>
-          </Link>
-        </li> */}
       </ul>
     </nav>
   )

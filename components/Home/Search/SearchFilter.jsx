@@ -30,16 +30,14 @@ const SearchFilter = ({ view }) => {
     <>
       <section
         className={`container w-full mx-auto flex items-center justify-center lg:grid lg:grid-cols-12   ${
-          displaySidebar ? 'pt-0 md:pt-10' : 'pt-10'
+          displaySidebar ? 'pt-0 md:pt-10' : ''
         }`}
       >
         {/* <div className="md:col-span-3"></div> */}
         {/* search bar */}
-          <Searchbar
-            className={`h-[48px] rounded-lg border-[#FCCF12]  w-full lg:w-[750px] `}
-          />
+        <Searchbar className={`h-[48px] rounded-lg border-[#FCCF12]  w-full mx-4`} />
         {/* filter button */}
-        <div className='hidden lg:inline-block'>
+        <div className="hidden lg:inline-block">
           <FilterButton view={view} filterView={filterView} />
         </div>
       </section>

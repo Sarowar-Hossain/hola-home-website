@@ -10,19 +10,22 @@ import { NavLinks } from 'data/NavLinks'
 import Languages from '@components/Language/Languages'
 import { SideNavLinks } from 'data/SideNavLinks'
 import { useState } from 'react'
+import Sidebar from '@components/common/Sidebar/Sidebar'
 
 export default function MenuSidebarView({ links = [] }) {
   const { closeSidebar, sidebarView } = useUI()
 
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false)
 
   const handleProfileClick = () => {
-    setIsProfileOpen(!isProfileOpen);
-  };
+    setIsProfileOpen(!isProfileOpen)
+  }
 
   return (
-    <SidebarLayout handleClose={() => closeSidebar()}>
-      <div className={`${s.root}`}>
+    <SidebarLayout
+    // handleClose={() => closeSidebar()}
+    >
+      {/* <div className={`${s.root}`}>
         {sidebarView === 'MOBILE_MENU_VIEW' ? (
           <nav>
             <ul>
@@ -36,7 +39,6 @@ export default function MenuSidebarView({ links = [] }) {
                   onClick={() => closeSidebar()}
                 >
                   {link.pathList ? (
-                    // If there are pathList items, render a DropdownMenu
                     <DropdownMenu.Root>
                       <DropdownMenu.Trigger asChild>
                         <a className="font-medium hover:text-white text-[#484C52] text-lg ">
@@ -67,24 +69,13 @@ export default function MenuSidebarView({ links = [] }) {
                   )}
                 </li>
               ))}
-              {/* <DropdownMenu.Root>
-                <DropdownMenu.Trigger asChild>
-                  <li className="font-medium hover:text-white text-[#484C52] text-lg py-2">
-                    Profile
-                  </li>
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content>
-                  Content for CustomerMenuContent
-                  <CustomerMenuContent />
-                </DropdownMenu.Content>
-                <Languages />
-              </DropdownMenu.Root> */}
             </ul>
           </nav>
         ) : (
           <FilterSidebar />
         )}
-      </div>
+      </div> */}
+      {/* {sidebarView === 'MOBILE_MENU_VIEW' && } */}
     </SidebarLayout>
   )
 }

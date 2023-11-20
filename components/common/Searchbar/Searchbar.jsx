@@ -29,17 +29,18 @@ const Searchbar = ({ className, id = 'search' }) => {
 
   return (
     <div className={cn(s.root, className)}>
-      <label className="hidden" htmlFor={id}>
-        Search
-      </label>
-      <input
-        id={id}
-        className={s.input}
-        placeholder="Start your search"
-        defaultValue={router.query.q}
-        onKeyUp={handleKeyUp}
-      />
-      <div className={`${s.iconContainer} my-2 me-2 py-[10px] px-[10px] bg-[#FCCF12] rounded-full`}>
+      <div className="mx-8">
+        <input
+          id={id}
+          className={s.input}
+          placeholder="Start your search"
+          defaultValue={router.query.q}
+          onKeyUp={handleKeyUp}
+        />
+      </div>
+      <div
+        className={`${s.iconContainer} my-1.5 me-2 py-[10px] px-[10px] bg-[#FCCF12] rounded-full`}
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="12"
@@ -54,7 +55,6 @@ const Searchbar = ({ className, id = 'search' }) => {
             strokeWidth="2"
           />
         </svg>
-        
       </div>
     </div>
   )

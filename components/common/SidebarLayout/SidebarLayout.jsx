@@ -15,7 +15,7 @@ const SidebarLayout = ({
 }) => {
   return (
     <div className={cn(s.root, className)}>
-      <header className={s.header}>
+      {/* <header className={s.header}>
         {handleClose && (
           <button
             onClick={handleClose}
@@ -40,7 +40,7 @@ const SidebarLayout = ({
 
         <UserNav />
       </header>
-      <div className={s.container}>{children}</div>
+      <div className={s.container}>{children}</div> */}
     </div>
   )
 }
