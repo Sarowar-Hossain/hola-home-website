@@ -1,52 +1,50 @@
-import Link from "next/link";
-import React from "react";
-import Image from "next/image";
-import { useRouter } from "next/router";
-import { NavLinks } from "data/NavLinks";
-import { ArrowDown, Globe, Menu, ProfileIcon } from "@components/icons";
-const Navbar = () => {
-  const router = useRouter();
+import Link from 'next/link'
+import s from './Navbar.module.css'
+import NavbarRoot from './NavbarRoot'
+import { Container } from '@components/ui'
+import { UserNav } from '@components/common'
+import Image from 'next/image'
+import { useGlobalContext } from 'Context/Context'
+import { NavLinks } from 'data/NavLinks'
+
+const Navbar = ({ links }) => {
+  const { showSearch, setShowSearch } = useGlobalContext()
+
   return (
-    <div className="h-[80px] w-full bg-[#FCCF12] flex justify-center items-center">
-      <div className="container mx-auto flex justify-between items-center">
-        <div onClick={() => router.push("/")}>
-          {/* logo */}
-          <img
-            src="/navlogo.png"
-            className="h-[55px] w-[115px] hover:cursor-pointer"
-            alt=""
-          />
-        </div>
-
-        <div className="flex items-center gap-10">
-          {/* navlinks */}
-          {NavLinks.map((item, index) => (
-            <Link
-              href={item.path}
-              key={index + 1}
-              className="font-medium hover:text-white text-[#484C52]"
-            >
-              {item.name}
+    <NavbarRoot>
+      <Container clean className="container mx-auto">
+        <div className={s.nav}>
+          <div className="flex flex-1 items-center">
+            <Link href="/" className={s.logo} aria-label="Logo">
+              <Image src="/navlogo.png" height={53} width={113} alt="Logo" />
             </Link>
-          ))}
-        </div>
-        <div className="flex justify-center items-center gap-2">
-          {/* profile and language icon */}
-          <div className="flex gap-2 items-center justify-center border rounded-2xl px-2 py-1 border-[#484C52] text-[#484C52] hover:cursor-pointer hover:border-white">
-            <Globe />
-            <ArrowDown />
           </div>
-
-          <div className="border rounded-2xl hover:border-white  border-[#484C52]">
-            <div className="flex text-[#484C52] items-center gap-3 px-3 py-1 hover:cursor-pointer">
-              <Menu />
-              <ProfileIcon />
-            </div>
+          <nav className="hidden lg:flex items-center gap-10">
+            {NavLinks?.map((l, index) => (
+              <Link
+                href={l.path}
+                key={index}
+                className="font-medium hover:text-white text-[#484C52]"
+              >
+                {l.name}
+              </Link>
+            ))}
+            <p
+              className="font-medium hover:text-white text-[#484C52]"
+              onClick={() => {
+                showSearch ? setShowSearch(false) : setShowSearch(true)
+              }}
+            >
+              Search
+            </p>
+          </nav>
+          <div className="flex flex-1 items-center justify-end space-x-8">
+            <UserNav />
           </div>
         </div>
-      </div>
-    </div>
-  );
-};
+      </Container>
+    </NavbarRoot>
+  )
+}
 
-export default Navbar;
+export default Navbar

@@ -6,6 +6,9 @@ module.exports = {
   safelist: ['outline-none'],
   theme: {
     extend: {
+      backgroundColor: {
+        white: 'white',
+      },
       maxWidth: {
         '8xl': '1920px',
       },

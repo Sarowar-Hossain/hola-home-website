@@ -40,7 +40,7 @@
 }
 
 .mobileMenu {
-  @apply flex lg:hidden ml-6 text-white;
+  @apply flex lg:hidden text-white;
 }
 
 .avatarButton:focus,
@@ -49,14 +49,14 @@
 }
 
 .dropdownDesktop {
-  @apply hidden -z-10;
+  @apply hidden -z-10 lg:block;
 }
 
-@media screen(lg) {
+/* @media screen(lg) {
   .dropdownDesktop {
     @apply block;
-  }
+  } */
   .dropdownMobile {
-    @apply hidden;
+    @apply lg:hidden;
   }
-}
+/* } */
