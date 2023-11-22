@@ -25,3 +25,7 @@ const Container: FC<ContainerProps> = ({
 }
 
 export default Container
+
+/*
+KT: This container has the same kind of thing that we have in container utilities in Tailwind CSS. But you can modify it. To use it, import it and wrap your component within it. If you want it with full width, then you can call clean prop in it.
+*/

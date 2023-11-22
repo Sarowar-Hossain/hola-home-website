@@ -32,3 +32,7 @@ const Input = (props) => {
 }
 
 export default Input
+
+/*
+KT: To use this input, import it into your code and provide the onChange. To provide an onChange, you can set the value like this:<Input onChange={setName} />. Also, you can add additional style to it or pre-define it in Input.module.css
+*/

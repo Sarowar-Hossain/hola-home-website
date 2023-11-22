@@ -4,7 +4,6 @@ import FocusTrap from '@lib/focus-trap'
 import { Cross } from '@components/icons'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 
-
 const Modal = ({ children, onClose }) => {
   const ref = useRef()
 
@@ -47,3 +46,7 @@ const Modal = ({ children, onClose }) => {
 }
 
 export default Modal
+
+/*
+KT: This is the centralized modal component. To use it go to Layout and define your desired modal
+*/
