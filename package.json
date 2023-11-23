@@ -31,6 +31,7 @@
     "react-icons": "^4.10.1",
     "react-merge-refs": "^2.0.2",
     "react-use-measure": "^2.1.1",
+    "swiper": "^11.0.5",
     "tabbable": "^6.2.0"
   },
   "devDependencies": {

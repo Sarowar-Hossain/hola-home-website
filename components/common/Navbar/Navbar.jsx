@@ -4,11 +4,12 @@ import NavbarRoot from './NavbarRoot'
 import { Container } from '@components/ui'
 import { UserNav } from '@components/common'
 import Image from 'next/image'
-import { useGlobalContext } from 'Context/Context'
+import { GlobalContext } from 'Context/Context'
 import { NavLinks } from 'data/NavLinks'
+import { useContext } from 'react'
 
 const Navbar = ({ links }) => {
-  const { showSearch, setShowSearch } = useGlobalContext()
+  const { showSearch, setShowSearch } = useContext(GlobalContext)
 
   return (
     <NavbarRoot>

@@ -23,6 +23,13 @@ const SignUpView = dynamic(() => import('@components/auth/SignUpView'), {
   ...dynamicProps,
 })
 
+const BookmarkView = dynamic(
+  () => import('@components/common/BookmarkModal/BookmarkModal'),
+  {
+    ...dynamicProps,
+  }
+)
+
 const ForgotPassword = dynamic(
   () => import('@components/auth/ForgotPassword'),
   {
@@ -45,6 +52,7 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'LOGIN_VIEW' && <LoginView />}
       {modalView === 'SIGNUP_VIEW' && <SignUpView />}
       {modalView === 'FORGOT_VIEW' && <ForgotPassword />}
+      {modalView === 'BOOKMARKMODAL_VIEW' && <BookmarkView />}
     </Modal>
   )
 }
