@@ -60,10 +60,10 @@ const Card = ({ property }) => {
 
 	return (
 		<div
-			className="slider-container relative mx-auto max-w-[360px] rounded-t-lg md:w-full border rounded-lg shadow-sm"
+			className="slider-container relative mx-auto w-[350px] rounded-t-lg  border rounded-lg shadow-sm"
 			onMouseEnter={() => setIsHovered(true)}
 			onMouseLeave={() => setIsHovered(false)}
-			onClick={() => router.push("/properties/654d6a4d6ad4a6d74")}
+			
 		>
 			<Swiper
 				modules={[Autoplay, Pagination, A11y, FreeMode]}
@@ -72,7 +72,7 @@ const Card = ({ property }) => {
 				slidesPerView={1}
 				pagination={{ clickable: true }}
 				autoplay={{ delay: 1000 }}
-				onSwiper={(swiper) => (swiperRef.current = swiper)} // Set the Swiper instance to the ref
+				onSwiper={(swiper) => (swiperRef.current = swiper)} 
 			>
 				{images?.map((image, i) => (
 					<SwiperSlide key={i}>
@@ -96,8 +96,10 @@ const Card = ({ property }) => {
 					<p className="text-accent-5">({reviews} reviews)</p>
 					<p className="italic text-accent-5">{hostType}</p>
 				</div>
-				<Link href="/property">
-					<p className="mt-1 text-2xl font-bold">{hotelName}</p>
+        <Link href="/properties/654d6a4d6ad4a6d74">
+          
+          
+					<p className="mt-1 text-2xl font-semibold">{hotelName}</p>
 				</Link>
 				<ul className={`mt-2 flex gap-2`}>
 					{propertyDetails?.map((detail, i) => (
