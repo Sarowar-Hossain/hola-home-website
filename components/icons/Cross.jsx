@@ -2,8 +2,8 @@ const Cross = ({ ...props }) => {
   return (
     <svg
       viewBox="0 0 24 24"
-      width="24"
-      height="24"
+      width="28"
+      height="28"
       stroke="currentColor"
       strokeWidth="1.5"
       strokeLinecap="round"

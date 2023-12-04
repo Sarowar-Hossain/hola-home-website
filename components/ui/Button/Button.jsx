@@ -1,13 +1,9 @@
 import cn from 'clsx'
-import React, {
-  forwardRef,
-  useRef,
-} from 'react'
+import React, { forwardRef, useRef } from 'react'
 import { mergeRefs } from 'react-merge-refs'
 import s from './Button.module.css'
 import { LoadingDots } from '@components/ui'
-
-
+import { Loader2 } from 'lucide-react'
 
 // eslint-disable-next-line react/display-name
 const Button = forwardRef((props, buttonRef) => {
@@ -28,9 +24,11 @@ const Button = forwardRef((props, buttonRef) => {
   const rootClassName = cn(
     s.root,
     {
-      [s.ghost]: variant === 'ghost',
+      [s.light]: variant === 'light',
       [s.slim]: variant === 'slim',
       [s.naked]: variant === 'naked',
+      [s.bordered]: variant === 'bordered',
+      [s.fullWidth]: variant === 'fullWidth',
       [s.loading]: loading,
       [s.disabled]: disabled,
     },
@@ -50,14 +48,18 @@ const Button = forwardRef((props, buttonRef) => {
       }}
       {...rest}
     >
-      {children}
       {loading && (
-        <i className="pl-2 m-0 flex">
-          <LoadingDots />
+        <i className="mr-2 flex text-accent-0 animate-spin">
+          <Loader2 />
         </i>
       )}
+      {children}
     </Component>
   )
 })
 
 export default Button
+
+/*
+KT: To use this Button, import it to your desired place. After importing it, you can provide an additional style or you can have a pre-defined style by calling variant. Also, you can create a new variant. To create a variant, define it first in this component, then style it through that Button.module.css. There are two more props you can have in this Button, 1. loading and 2. disable.
+*/

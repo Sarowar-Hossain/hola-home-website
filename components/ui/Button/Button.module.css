@@ -1,38 +1,56 @@
 .root {
-  @apply bg-accent-9 text-accent-0 cursor-pointer inline-flex
-  px-10 py-5 leading-6 transition ease-in-out duration-150
+  @apply bg-yellow-400 text-accent-0 cursor-pointer inline-flex
+  px-10 py-3 leading-6 transition ease-in-out duration-150
   shadow-sm text-center justify-center uppercase
   border border-transparent items-center text-sm font-semibold
-  tracking-wide;
+  tracking-wide rounded-lg;
   max-height: 64px;
 }
 
 .root:hover {
-  @apply border-accent-9 bg-accent-6;
+  @apply bg-yellow-500;
 }
 
 .root:focus {
-  @apply shadow-outline-normal outline-none;
+  @apply outline-none;
 }
 
 .root[data-active] {
-  @apply bg-accent-6;
+  @apply bg-yellow-500;
+}
+.root:active {
+  @apply bg-yellow-400;
 }
 
 .loading {
-  @apply bg-accent-1 text-accent-3 border-accent-2 cursor-not-allowed;
+  @apply bg-yellow-400 text-accent-3 border-yellow-400 py-2 cursor-not-allowed;
 }
 
 .slim {
   @apply py-2 transform-none normal-case;
 }
-
-.ghost {
-  @apply border border-accent-2 bg-accent-0 text-accent-9 text-sm;
+.bordered {
+  @apply py-2 transform-none normal-case border-2 rounded-full border-yellow-400 bg-transparent text-yellow-400;
+}
+.bordered:hover {
+  @apply bg-yellow-400 text-accent-9 shadow-md shadow-yellow-100;
+}
+.bordered:active {
+  @apply bg-yellow-500 text-accent-9;
+}
+.fullWidth {
+  @apply py-2 w-full transform-none normal-case;
 }
 
-.ghost:hover {
-  @apply border-accent-9 bg-accent-9 text-accent-0;
+.light {
+  @apply border-2 border-yellow-400 bg-yellow-100 text-accent-0 text-sm;
+}
+
+.light:hover {
+  @apply bg-accent-9 text-accent-0;
+}
+.light:active {
+  @apply bg-yellow-100 text-accent-0;
 }
 
 .naked {

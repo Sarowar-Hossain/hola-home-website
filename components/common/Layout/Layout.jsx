@@ -38,6 +38,7 @@ const Modal = dynamic(() => import('@components/ui/Modal'), {
   ...dynamicProps,
   ssr: false,
 })
+
 const ModalView = ({ modalView, closeModal }) => {
   return (
     <Modal onClose={closeModal}>
@@ -111,3 +112,8 @@ const Layout = ({ children }) => {
 }
 
 export default Layout
+
+/*
+Create a component that you want to show as a modal and call that dynamically (Please follow 23 - 25 line). There is a UI context (setModalView) for modal view, you have to set it from your component where you want to show the modal and define that modal view and component in a condition (Please follow from 43 no. line in this page). 
+Example of calling setModalView through the UI context:   const { setModalView, closeModal } = useUI(); To close the modal call that closeModal function in your onClick handler
+*/

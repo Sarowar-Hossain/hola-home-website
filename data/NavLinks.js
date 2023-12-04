@@ -11,9 +11,5 @@ export const NavLinks = [
   {
     name: "My trips",
     path: "/my-trips",
-  },
-  {
-    name: "Search",
-    path: "",
-  },
+  }
 ];

@@ -8,6 +8,9 @@ const initialState = {
   displayDropdown: false,
   displayModal: false,
   modalView: 'LOGIN_VIEW',
+  // allscreenmodal mean it visible in all screen sizes
+  displayallScreenModal: false,
+  allScreenModalView: '',
   sidebarView: 'CART_VIEW',
   userAvatar: '',
 }
@@ -52,16 +55,35 @@ function uiReducer(state, action) {
         displaySidebar: false,
       }
     }
+    case 'OPEN_ALLSCREENMODAL': {
+      return {
+        ...state,
+        displayallScreenModal: true,
+        displaySidebar: false,
+      }
+    }
     case 'CLOSE_MODAL': {
       return {
         ...state,
         displayModal: false,
       }
     }
+    case 'CLOSE_ALLSCREENMODAL': {
+      return {
+        ...state,
+        displayallScreenModal: false,
+      }
+    }
     case 'SET_MODAL_VIEW': {
       return {
         ...state,
         modalView: action.view,
+      }
+    }
+    case 'SET_ALLSCREENMODAL_VIEW': {
+      return {
+        ...state,
+        allScreenModalView: action.view,
       }
     }
     case 'SET_SIDEBAR_VIEW': {
@@ -115,8 +137,16 @@ export const UIProvider = (props) => {
     () => dispatch({ type: 'OPEN_MODAL' }),
     [dispatch]
   )
+  const openAllScreenModal = useCallback(
+    () => dispatch({ type: 'OPEN_ALLSCREENMODAL' }),
+    [dispatch]
+  )
   const closeModal = useCallback(
     () => dispatch({ type: 'CLOSE_MODAL' }),
+    [dispatch]
+  )
+  const closeAllScreenModal = useCallback(
+    () => dispatch({ type: 'CLOSE_ALLSCREENMODAL' }),
     [dispatch]
   )
 
@@ -127,6 +157,11 @@ export const UIProvider = (props) => {
 
   const setModalView = useCallback(
     (view) => dispatch({ type: 'SET_MODAL_VIEW', view }),
+    [dispatch]
+  )
+  
+  const setAllScreenModalView = useCallback(
+    (view) => dispatch({ type: 'SET_ALLSCREENMODAL_VIEW', view }),
     [dispatch]
   )
 
@@ -146,7 +181,10 @@ export const UIProvider = (props) => {
       closeDropdown,
       openModal,
       closeModal,
+      openAllScreenModal,
+      closeAllScreenModal,
       setModalView,
+      setAllScreenModalView,
       setSidebarView,
       setUserAvatar,
     }),
