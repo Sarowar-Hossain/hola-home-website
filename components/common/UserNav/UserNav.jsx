@@ -36,7 +36,7 @@ const UserNav = ({ className }) => {
         <DropdownMenu.Root>
           <DropdownMenu.Trigger asChild>
             <span
-              className="flex gap-2 items-center justify-center border rounded-2xl px-2 py-1 border-[#484C52] text-[#484C52] hover:cursor-pointer hover:border-white"
+              className="flex  items-center justify-center border rounded-2xl p-1  border-[#484C52] text-[#484C52] hover:cursor-pointer hover:border-white"
               onClick={() => {}}
             >
               <Globe />
@@ -53,7 +53,7 @@ const UserNav = ({ className }) => {
         </li>
 
         <li className={s.item}>
-          <div className="hidden  space-x-2  p-1 lg:flex  gap-2 items-center justify-center border rounded-2xl px-2 py-1 border-[#484C52] text-[#484C52]  hover:border-white">
+          <div className="hidden  space-x-2   lg:flex  gap-2 items-center justify-center border rounded-3xl px-3 py-1 border-[#484C52] text-[#484C52]  hover:border-white">
             <Dropdown>
               <DropdownTriggerInst>
                 <span className="cursor-pointer">
@@ -64,7 +64,7 @@ const UserNav = ({ className }) => {
             </Dropdown>
             <span
               aria-label="Menu"
-              className={`${s.avatarButton} cursor-pointer`}
+              className={`${s.avatarButton} cursor-pointer `}
               onClick={() => {
                 user ? null : openModal()
                 setModalView('LOGIN_VIEW')
