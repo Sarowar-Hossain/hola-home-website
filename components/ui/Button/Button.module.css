@@ -1,7 +1,7 @@
 .root {
   @apply bg-yellow-400 text-accent-0 cursor-pointer inline-flex
-  px-10 py-3 leading-6 transition ease-in-out duration-150
-  shadow-sm text-center justify-center uppercase
+  px-10 py-2 leading-6 transition ease-in-out duration-150
+  shadow-sm text-center justify-center
   border border-transparent items-center text-sm font-semibold
   tracking-wide rounded-lg;
   max-height: 64px;

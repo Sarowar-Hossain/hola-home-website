@@ -37,7 +37,7 @@ const Modal = ({ children, onClose }) => {
           aria-label="Close panel"
           className={s.close}
         >
-          <Cross className="h-6 w-6" />
+          <Cross className="h-6 w-6 bg-accent-8 text-white rounded-full hover:bg-accent-6" />
         </button>
         <FocusTrap focusFirst>{children}</FocusTrap>
       </div>
