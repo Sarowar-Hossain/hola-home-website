@@ -139,7 +139,7 @@ const Sidebar = () => {
           >
             {NavLinksProfile.pathList.map((item, index) => {
               return (
-                <Link href={''} key={index + 1}>
+                <Link href={item.path} key={index + 1} onClick={toggleSidebar}>
                   <h1 className="ml-4 cursor-pointer p-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal">
                     {item.name}
                   </h1>

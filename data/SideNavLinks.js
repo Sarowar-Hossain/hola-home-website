@@ -28,11 +28,11 @@ export const NavLinksProfile = {
     },
     {
       name: 'My Profile',
-      path: '/My-Profile',
+      path: '/profile',
     },
     {
       name: 'Bookmarks',
-      path: '/Bookmarks',
+      path: '/bookmarks',
     },
     {
       name: 'My Properties',
