@@ -1,5 +1,5 @@
 import { Layout } from '@components/common';
-import { PageBackButton, Save, Share, Star } from '@components/icons';
+import { Location, PageBackButton, Save, Share, Star } from '@components/icons';
 import { Container, Text } from '@components/ui';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -60,27 +60,27 @@ const DetailsPage = () => {
                         <Image src="/host.png" fill alt='' className='object-cover' />
                     </div>
                     <div>
-                        <Text className='text-accent-2'>Private Host</Text>
-                        <Text className='text-accent-0 text-lg font-medium text-right'>Charles</Text>
+                        <Text className='text-accent-4'>Private Host</Text>
+                        <Text className='text-accent-9 text-lg font-medium text-right'>Charles</Text>
                     </div>
                 </div>
             </div>
             <div className='mt-8 flex justify-between items-end'>
                 <div>
-                    <Text variant='pageHeading' className='text-accent-0'>The Astin Villa Hotel</Text>
+                    <Text variant='pageHeading' className='text-accent-9'>The Astin Villa Hotel</Text>
                     <div className='flex items-center gap-2'>
                         <Star className="text-yellow-400" />
-                        <span className='text-accent-0 text-[18px]'>
+                        <span className='text-accent-8 text-[18px]'>
                             5.0 <span className='text-accent-4'>(22 Reviews)</span>
                         </span>
                     </div>
                 </div>
                 <div className='flex gap-5'>
-                    <span className='text-accent-0 flex items-center gap-1'>
+                    <span className='text-accent-6 font-semibold flex items-center gap-1'>
                         <Share />
                         Share
                     </span>
-                    <span className='text-accent-0 flex items-center gap-1'>
+                    <span className='text-accent-6 font-semibold flex items-center gap-1'>
                         <Save />
                         Save
                     </span>
@@ -101,7 +101,7 @@ const DetailsPage = () => {
                         ))}
                     </div>
                 </div>
-            </div>-
+            </div>
             {isModalOpen && (
                 <div className='fixed inset-0 bg-black bg-opacity-60 backdrop-blur-md flex justify-center items-center z-50'>
                     <AnimatePresence initial={false}>
@@ -121,7 +121,13 @@ const DetailsPage = () => {
                     <p className='top-5 absolute text-accent-9 text-lg'>{currentImageIndex + 1}/{images?.length}</p>
                 </div>
             )}
-
+            <div className='mt-5'>
+                <div>
+                    <Text variant='pageHeading' className='text-accent-6'>The Astin Villa Hotel</Text>
+                    <span className='flex items-center gap-1'><Location /><Text variant='body' className='text-accent-6'>12 Eze Adele Road, Rumuomasi Lagos,Wallace, Australia.</Text></span>
+                </div>
+                <div></div>
+            </div>
         </Container>
     );
 };
