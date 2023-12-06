@@ -14,7 +14,7 @@ const Navbar = ({ links }) => {
 
   return (
     <NavbarRoot>
-      <Container clean className="container mx-auto">
+      <Container clean className="container w-full   2xl:w-[98%] xl:w-[93%] mx-auto">
         <div className={s.nav}>
           <div className="flex flex-1 items-center">
             <Link href="/" className={s.logo} aria-label="Logo">
@@ -26,7 +26,7 @@ const Navbar = ({ links }) => {
               <Link
                 href={l.path}
                 key={index}
-                className="font-medium hover:text-white text-[#484C52]"
+                className=" hover:text-white text-[#484C52]"
               >
                 {l.name}
               </Link>

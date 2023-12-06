@@ -1,17 +1,4 @@
 {
-<<<<<<< HEAD
-  "hosting": {
-    "source": ".",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "frameworksBackend": {
-      "region": "us-central1"
-    }
-  }
-=======
 	"hosting": {
 		"source": ".",
 		"site": "hola-home",
@@ -21,5 +8,4 @@
 			"maxInstances": 2
 		}
 	}
->>>>>>> 0966e2a1dd5379f9ee63dba7a4dd79e9b5d3cb70
 }

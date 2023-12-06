@@ -5,7 +5,7 @@ import React from 'react'
 const Properties = () => {
   return (
     <div className="flex flex-col items-center justify-center my-6">
-      <div className="mt-10 grid grid-cols-1 gap-5 px-2 pb-10 md:grid-cols-2 lg:mt-0 lg:grid-cols-3 lg:py-10 xl:grid-cols-4 ">
+      <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
         {allProperty.map((property, index) => (
           <Card property={property} key={index + 1} />
         ))}
