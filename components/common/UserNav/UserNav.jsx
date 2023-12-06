@@ -4,7 +4,7 @@ import s from './UserNav.module.css'
 import { useUI } from '@components/ui/context'
 import { ChevronDown, Cross, Globe, Menu, Menu2 } from '@components/icons'
 import CustomerMenuContent from './CustomerMenuContent'
-import React from 'react'
+import React, { useContext } from 'react'
 import {
   Dropdown,
   DropdownTrigger as DropdownTriggerInst,
@@ -17,6 +17,8 @@ import Languages from '@components/Language/Languages'
 import Dp from '@components/icons/Dp'
 import Sidebar from '../Sidebar/Sidebar'
 import { MenuIcon } from 'lucide-react'
+import NavDropDown from './NavDropDown'
+import { GlobalContext } from 'Context/Context'
 
 const UserNav = ({ className }) => {
   const {
@@ -28,8 +30,14 @@ const UserNav = ({ className }) => {
     setModalView,
     sidebarView,
   } = useUI()
+  const { isMenuOpen, setIsMenuOpen } = useContext(GlobalContext)
+
   const { data: user } = useSession()
   const DropdownTrigger = user ? DropdownTriggerInst : React.Fragment
+
+  const handleDropDown = () => {
+    setIsMenuOpen(!isMenuOpen)
+  }
 
   return (
     <nav className={cn(s.root, className)}>
@@ -54,15 +62,16 @@ const UserNav = ({ className }) => {
         </li>
 
         <li className={s.item}>
-          <div className="hidden  space-x-2   lg:flex  gap-2 items-center justify-center border rounded-3xl px-3 py-1 border-[#484C52] text-[#484C52]  hover:border-white">
-            <Dropdown>
-              <DropdownTriggerInst>
-                <span className="cursor-pointer">
-                  <MenuIcon className="h-5 w-5 border-none hover:border-none" />
-                </span>
-              </DropdownTriggerInst>
-              <CustomerMenuContent />
-            </Dropdown>
+          <div className="hidden  space-x-2 relative  lg:flex  gap-2 items-center justify-center border rounded-3xl px-3 py-1 border-[#484C52] text-[#484C52]  hover:border-white">
+            <span className="cursor-pointer">
+              <MenuIcon
+                className="h-5 w-5 border-none hover:border-none"
+                onClick={handleDropDown}
+              />
+            </span>
+            <div className="absolute top-14 right-0">
+              {isMenuOpen && <NavDropDown />}
+            </div>
             <span
               aria-label="Menu"
               className={`${s.avatarButton} cursor-pointer `}

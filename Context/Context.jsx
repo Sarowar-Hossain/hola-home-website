@@ -3,6 +3,9 @@ import { createContext, useState } from 'react'
 export const GlobalContext = createContext()
 
 export const GlobalProvider = ({ children }) => {
+  // for nav menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
   // states of reservartion
   const [acceptPolicy, setAcceptPolicy] = useState(false)
   const [confirmPay, setConfirmPay] = useState(false)
@@ -40,8 +43,8 @@ export const GlobalProvider = ({ children }) => {
     setConfirmDelection,
     allReview,
     setAllReview,
-    // propertyDetails,
-    // setPropertyDetails,
+    isMenuOpen,
+    setIsMenuOpen,
     bookmarkList,
     setBookMarkList,
   }
