@@ -7,3 +7,8 @@
 body {
     background-color: white;
   }
+
+  /* this ccs for edit profile */
+.no-border {
+  border: none !important;
+}
