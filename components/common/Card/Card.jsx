@@ -16,7 +16,7 @@ const Card = ({ property }) => {
   const [isHovered, setIsHovered] = useState(false)
   const { bookmarkList, setBookMarkList } = useContext(GlobalContext)
   const swiperRef = useRef(null)
-  const { openModal, setModalView } = useUI()
+  const { openModal, setModalView, closeModal } = useUI()
   const {
     images,
     reviews,
@@ -53,11 +53,16 @@ const Card = ({ property }) => {
 
   return (
     <div
-      className="slider-container relative mx-auto max-w-[360px] rounded-t-lg md:w-full border rounded-lg shadow-sm"
+      className="slider-container relative mx-auto max-w-[360px] rounded-t-xl md:w-full border rounded-lg shadow-sm"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
       <Swiper
+        style={{
+          '--swiper-pagination-color': '#FCCF12',
+          '--swiper-pagination-bullet-inactive-color': '#999999',
+          '--swiper-pagination-bullet-inactive-opacity': '1'
+        }}
         modules={[Autoplay, Pagination, A11y, FreeMode]}
         spaceBetween={10}
         loop={true}

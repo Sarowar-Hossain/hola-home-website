@@ -2,6 +2,7 @@ import { ChevronDown, Cross, Menu } from '@components/icons'
 import { motion, useCycle } from 'framer-motion'
 import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock'
 import {
+  NavLinksHelp,
   NavLinksLanguage,
   NavLinksProfile,
   SideNavLinks,
@@ -13,6 +14,7 @@ import Link from 'next/link'
 
 const Sidebar = () => {
   const [isLanguageSubMenuHidden, setLanguageSubMenuHidden] = useState(false)
+  const [isHelpSubMenuHidden, setHelpSubMenuHidden] = useState(false)
   const [isProfileSubMenuHidden, setProfileSubMenuHidden] = useState(false)
   const [isSidebarHidden, setSidebarHidden] = useState(false)
   const [isOpen, toggleOpen] = useCycle(false, true)
@@ -20,6 +22,9 @@ const Sidebar = () => {
 
   const toggleProfileSubMenu = () => {
     setProfileSubMenuHidden(!isProfileSubMenuHidden)
+  }
+  const toggleHelpSubMenu = () => {
+    setHelpSubMenuHidden(!isHelpSubMenuHidden)
   }
 
   const toggleLanguageSubMenu = () => {
@@ -112,6 +117,7 @@ const Sidebar = () => {
             )
           })}
 
+          {/* profile */}
           <div
             className="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer  "
             onClick={toggleProfileSubMenu}
@@ -138,6 +144,44 @@ const Sidebar = () => {
             id=""
           >
             {NavLinksProfile.pathList.map((item, index) => {
+              return (
+                <Link href={item.path} key={index + 1} onClick={toggleSidebar}>
+                  <h1 className="ml-4 cursor-pointer p-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal">
+                    {item.name}
+                  </h1>
+                </Link>
+              )
+            })}
+          </div>
+
+
+{/* Help */}
+          <div
+            className="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer  "
+            onClick={toggleHelpSubMenu}
+          >
+            <i className="bi bi-chat-left-text-fill"></i>
+            <div className="flex justify-between w-full items-center">
+              <span className="text-[20px] ml-4 text-[#484C52] font-medium">
+                {NavLinksHelp.name}
+              </span>
+              <span
+                className={`text-sm ${
+                  isHelpSubMenuHidden ? 'rotate-0' : 'rotate-180'
+                }`}
+              >
+                <ChevronDown className="text-[#484C52]" />
+              </span>
+            </div>
+          </div>
+
+          <div
+            className={`text-left text-sm mt-2 w-4/5 mx-auto text-[#484C52] font-bold ${
+              isHelpSubMenuHidden ? 'hidden' : ''
+            }`}
+            id=""
+          >
+            {NavLinksHelp.pathList.map((item, index) => {
               return (
                 <Link href={item.path} key={index + 1} onClick={toggleSidebar}>
                   <h1 className="ml-4 cursor-pointer p-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal">

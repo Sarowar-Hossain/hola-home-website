@@ -2,7 +2,7 @@ import cn from 'clsx'
 import Link from 'next/link'
 import s from './UserNav.module.css'
 import { useUI } from '@components/ui/context'
-import { ChevronDown, Cross, Globe, Menu } from '@components/icons'
+import { ChevronDown, Cross, Globe, Menu, Menu2 } from '@components/icons'
 import CustomerMenuContent from './CustomerMenuContent'
 import React from 'react'
 import {
@@ -16,6 +16,7 @@ import { useSession, signIn, signOut } from 'next-auth/react'
 import Languages from '@components/Language/Languages'
 import Dp from '@components/icons/Dp'
 import Sidebar from '../Sidebar/Sidebar'
+import { MenuIcon } from 'lucide-react'
 
 const UserNav = ({ className }) => {
   const {
@@ -57,7 +58,7 @@ const UserNav = ({ className }) => {
             <Dropdown>
               <DropdownTriggerInst>
                 <span className="cursor-pointer">
-                  <Menu className="h-5 w-5" />
+                  <MenuIcon className="h-5 w-5 border-none hover:border-none" />
                 </span>
               </DropdownTriggerInst>
               <CustomerMenuContent />
