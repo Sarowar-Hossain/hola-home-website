@@ -3,7 +3,7 @@ import React from 'react'
 
 const index = () => {
   return (
-    <div className="container mx-auto p-0">
+    <div>
       <MyProfile />
     </div>
   )

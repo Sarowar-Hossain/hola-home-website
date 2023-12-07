@@ -1,14 +1,12 @@
 import cn from 'clsx'
-import { useTheme } from 'next-themes'
 import { useRouter } from 'next/router'
-import { Moon, Sun } from '@components/icons'
 import s from './CustomerMenuContent.module.css'
 import {
   DropdownContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
 } from '@components/ui/Dropdown/Dropdown'
-import { Button, Text } from '@components/ui'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { useState } from 'react'
 
 const LINKS = [
   {
@@ -27,25 +25,47 @@ const LINKS = [
     href: '/profile/bookmarks',
   },
   {
-    id: 2,
+    id: 5,
     name: 'My Properties',
     href: '/profile/my-properties',
   },
 ]
 
+const HelpNavLink = {
+  name: 'Help',
+  pathList: [
+    {
+      id: 1,
+      name: 'Contact Us',
+      href: '/contact',
+    },
+    {
+      id: 2,
+      name: 'Report a bug',
+      href: '/report-bug',
+    },
+  ],
+}
+
 export default function CustomerMenuContent() {
   const router = useRouter()
   const { pathname } = useRouter()
-  const { data: session } = useSession()
+  const [showSubMenu, setShowSubMenu] = useState(false)
+
   function handleClick(_, href) {
     router.push(href)
   }
+
+function handleHelpClick(e) {
+  setShowSubMenu(!showSubMenu)
+  e.stopPropagation()
+}
 
   return (
     <DropdownContent
       sideOffset={10}
       id="CustomerMenuContent"
-      className="rounded-lg -ms-32 mt-2 border min-w-[170px]  border-[#C4C4C4]"
+      className="rounded-lg -ms-32 mt-2 border min-w-[170px] border-[#C4C4C4]"
     >
       {LINKS.map(({ name, href }) => (
         <DropdownMenuItem key={href}>
@@ -57,38 +77,40 @@ export default function CustomerMenuContent() {
           </a>
         </DropdownMenuItem>
       ))}
-      <DropdownMenuItem>
-        <p
-          className={cn(s.link, 'justify-between')}
-          // onClick={() => }
-        >
-          Logout
-        </p>
-      </DropdownMenuItem>
 
-      <DropdownMenuItem>
-        {session && (
-          <>
-            <Text
-              variant="body"
-              className={cn(
-                s.link,
-                'border-t border-accent-2 mt-4 flex flex-col gap-2 text-start'
-              )}
-            >
-              <span>{session?.user?.name}</span>
-              <span>{session?.user?.email}</span>
-            </Text>
-            <Button
-              variant="naked"
-              onClick={() => signOut()}
-              className={cn(s.link, '')}
-            >
-              Sign out
-            </Button>
-          </>
-        )}
-      </DropdownMenuItem>
+      {/* Submenu for Help */}
+      {/* <DropdownMenuItem>
+      <p
+        className={cn(s.link, 'justify-between', { [s.active]: showSubMenu })}
+        onPointerDown={handleHelpClick}
+      >
+        {HelpNavLink.name}
+        <div className="ml-auto pl-[20px] text-mauve11 group-data-[highlighted]:text-white group-data-[disabled]:text-mauve8">
+          {showSubMenu ? '▲' : '▼'}
+        </div>
+      </p>
+      {showSubMenu && (
+        <DropdownMenuGroup>
+          {HelpNavLink.pathList.map(({ id, name, href }) => (
+            <DropdownMenuItem key={id}>
+              <a
+                className={cn(s.link, { [s.active]: pathname === href })}
+                onClick={(e) => handleClick(e, href)}
+              >
+                {name}
+              </a>
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
+      )}
+    </DropdownMenuItem> */}
+    
+    {/* Logout */}
+    <DropdownMenuItem>
+      <p className={cn(s.link, 'justify-between')} onClick={handleHelpClick}>
+        Logout
+      </p>
+    </DropdownMenuItem>
     </DropdownContent>
   )
 }

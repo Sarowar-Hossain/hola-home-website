@@ -44,6 +44,20 @@ export const NavLinksProfile = {
     },
   ],
 }
+export const NavLinksHelp = {
+  name: 'Help',
+  path: '',
+  pathList: [
+    {
+      name: 'Contact Us',
+      path: '',
+    },
+    {
+      name: 'Report a bug',
+      path: '',
+    },
+  ],
+}
 export const NavLinksLanguage = {
   name: 'Languages',
   path: '',

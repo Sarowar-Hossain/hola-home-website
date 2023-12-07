@@ -2,38 +2,135 @@ import { Button, Container, Text } from '@components/ui'
 import React, { useState } from 'react'
 import displayPic from 'public/profileDP.png'
 import Image from 'next/image'
-import { Plus } from 'lucide-react'
+import { Loader, Plus } from 'lucide-react'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { useRouter } from 'next/router'
+import { storage } from '@config/firebase.config'
+import validator from 'validator'
+import 'react-phone-number-input/style.css'
+import PhoneInput from 'react-phone-number-input'
 
 const MyProfile = () => {
+  const router = useRouter()
   const [isNameEdit, setIsNameEdit] = useState(false)
   const [isEmailEdit, setIsEmailEdit] = useState(false)
   const [isPhoneNoEdit, setIsPhoneNoEdit] = useState(false)
-
+  const [uploader, setUploader] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [editedData, setEditedData] = useState({})
+  const [validatePhnNo, setValidatePhnNo] = useState(false)
+  const [validEmail, setValidateEmail] = useState(false)
+  const [validName, setValidateName] = useState(false)
 
   const handleInputChange = (fieldName, value) => {
     setEditedData((prevData) => ({ ...prevData, [fieldName]: value }))
-    // setIsChanged(true)
   }
 
+  const uploadProfileImage = async () => {
+    const input = document.getElementById('profileImg')
+    input.onchange = async () => {
+      const imageFile = input.files[0]
+      if (!imageFile) {
+        return
+      }
+      setUploader(true)
+      const storageRef = ref(storage, `profilePicture/${imageFile.name}`)
+      try {
+        await uploadBytes(storageRef, imageFile)
+        const downloadURL = await getDownloadURL(storageRef)
+        setEditedData((prevData) => ({ ...prevData, dpUrl: downloadURL }))
+        handleInputChange('dpUrl', downloadURL)
+        setUploader(false)
+      } catch (error) {
+        setUploader(false)
+      }
+    }
+  }
+
+  const validateEmail = () => {
+    const email = editedData?.email
+    if (!email) {
+      setValidateEmail('Please enter a email!')
+    } else if (!validator.isEmail(email)) {
+      setValidateEmail('Please enter a valid email address!')
+    } else {
+      setValidateEmail(false)
+      setIsEmailEdit(false)
+      // Call uploader function or any other logic here
+    }
+  }
+
+  const validateName = () => {
+    const fullName = editedData?.fullName
+    if (!fullName) {
+      setValidateName('Please enter your name!')
+    } else if (typeof fullName !== 'string' || !/^[a-zA-Z]+$/.test(fullName)) {
+      setValidateName('Name must be characters!')
+    } else if (fullName.length < 3) {
+      setValidateName('Name must be at least 3 characters!')
+    } else {
+      setValidateName(false)
+      setIsNameEdit(false)
+      // Call uploader function
+    }
+  }
+
+  const validatePhoneNumber = () => {
+    const phoneRegex = /^\+?[0-9]*$/
+    const phoneNumber = editedData?.phoneNo
+    if (
+      !phoneRegex.test(phoneNumber) ||
+      phoneNumber.length < 9 ||
+      phoneNumber.length > 15
+    ) {
+      setValidatePhnNo('Please enter a valid phone number!')
+    } else {
+      setValidatePhnNo(false)
+      setIsPhoneNoEdit(false)
+      //call uploader function
+    }
+  }
+  console.log(editedData)
+
   return (
-    <Container
-      clear
-      className="text-accent-7 space-y-5 md:space-y-10"
-    >
-      <Text variant="heroBody" className=" hidden md:block text-2xl xl:text-4xl mt-10">
+    <Container clear className="text-accent-7 space-y-5 md:space-y-10">
+      <Text
+        variant="heroBody"
+        className=" hidden md:block text-2xl xl:text-4xl mt-10"
+      >
         Personal info
       </Text>
-      <div className="flex justify-center items-center flex-col-reverse md:grid md:grid-cols-2">
+      <div className="flex justify-center items-center flex-col-reverse lg:grid lg:grid-cols-2">
         {/* Forms */}
-        <div className="space-y-4 lg:space-y-7 w-[95%]">
-          <div className="flex justify-between ">
-            <span className="text-base md:text-2xl">
-              <h1 className="font-medium">Full Name</h1>
+        <div className="space-y-4 lg:space-y-7 w-full">
+          <div className="flex justify-between">
+            <div className="text-base md:text-2xl w-full">
+              <div className="flex items-center justify-between">
+                <h1 className="font-medium">Full Name</h1>
+
+                {isNameEdit ? (
+                  <button
+                    onClick={validateName}
+                    className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg bg-primary"
+                    title="Save Name"
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setIsNameEdit(true)}
+                    className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline"
+                    title="Edit Name"
+                  >
+                    Edit
+                  </button>
+                )}
+              </div>
               <input
                 readOnly={`${isNameEdit ? '' : 'readOnly'}`}
-                className={`font-normal outline-none text-[#777E8B] mt-2 ${
-                  isNameEdit && 'border-none focus:outline-none'
+                className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full  ${
+                  isNameEdit &&
+                  'border-2 focus:outline-none  border-accent-2  rounded-lg ps-2'
                 }`}
                 placeholder="Enter Your Full Name"
                 type="text"
@@ -46,78 +143,88 @@ const MyProfile = () => {
                   handleInputChange('fullName', e.target.value.trim())
                 }}
               />
-            </span>
-
-            {isNameEdit ? (
-              <button
-                onClick={() => setIsNameEdit(false)}
-                className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg bg-primary"
-                title="Save Name"
-              >
-                Save
-              </button>
-            ) : (
-              <button
-                onClick={() => setIsNameEdit(true)}
-                className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline"
-                title="Edit Name"
-              >
-                Edit
-              </button>
-            )}
+              {validName && <p className="text-red text-sm">{validName}</p>}
+            </div>
           </div>
 
           <hr />
 
           <div className="flex justify-between">
-            <span className="text-base md:text-2xl">
-              <h1 className="font-medium">Phone Number</h1>
-              <input
-                readOnly={`${isPhoneNoEdit ? '' : 'readOnly'}`}
-                className={`font-normal outline-none text-[#777E8B] mt-2 ${
-                  isPhoneNoEdit && 'border-none focus:outline-none'
-                }`}
+            <div className="text-base md:text-2xl w-full">
+              <div className="flex items-center justify-between ">
+                <h1 className="font-medium">Phone Number</h1>
+                {isPhoneNoEdit ? (
+                  <button
+                    onClick={validatePhoneNumber}
+                    className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg bg-primary"
+                    title="Save Name"
+                  >
+                    Save
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setIsPhoneNoEdit(true)}
+                    className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline"
+                    title="Edit Name"
+                  >
+                    Edit
+                  </button>
+                )}
+              </div>
+              <PhoneInput
+                readOnly={!isPhoneNoEdit}
                 placeholder="Enter Your Phone No."
-                type="text"
-                defaultValue={editedData?.phoneNo}
-                onChange={(e) => {
+                value={editedData?.phoneNo}
+                onChange={(value) => {
                   setEditedData({
                     ...editedData,
-                    phoneNo: e.target.value.trim(),
+                    phoneNo: value,
                   })
-                  handleInputChange('phoneNo', e.target.value.trim())
+                  handleInputChange('phoneNo', value)
                 }}
+                className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full  ${
+                  isPhoneNoEdit &&
+                  'border-2 focus:outline-none  border-accent-2  rounded-lg ps-2'
+                }`}
               />
-            </span>
 
-            {isPhoneNoEdit ? (
-              <button
-                onClick={() => setIsPhoneNoEdit(false)}
-                className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg bg-primary"
-                title="Save Name"
-              >
-                Save
-              </button>
-            ) : (
-              <button
-                onClick={() => setIsPhoneNoEdit(true)}
-                className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline"
-                title="Edit Name"
-              >
-                Edit
-              </button>
-            )}
+              {validatePhnNo && (
+                <p className="text-red text-sm">{validatePhnNo}</p>
+              )}
+            </div>
           </div>
 
           <hr />
 
-          <div className="flex justify-between">
-            <span className="text-base md:text-2xl">
-              <h1 className="font-medium">Email Address</h1>
+          <div className="flex justify-between ">
+            <div className="text-base md:text-2xl w-full">
+              <div className="flex items-center justify-between ">
+                <h1 className="font-medium">Email Address</h1>
+                <p>
+                  {isEmailEdit ? (
+                    <button
+                      onClick={validateEmail}
+                      className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg bg-primary"
+                      title="Save Name"
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => setIsEmailEdit(true)}
+                      className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline"
+                      title="Edit Name"
+                    >
+                      Edit
+                    </button>
+                  )}
+                </p>
+              </div>
               <input
                 readOnly={`${isEmailEdit ? '' : 'readOnly'}`}
-                className={`font-normal outline-none text-[#777E8B] mt-2 ${
-                  isEmailEdit && 'border-none focus:outline-none'
+                className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full ${
+                  isEmailEdit &&
+                  'border-2 focus:outline-none  border-accent-2  rounded-lg ps-2'
                 }`}
                 placeholder="user@gmail.com"
                 type="text"
@@ -130,25 +237,8 @@ const MyProfile = () => {
                   handleInputChange('email', e.target.value.trim())
                 }}
               />
-            </span>
-
-            {isEmailEdit ? (
-              <button
-                onClick={() => setIsEmailEdit(false)}
-                className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg bg-primary"
-                title="Save Name"
-              >
-                Save
-              </button>
-            ) : (
-              <button
-                onClick={() => setIsEmailEdit(true)}
-                className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline"
-                title="Edit Name"
-              >
-                Edit
-              </button>
-            )}
+              {validEmail && <p className="text-red text-sm">{validEmail}</p>}
+            </div>
           </div>
 
           <hr />
@@ -159,20 +249,51 @@ const MyProfile = () => {
             Display Picture
           </h2>
           <div className="relative rounded-full border">
-            <Image
+            {/* <Image
               src={displayPic}
               sizes="100vw"
               alt="userIcon"
               className="h-auto w-[150px] md:w-[245px]"
-            />
-            <span className="absolute bottom-2 right-2 rounded-full bg-[#FCCF12] fill-white stroke-white p-1 shadow-lg md:bottom-4 md:right-4 md:p-3 text-white">
-              <Plus />
-            </span>
+            /> */}
+            <div className="md:h-[245px] h-[150px] w-[150px] md:w-[245px] overflow-hidden rounded-full">
+              {editedData?.dpUrl ? (
+                <Image
+                  src={editedData?.dpUrl}
+                  alt="profile picture"
+                  className="rounded-full"
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
+              ) : (
+                <Image
+                  src={displayPic}
+                  alt="profile picture"
+                  className="rounded-full"
+                  fill
+                  style={{ objectFit: 'cover' }}
+                />
+              )}
+            </div>
+            <div
+              onClick={uploadProfileImage}
+              className="absolute bottom-1 right-3 rounded-full bg-[#FCCF12] fill-white stroke-white p-1 shadow-lg md:bottom-3 md:right-4 md:p-3 text-white cursor-pointer"
+            >
+              {uploader ? (
+                <div className="flex">
+                  <Loader className="animate-spin text-white" />
+                </div>
+              ) : (
+                <label for="profileImg" className="cursor-pointer">
+                  <Plus />
+                  <input id="profileImg" type="file" className="hidden" />
+                </label>
+              )}
+            </div>
           </div>
         </div>
       </div>
       {/* Delete Button */}
-      <div className="flex justify-center md:justify-start">
+      <div className="flex justify-center lg:justify-start pb-6">
         <Button
           className=" text-xl font-medium text-accent-8"
           variant="slim"

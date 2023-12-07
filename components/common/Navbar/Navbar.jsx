@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { GlobalContext } from 'Context/Context'
 import { NavLinks } from 'data/NavLinks'
 import { useContext } from 'react'
+import Search from '@components/icons/Search'
 
 const Navbar = ({ links }) => {
   const { showSearch, setShowSearch } = useContext(GlobalContext)
@@ -31,11 +32,12 @@ const Navbar = ({ links }) => {
               </Link>
             ))}
             <p
-              className=" hover:text-white text-[#484C52]"
+              className="font-medium hover:text-white text-[#484C52] flex items-center cursor-pointer gap-2"
               onClick={() => {
                 showSearch ? setShowSearch(false) : setShowSearch(true)
               }}
             >
+              <Search />
               Search
             </p>
           </nav>
