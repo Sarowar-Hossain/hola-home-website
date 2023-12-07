@@ -6,24 +6,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500&family=Poppins:wght@400;500;600;700;800&display=swap');
 
 body {
-    background-color: white;
-  }
+  background-color: white;
+}
 
-  /* this ccs for edit profile */
+/* this ccs for edit profile */
 .no-border {
   border: none !important;
-	background-color: white;
-
-	font-family: "Poppins", sans-serif;
+  background-color: white;
+  font-family: 'Poppins', sans-serif;
 }
 
 .details-page .swiper-pagination-bullet {
-	opacity: 80 !important;
-	background-color: white !important;
+  opacity: 80 !important;
+  background-color: white !important;
 }
 
 .details-page .swiper-pagination-bullet-active {
-	width: 20px !important;
-	border-radius: 4px !important;
-	background-color: #FCCF12 !important;
+  width: 20px !important;
+  border-radius: 4px !important;
+  background-color: #fccf12 !important;
 }

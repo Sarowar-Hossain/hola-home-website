@@ -1,5 +1,5 @@
 import { Layout } from '@components/common';
-import { Location, PageBackButton, Save, Share, Star } from '@components/icons';
+import { ActivityArea, AirConditioning, Baths, BeachAccess, Bedroom, FirePit, Gym, HotTub, Location, PageBackButton, Parking, Pool, Save, Share, Star, TV, Villa, Wifi } from '@components/icons';
 import { Container, Text } from '@components/ui';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -18,12 +18,63 @@ const images = [
     'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     'https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
 ];
-// const details = [
-//     {
-//         type: 'Villa',
-//         logo: <
-//     },
-// ]
+const details = [
+    {
+        type: 'Villa',
+        logo: <Villa />
+    },
+    {
+        type: '4 Bedroom',
+        logo: <Bedroom />
+    },
+    {
+        type: '5 Baths',
+        logo: <Baths />
+    },
+]
+
+const amenities = [
+    {
+        title: 'Parking',
+        logo: <Parking />
+    },
+    {
+        title: 'Wifi',
+        logo: <Wifi />
+    },
+    {
+        title: 'Beach',
+        logo: <BeachAccess />
+    },
+    {
+        title: 'Pool',
+        logo: <Pool />
+    },
+    {
+        title: 'Hot Tub',
+        logo: <HotTub />
+    },
+    {
+        title: 'TV',
+        logo: <TV />
+    },
+    {
+        title: 'Air Conditioner',
+        logo: <AirConditioning />
+    },
+    {
+        title: 'Gym',
+        logo: <Gym />
+    },
+    {
+        title: 'Fire Pit',
+        logo: <FirePit />
+    },
+    {
+        title: 'Activity Area',
+        logo: <ActivityArea />
+    },
+]
 
 const swipeThreshold = 50;
 const DetailsPage = () => {
@@ -157,12 +208,50 @@ const DetailsPage = () => {
             )}
             <div className='mt-5'>
                 <div>
-                    <div className='sm:border-b-2 sm:pb-3'>
+                    <div className='sm:border-b sm:pb-3'>
                         <Text variant='pageHeading' className='text-accent-6'>The Astin Villa Hotel</Text>
                         <span className='flex items-center gap-1'><Location /><Text variant='body' className='text-accent-6'>12 Eze Adele Road, Rumuomasi Lagos,Wallace, Australia.</Text></span>
                     </div>
-                    <div className='mt-5'>
+                    <div className='mt-8 border-b pb-4'>
                         <Text variant='sectionHeading'>Details</Text>
+                        <div className='flex gap-10'>
+                            {
+                                details?.map((d, i) => {
+                                    return (
+                                        <div key={i} className='flex flex-col justify-center items-center gap-1'>
+                                            <span className='bg-slate-100 p-2 rounded'>
+                                                {d?.logo}
+                                            </span>
+                                            <Text>{d?.type}</Text>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div className='mt-8 border-b pb-4'>
+                        <Text variant='sectionHeading'>Description</Text>
+                        <Text>The villa is located in the most popular tourist area in Toronto, perfect for those of you who like backpackers. We’ll bring you through some of the most unique hotels that you never thought you’ll find in Bali. Let's find out!</Text>
+                    </div>
+                    <div className='mt-8 border-b pb-4'>
+                        <Text variant='sectionHeading'>Amenities</Text>
+                        <div className='flex flex-wrap gap-10'>
+                            {
+                                amenities?.map((d, i) => {
+                                    return (
+                                        <div key={i} className='flex flex-col justify-center items-center gap-1'>
+                                            <span className='bg-slate-100 p-2 rounded'>
+                                                {d?.logo}
+                                            </span>
+                                            <Text>{d?.title}</Text>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
+                    </div>
+                    <div className='mt-8 border-b pb-4'>
+                        <Text variant='sectionHeading'>Reviews</Text>
 
                     </div>
                 </div>
