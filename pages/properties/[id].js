@@ -254,7 +254,7 @@ const DetailsPage = () => {
                         <p className='top-5 absolute text-accent-9 text-lg'>{currentImageIndex + 1}/{images?.length}</p>
                     </div>
                 )}
-                <div className='mt-5 lg:flex gap-5'>
+                <div className='mt-8 lg:flex gap-5'>
                     <div>
                         <div className='sm:border-b sm:pb-3'>
                             <Text variant='pageHeading' className='text-accent-6'>The Astin Villa Hotel</Text>
@@ -282,7 +282,7 @@ const DetailsPage = () => {
                             <Text>The villa is located in the most popular tourist area in Toronto, perfect for those of you who like backpackers. We’ll bring you through some of the most unique hotels that you never thought you’ll find in Bali. Let's find out!</Text>
                         </div>
                         <div className='mt-8 border-b pb-8'>
-                            <Text variant='sectionHeading'>Amenities</Text>
+                            <Text variant='sectionHeading' className='mb-5'>Amenities</Text>
                             <div className='flex flex-wrap gap-10'>
                                 {
                                     amenities?.map((d, i) => {
