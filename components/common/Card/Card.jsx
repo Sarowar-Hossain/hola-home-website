@@ -95,7 +95,7 @@ const Card = ({ property }) => {
           <p className="text-accent-5">({reviews} reviews)</p>
           <p className="italic text-accent-5">{hostType}</p>
         </div>
-        <Link href="/property">
+        <Link href="/properties/654d6a4d6ad4a6d74">
           <p className="mt-1 text-2xl font-bold">{hotelName}</p>
         </Link>
         <ul className={`mt-2 flex gap-2`}>

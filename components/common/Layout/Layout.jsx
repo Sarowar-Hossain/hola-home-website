@@ -8,6 +8,7 @@ import { Sidebar, LoadingDots } from '@components/ui'
 import { MenuSidebarView } from '@components/common/UserNav'
 import Navbar from '../Navbar/Navbar'
 import Footer from '../Footer/Footer'
+import { Toaster } from 'react-hot-toast'
 
 const Loading = () => (
   <div className="w-80 h-80 flex items-center text-center justify-center p-3">
@@ -22,6 +23,21 @@ const dynamicProps = {
 const SignUpView = dynamic(() => import('@components/auth/SignUpView'), {
   ...dynamicProps,
 })
+const ShareView = dynamic(() => import('@components/Share/Share'), {
+  ...dynamicProps,
+})
+const LoginAlertView = dynamic(
+  () => import('@components/LoginAlert/LoginAlert'),
+  {
+    ...dynamicProps,
+  }
+)
+const ReviewSuccessView = dynamic(
+  () => import('@components/ReviewSubmitModal/ReviewSubmitModal'),
+  {
+    ...dynamicProps,
+  }
+)
 
 const BookmarkView = dynamic(
   () => import('@components/common/BookmarkModal/BookmarkModal'),
@@ -54,12 +70,16 @@ const Modal = dynamic(() => import('@components/ui/Modal'), {
 })
 
 const ModalView = ({ modalView, closeModal }) => {
+  console.log(modalView)
   return (
     <Modal onClose={closeModal}>
       {modalView === 'LOGIN_VIEW' && <LoginView />}
       {modalView === 'SIGNUP_VIEW' && <SignUpView />}
       {modalView === 'FORGOT_VIEW' && <ForgotPassword />}
       {modalView === 'BOOKMARKMODAL_VIEW' && <BookmarkView />}
+      {modalView === 'SHARE_VIEW' && <ShareView />}
+      {modalView === 'REVIEW_ALERT' && <LoginAlertView />}
+      {modalView === 'REVIEW_SUCCESS_VIEW' && <ReviewSuccessView />}
       {modalView === 'LOGOUTMODAL_VIEW' && <LogoutView />}
     </Modal>
   )
@@ -90,6 +110,7 @@ const SidebarUI = ({ links }) => {
     />
   ) : null
 }
+
 const navLinks = [
   {
     name: 'Home',
@@ -117,6 +138,7 @@ const Layout = ({ children }) => {
   return (
     <>
       <div className={cn(s.root)}>
+        <Toaster position="top-center" />
         <Navbar />
         <main className="fit min-h-screen">{children}</main>
         <Footer />

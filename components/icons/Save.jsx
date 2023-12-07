@@ -7,7 +7,7 @@ const Save = ({ ...props }) => {
       width="22"
       height="22"
       viewBox="0 0 27 27"
-      fill="none"
+      fill="currentColor"
       {...props}
     >
       <g clip-path="url(#clip0_4635_134063)">
