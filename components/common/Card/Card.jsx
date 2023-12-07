@@ -15,7 +15,8 @@ import { useRouter } from 'next/router'
 const Card = ({ property }) => {
   const [bookmark, setBookmark] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
-  const { bookmarkList, setBookMarkList } = useContext(GlobalContext)
+  const { bookmarkList, setBookMarkList, setCurrentBookmarkItem } =
+    useContext(GlobalContext)
   const swiperRef = useRef(null)
   const { openModal, setModalView, closeModal } = useUI()
   const {
@@ -29,10 +30,10 @@ const Card = ({ property }) => {
   } = property
 
   const handleBookMark = (data) => {
-    if (bookmarkList.find((item) => item.id === data.id)) {
-      const updateData = bookmarkList.filter((pt) => pt.id !== data.id)
+    if (bookmarkList.find((item) => item?.id === data?.id)) {
+      // const updateData = bookmarkList.filter((pt) => pt.id !== data.id)
+      setCurrentBookmarkItem(data.id)
       openModal(), setModalView('BOOKMARKMODAL_VIEW')
-      setBookMarkList(updateData)
       //   setBookmark(false)
     } else {
       setBookMarkList([...bookmarkList, data])
@@ -70,7 +71,7 @@ const Card = ({ property }) => {
         slidesPerView={1}
         pagination={{ clickable: true }}
         autoplay={{ delay: 1000 }}
-        onSwiper={(swiper) => (swiperRef.current = swiper)} // Set the Swiper instance to the ref
+        onSwiper={(swiper) => (swiperRef.current = swiper)}
       >
         {images?.map((image, i) => (
           <SwiperSlide key={i}>
@@ -118,7 +119,7 @@ const Card = ({ property }) => {
       <div
         onClick={() => handleBookMark(property)}
         className={`absolute ${
-          bookmarkList.find((item) => item.id === property.id)
+          bookmarkList.some((item) => item.id === property.id)
             ? 'text-[#FCCF12]'
             : 'text-white'
         } right-3 top-3 z-10 cursor-pointer`}

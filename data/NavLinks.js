@@ -6,11 +6,11 @@ export const NavLinks = [
   },
   {
     name: 'List your property',
-    path: '/list-your-property',
+    path: '/profile/list-your-property',
   },
   {
     name: 'My trips',
-    path: '/my-trips',
+    path: '/profile/my-trips',
   },
 ]
 

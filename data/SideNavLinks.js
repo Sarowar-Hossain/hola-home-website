@@ -10,11 +10,11 @@ export const SideNavLinks = [
   },
   {
     name: 'List your property',
-    path: '/list-your-property',
+    path: '/profile/list-your-property',
   },
   {
     name: 'My trips',
-    path: '/my-trips',
+    path: '/profile/my-trips',
   },
 ]
 
@@ -24,7 +24,7 @@ export const NavLinksProfile = {
   pathList: [
     {
       name: 'My Bookings',
-      path: '/my-bookings',
+      path: '/profile/my-bookings',
     },
     {
       name: 'My Profile',
@@ -32,11 +32,11 @@ export const NavLinksProfile = {
     },
     {
       name: 'Bookmarks',
-      path: '/bookmarks',
+      path: '/profile/bookmarks',
     },
     {
       name: 'My Properties',
-      path: '/My-Properties',
+      path: '/profile/My-Properties',
     },
   ],
 }

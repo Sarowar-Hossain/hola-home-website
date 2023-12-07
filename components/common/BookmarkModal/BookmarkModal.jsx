@@ -1,8 +1,27 @@
 import { useUI } from '@components/ui'
-import React from 'react'
+import { GlobalContext } from 'Context/Context'
+import React, { useContext } from 'react'
 
 const BookmarkModal = () => {
-  const { openModal, setModalView, closeModal } = useUI()
+  const { closeModal } = useUI()
+  const {
+    bookmarkList,
+    setBookMarkList,
+    currentBookMarkItem,
+    setCurrentBookmarkItem,
+  } = useContext(GlobalContext)
+
+  const handleRemoveBookmark = () => {
+    if (currentBookMarkItem !== null) {
+      const updatedBookmarks = bookmarkList.filter(
+        (item) => item?.id !== currentBookMarkItem
+      )
+      setBookMarkList(updatedBookmarks)
+      setCurrentBookmarkItem(null)
+      closeModal()
+    }
+  }
+
   return (
     <div className=" bg-white rounded-md flex flex-col justify-center items-center  gap-3 text-center">
       <h1>Remove Bookmark</h1>
@@ -15,7 +34,7 @@ const BookmarkModal = () => {
           Cancel
         </button>
         <button
-          onClick={() => closeModal()}
+          onClick={handleRemoveBookmark}
           className=" px-6 py-0.5 rounded-md font-medium bg-primary text-accent-7"
         >
           Remove

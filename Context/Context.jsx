@@ -16,6 +16,7 @@ export const GlobalProvider = ({ children }) => {
 
   // bookmark data
   const [bookmarkList, setBookMarkList] = useState([])
+  const [currentBookMarkItem, setCurrentBookmarkItem] = useState(null)
 
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
@@ -52,6 +53,8 @@ export const GlobalProvider = ({ children }) => {
     setBookMarkList,
     isLogoutModalShow,
     setIsLogoutModalShow,
+    currentBookMarkItem,
+    setCurrentBookmarkItem,
   }
 
   return (
