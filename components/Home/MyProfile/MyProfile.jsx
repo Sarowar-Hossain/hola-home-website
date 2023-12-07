@@ -17,7 +17,7 @@ const MyProfile = () => {
   const [isPhoneNoEdit, setIsPhoneNoEdit] = useState(false)
   const [uploader, setUploader] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [editedData, setEditedData] = useState({})
+  const [editedData, setEditedData] = useState({ phoneNo: '+8619513583884' })
   const [validatePhnNo, setValidatePhnNo] = useState(false)
   const [validEmail, setValidateEmail] = useState(false)
   const [validName, setValidateName] = useState(false)
@@ -90,7 +90,6 @@ const MyProfile = () => {
       //call uploader function
     }
   }
-  console.log(editedData)
 
   return (
     <Container clear className="text-accent-7 space-y-5 md:space-y-10">
@@ -130,7 +129,7 @@ const MyProfile = () => {
                 readOnly={`${isNameEdit ? '' : 'readOnly'}`}
                 className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full  ${
                   isNameEdit &&
-                  'border-2 focus:outline-none  border-accent-2  rounded-lg ps-2'
+                  'focus:outline-none  bg-accent-2  rounded-lg ps-4'
                 }`}
                 placeholder="Enter Your Full Name"
                 type="text"
@@ -184,8 +183,13 @@ const MyProfile = () => {
                 }}
                 className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full  ${
                   isPhoneNoEdit &&
-                  'border-2 focus:outline-none  border-accent-2  rounded-lg ps-2'
+                  'border-2 focus:outline-none bg-accent-2 border-accent-2  rounded-lg ps-2'
                 }`}
+                numberInputProps={{
+                  className: `rounded-md px-4 focus:outline-none ${
+                    isPhoneNoEdit ? 'bg-accent-2 focus:bg-accent-2 ' : ''
+                  } `,
+                }}
               />
 
               {validatePhnNo && (
@@ -224,7 +228,7 @@ const MyProfile = () => {
                 readOnly={`${isEmailEdit ? '' : 'readOnly'}`}
                 className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full ${
                   isEmailEdit &&
-                  'border-2 focus:outline-none  border-accent-2  rounded-lg ps-2'
+                  'focus:outline-none  bg-accent-2  rounded-lg ps-4'
                 }`}
                 placeholder="user@gmail.com"
                 type="text"
