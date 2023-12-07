@@ -14,6 +14,7 @@ import Link from 'next/link';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ReviewCard from '@components/common/ReviewCard/ReviewCard';
+import toast from 'react-hot-toast';
 
 const images = [
     'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -115,6 +116,7 @@ const reviews = [
 
 const swipeThreshold = 50;
 const DetailsPage = () => {
+    const router = useRouter();
     const handleDragEnd = (event, info) => {
         const offset = info.offset.x;
         if (offset > swipeThreshold) {
@@ -125,7 +127,7 @@ const DetailsPage = () => {
     };
     const [startDate, setStartDate] = useState(new Date("2023/02/08"));
     const [endDate, setEndDate] = useState(new Date("2025/02/10"));
-    const router = useRouter();
+    const [bookmarked, setBookMarked] = useState(false)
     const [profileView, setProfileView] = useState(false)
     const { setModalView, openModal } = useUI()
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -154,6 +156,15 @@ const DetailsPage = () => {
     const handleModal = () => {
         openModal()
         setModalView("SHARE_VIEW")
+    }
+
+    const handleBookmark = () => {
+        setBookMarked(true)
+        if (bookmarked) {
+            openModal(),
+                setModalView('BOOKMARKMODAL_VIEW')
+            setBookMarked(false)
+        }
     }
 
     return (
@@ -189,8 +200,10 @@ const DetailsPage = () => {
                             <Share />
                             <span className='hidden sm:block'>Share</span>
                         </div>
-                        <div className='text-accent-6 font-semibold flex items-center gap-1 cursor-pointer'>
-                            <Save />
+                        <div className='font-semibold flex items-center gap-1 cursor-pointer' onClick={handleBookmark}>
+                            <span className={`${bookmarked ? "text-yellow-500" : "text-transparent"}`}>
+                                <Save />
+                            </span>
                             <span className='hidden sm:block'>Save</span>
                         </div>
                     </div>
@@ -248,10 +261,10 @@ const DetailsPage = () => {
                                 onDragEnd={handleDragEnd}
                             />
                         </AnimatePresence>
-                        <button onClick={showPrev} className='absolute bottom-5 mr-10 md:left-5 md:top-1/2 transform -translate-y-1/2 hover:text-yellow-400 transition-all duration-200 max-h-10'><ChevronLeftCircle className='w-8 md:w-10 h-8 md:h-10' /></button>
-                        <button onClick={showNext} className='absolute bottom-5 ml-10 md:right-5 md:top-1/2 transform -translate-y-1/2 hover:text-yellow-400 transition-all duration-200 max-h-10'><ChevronRightCircle className='w-8 md:w-10 h-8 md:h-10' /></button>
-                        <button onClick={closeModal} className='absolute left-5 top-5 hover:text-yellow-400 transition-all duration-200'>X Close</button>
-                        <p className='top-5 absolute text-accent-9 text-lg'>{currentImageIndex + 1}/{images?.length}</p>
+                        <button onClick={showPrev} className='absolute bottom-5 mr-10 md:left-5 md:top-1/2 transform -translate-y-1/2 text-white hover:text-yellow-400 transition-all duration-200 max-h-10'><ChevronLeftCircle className='w-8 md:w-10 h-8 md:h-10' /></button>
+                        <button onClick={showNext} className='absolute bottom-5 ml-10 md:right-5 md:top-1/2 transform -translate-y-1/2 text-white hover:text-yellow-400 transition-all duration-200 max-h-10'><ChevronRightCircle className='w-8 md:w-10 h-8 md:h-10' /></button>
+                        <button onClick={closeModal} className='absolute left-5 top-5 text-white hover:text-yellow-400 transition-all duration-200'>X Close</button>
+                        <p className='top-5 absolute text-accent-9 text-lg text-white'>{currentImageIndex + 1}/{images?.length}</p>
                     </div>
                 )}
                 <div className='mt-8 lg:flex gap-5'>
