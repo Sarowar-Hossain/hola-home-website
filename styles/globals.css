@@ -26,3 +26,11 @@ body {
   border-radius: 4px !important;
   background-color: #fccf12 !important;
 }
+
+.react-datepicker__input-container input{
+  padding: 3px !important;
+  background-color: white !important;
+}
+.react-datepicker__input-container input:focus{
+  outline: none !important;
+}
