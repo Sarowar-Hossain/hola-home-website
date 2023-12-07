@@ -32,6 +32,12 @@ const LoginAlertView = dynamic(
     ...dynamicProps,
   }
 )
+const ReviewSuccessView = dynamic(
+  () => import('@components/ReviewSubmitModal/ReviewSubmitModal'),
+  {
+    ...dynamicProps,
+  }
+)
 
 const BookmarkView = dynamic(
   () => import('@components/common/BookmarkModal/BookmarkModal'),
@@ -66,6 +72,7 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'BOOKMARKMODAL_VIEW' && <BookmarkView />}
       {modalView === 'SHARE_VIEW' && <ShareView />}
       {modalView === 'REVIEW_ALERT' && <LoginAlertView />}
+      {modalView === 'REVIEW_SUCCESS_VIEW' && <ReviewSuccessView />}
     </Modal>
   )
 }

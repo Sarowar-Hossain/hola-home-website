@@ -7,9 +7,9 @@ import React, { useState } from 'react';
 const WriteReview = () => {
     const router = useRouter()
     const { setModalView, openModal } = useUI()
-    const handleReviewPage = () => {
+    const handleReviewSubmit = () => {
         openModal()
-        setModalView("REVIEW_ALERT")
+        setModalView("REVIEW_SUCCESS_VIEW")
     }
 
     const [rating, setRating] = useState(0);
@@ -36,7 +36,7 @@ const WriteReview = () => {
                         <Text className='text-lg font-semibold'>Review</Text>
                         <textarea className='w-full bg-white border-2 outline-none border-accent-2 rounded-md py-2 px-3' placeholder='Write review' name="" id="" cols="30" rows="8"></textarea>
                     </div>
-                    <Button className="w-[80%] mx-auto">Submit</Button>
+                    <Button onClick={handleReviewSubmit} className="w-[80%] mx-auto">Submit</Button>
                 </div>
             </div>
 
