@@ -1,5 +1,5 @@
 import { Layout } from '@components/common';
-import { ActivityArea, AirConditioning, Baths, BeachAccess, Bedroom, FirePit, Gym, HotTub, Location, PageBackButton, Parking, Pool, Save, Share, Star, TV, Villa, Wifi } from '@components/icons';
+import { ActivityArea, AirConditioning, Baths, BeachAccess, Bedroom, FirePit, Gym, HotTub, Location, PageBackButton, Parking, Pool, Save, Share, Star, Star3, TV, Villa, Wifi } from '@components/icons';
 import { Container, Text } from '@components/ui';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
@@ -73,6 +73,39 @@ const amenities = [
     {
         title: 'Activity Area',
         logo: <ActivityArea />
+    },
+]
+
+const reviews = [
+    {
+        image: "/reviewer.png",
+        name: "Ivande Othawa",
+        date: "Jan 20, 2025",
+        details: "Very nice and comfortable hotel, thank you for accompanying my vacation!"
+    },
+    {
+        image: "/reviewer.png",
+        name: "Ivande Othawa",
+        date: "Jan 20, 2025",
+        details: "Very nice and comfortable hotel, thank you for accompanying my vacation!"
+    },
+    {
+        image: "/reviewer.png",
+        name: "Ivande Othawa",
+        date: "Jan 20, 2025",
+        details: "Very nice and comfortable hotel, thank you for accompanying my vacation!"
+    },
+    {
+        image: "/reviewer.png",
+        name: "Ivande Othawa",
+        date: "Jan 20, 2025",
+        details: "Very nice and comfortable hotel, thank you for accompanying my vacation!"
+    },
+    {
+        image: "/reviewer.png",
+        name: "Ivande Othawa",
+        date: "Jan 20, 2025",
+        details: "Very nice and comfortable hotel, thank you for accompanying my vacation!"
     },
 ]
 
@@ -252,7 +285,29 @@ const DetailsPage = () => {
                     </div>
                     <div className='mt-8 border-b pb-4'>
                         <Text variant='sectionHeading'>Reviews</Text>
-
+                        <div>
+                            {
+                                reviews?.map((r, i) => {
+                                    return (
+                                        <div className=''>
+                                            <div className='flex'>
+                                                <div className='flex items-center gap-3'>
+                                                    <Image src={r?.image} height={80} width={80} alt='' />
+                                                    <div>
+                                                        <Text className='leading-4 text-xl font-semibold'>{r?.name}</Text>
+                                                        <Text className='text-accent-5'>{r?.date}</Text>
+                                                    </div>
+                                                </div>
+                                                <div className='bg-yellow-500 flex gap-2 items-center justify-center w-24 h-14'>
+                                                    <Star3 />
+                                                    <Text>5.0</Text>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )
+                                })
+                            }
+                        </div>
                     </div>
                 </div>
                 <div></div>
