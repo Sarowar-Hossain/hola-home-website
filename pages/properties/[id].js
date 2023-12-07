@@ -6,6 +6,24 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Pagination, A11y, FreeMode } from "swiper/modules";
+import 'swiper/css';
+import "swiper/css/pagination";
+
+const images = [
+    'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+];
+const details = [
+    {
+        type: 'Villa',
+        logo: <
+    },
+]
 
 const swipeThreshold = 50;
 const DetailsPage = () => {
@@ -20,14 +38,6 @@ const DetailsPage = () => {
     const router = useRouter();
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const images = [
-        'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?q=80&w=2053&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-        'https://images.unsplash.com/photo-1600585152220-90363fe7e115?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    ];
-
     const openModal = (index) => {
         setCurrentImageIndex(index);
         setIsModalOpen(true);
@@ -65,7 +75,7 @@ const DetailsPage = () => {
                     </div>
                 </div>
             </div>
-            <div className='mt-8 flex justify-between items-end'>
+            <div className='mt-8 flex justify-between items-start sm:items-end'>
                 <div>
                     <Text variant='pageHeading' className='text-accent-9'>The Astin Villa Hotel</Text>
                     <div className='flex items-center gap-2'>
@@ -78,15 +88,39 @@ const DetailsPage = () => {
                 <div className='flex gap-5'>
                     <span className='text-accent-6 font-semibold flex items-center gap-1'>
                         <Share />
-                        Share
+                        <span className='hidden sm:block'>Share</span>
                     </span>
                     <span className='text-accent-6 font-semibold flex items-center gap-1'>
                         <Save />
-                        Save
+                        <span className='hidden sm:block'>Save</span>
                     </span>
                 </div>
             </div>
-            <div className='h-[55vh] mt-5 rounded-lg overflow-hidden hidden md:block'>
+            <div className='mt-5 rounded-lg overflow-hidden md:hidden relative details-page'>
+                <Swiper
+                    modules={[Autoplay, Pagination, A11y, FreeMode]}
+                    spaceBetween={10}
+                    loop={true}
+                    slidesPerView={1}
+                    pagination={{ clickable: true }}
+                // autoplay={{ delay: 1000 }}
+                >
+                    {images?.map((image, index) => (
+                        <SwiperSlide key={index}>
+                            <div className='h-[40vh] w-screen relative'>
+                                <Image
+                                    className='object-cover'
+                                    onClick={() => openModal(index)}
+                                    src={image}
+                                    fill
+                                    alt="Carousel Image"
+                                />
+                            </div>
+                        </SwiperSlide>
+                    ))}
+                </Swiper>
+            </div>
+            <div className='mt-5 rounded-lg overflow-hidden hidden md:block'>
                 <div className='grid grid-cols-2 gap-4'>
                     {images.slice(0, 1).map((img, index) => (
                         <div key={index} className='col-span-1 cursor-pointer' onClick={() => openModal(index)}>
@@ -123,8 +157,14 @@ const DetailsPage = () => {
             )}
             <div className='mt-5'>
                 <div>
-                    <Text variant='pageHeading' className='text-accent-6'>The Astin Villa Hotel</Text>
-                    <span className='flex items-center gap-1'><Location /><Text variant='body' className='text-accent-6'>12 Eze Adele Road, Rumuomasi Lagos,Wallace, Australia.</Text></span>
+                    <div className='sm:border-b-2 sm:pb-3'>
+                        <Text variant='pageHeading' className='text-accent-6'>The Astin Villa Hotel</Text>
+                        <span className='flex items-center gap-1'><Location /><Text variant='body' className='text-accent-6'>12 Eze Adele Road, Rumuomasi Lagos,Wallace, Australia.</Text></span>
+                    </div>
+                    <div className='mt-5'>
+                        <Text variant='sectionHeading'>Details</Text>
+
+                    </div>
                 </div>
                 <div></div>
             </div>
