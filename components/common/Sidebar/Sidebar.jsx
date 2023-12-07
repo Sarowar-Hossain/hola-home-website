@@ -8,9 +8,11 @@ import {
   SideNavLinks,
 } from 'data/SideNavLinks'
 import Image from 'next/image'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Searchbar from '../Searchbar'
 import Link from 'next/link'
+import { useUI } from '@components/ui'
+import { GlobalContext } from 'Context/Context'
 
 const Sidebar = () => {
   const [isLanguageSubMenuHidden, setLanguageSubMenuHidden] = useState(false)
@@ -19,6 +21,10 @@ const Sidebar = () => {
   const [isSidebarHidden, setSidebarHidden] = useState(false)
   const [isOpen, toggleOpen] = useCycle(false, true)
   const containerRef = useRef(null)
+
+  const { setIsLogoutModalShow } = useContext(GlobalContext)
+
+  const { openModal, setModalView, closeModal } = useUI()
 
   const toggleProfileSubMenu = () => {
     setProfileSubMenuHidden(!isProfileSubMenuHidden)
@@ -33,6 +39,12 @@ const Sidebar = () => {
 
   const toggleSidebar = () => {
     setSidebarHidden(!isSidebarHidden)
+  }
+
+  const handleLogout = () => {
+    // toggleSidebar()
+    setIsLogoutModalShow(true)
+    openModal(), setModalView('LOGOUTMODAL_VIEW')
   }
 
   const sidebar = {
@@ -93,7 +105,10 @@ const Sidebar = () => {
                 alt="language-logo"
                 className="ml-6"
               />
-              <Cross onClick={toggleSidebar} className="absolute right-8" />
+              <Cross
+                onClick={toggleSidebar}
+                className="absolute right-8 cursor-pointer"
+              />
             </div>
           </div>
           <div className="my-2  h-[1px]"></div>
@@ -129,7 +144,9 @@ const Sidebar = () => {
               </span>
               <span
                 className={`text-sm ${
-                  isProfileSubMenuHidden ? 'rotate-0' : 'rotate-180'
+                  isProfileSubMenuHidden
+                    ? 'rotate-0 duration-200'
+                    : 'rotate-180 duration-200'
                 }`}
               >
                 <ChevronDown className="text-[#484C52]" />
@@ -146,16 +163,23 @@ const Sidebar = () => {
             {NavLinksProfile.pathList.map((item, index) => {
               return (
                 <Link href={item.path} key={index + 1} onClick={toggleSidebar}>
-                  <h1 className="ml-4 cursor-pointer p-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal">
+                  <h1 className="cursor-pointer py-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal">
                     {item.name}
                   </h1>
                 </Link>
               )
             })}
+            <p
+              onClick={handleLogout}
+              className="cursor-pointer py-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal"
+            >
+              Logout
+            </p>
           </div>
 
+          <div className="mt-6 bg-[#C4C4C4] h-[1px]"></div>
 
-{/* Help */}
+          {/* Help */}
           <div
             className="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer  "
             onClick={toggleHelpSubMenu}
@@ -167,7 +191,9 @@ const Sidebar = () => {
               </span>
               <span
                 className={`text-sm ${
-                  isHelpSubMenuHidden ? 'rotate-0' : 'rotate-180'
+                  isHelpSubMenuHidden
+                    ? 'rotate-0 duration-200'
+                    : 'rotate-180 duration-200'
                 }`}
               >
                 <ChevronDown className="text-[#484C52]" />
@@ -176,7 +202,7 @@ const Sidebar = () => {
           </div>
 
           <div
-            className={`text-left text-sm mt-2 w-4/5 mx-auto text-[#484C52] font-bold ${
+            className={`text-left text-sm pb-3 w-4/5 mx-auto text-[#484C52] font-bold ${
               isHelpSubMenuHidden ? 'hidden' : ''
             }`}
             id=""
@@ -184,7 +210,7 @@ const Sidebar = () => {
             {NavLinksHelp.pathList.map((item, index) => {
               return (
                 <Link href={item.path} key={index + 1} onClick={toggleSidebar}>
-                  <h1 className="ml-4 cursor-pointer p-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal">
+                  <h1 className="cursor-pointer py-2 rounded-md  text-[20px] text-[#484C52] font-normal">
                     {item.name}
                   </h1>
                 </Link>
@@ -204,7 +230,9 @@ const Sidebar = () => {
               </span>
               <span
                 className={`text-sm ${
-                  isLanguageSubMenuHidden ? 'rotate-0' : 'rotate-180'
+                  isLanguageSubMenuHidden
+                    ? 'rotate-0 duration-200'
+                    : 'rotate-180 duration-200'
                 }`}
               >
                 <ChevronDown className="text-[#484C52]" />
@@ -223,7 +251,7 @@ const Sidebar = () => {
                 <Link
                   href={''}
                   key={index + 1}
-                  className="flex justify-start gap-3 w-full items-center mt-3 ml-6 cursor-pointer"
+                  className="flex justify-start gap-3 w-full items-center mt-3 cursor-pointer"
                 >
                   <Image
                     src={item.icon}

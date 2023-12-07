@@ -38,10 +38,6 @@ export const NavLinksProfile = {
       name: 'My Properties',
       path: '/My-Properties',
     },
-    {
-      name: 'Logout',
-      path: '/My-Properties',
-    },
   ],
 }
 export const NavLinksHelp = {

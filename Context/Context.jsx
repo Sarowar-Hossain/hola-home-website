@@ -6,6 +6,9 @@ export const GlobalProvider = ({ children }) => {
   // for nav menu
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
+  // for logout modal
+  const [isLogoutModalShow, setIsLogoutModalShow] = useState(false)
+
   // states of reservartion
   const [acceptPolicy, setAcceptPolicy] = useState(false)
   const [confirmPay, setConfirmPay] = useState(false)
@@ -47,6 +50,8 @@ export const GlobalProvider = ({ children }) => {
     setIsMenuOpen,
     bookmarkList,
     setBookMarkList,
+    isLogoutModalShow,
+    setIsLogoutModalShow,
   }
 
   return (

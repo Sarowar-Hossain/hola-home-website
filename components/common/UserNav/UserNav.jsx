@@ -3,7 +3,6 @@ import Link from 'next/link'
 import s from './UserNav.module.css'
 import { useUI } from '@components/ui/context'
 import { ChevronDown, Cross, Globe, Menu, Menu2 } from '@components/icons'
-import CustomerMenuContent from './CustomerMenuContent'
 import React, { useContext } from 'react'
 import {
   Dropdown,

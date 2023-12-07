@@ -1,11 +1,15 @@
 import { ChevronDown } from '@components/icons'
+import { useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
 import { HelpNavLink, MenuLinks } from 'data/NavLinks'
 import Link from 'next/link'
 import React, { useContext, useState, useEffect, useRef } from 'react'
 
 const NavDropDown = () => {
-  const { isMenuOpen, setIsMenuOpen } = useContext(GlobalContext)
+  const { isMenuOpen, setIsMenuOpen, setIsLogoutModalShow } =
+    useContext(GlobalContext)
+  const { openModal, setModalView, closeModal } = useUI()
+
   const [isHelpOpen, setIsHelpOpen] = useState(false)
   const dropdownRef = useRef(null)
 
@@ -27,6 +31,13 @@ const NavDropDown = () => {
 
   const handleDropMenu = () => {
     setIsMenuOpen(false)
+  }
+
+  const handleLogout = () => {
+    setIsLogoutModalShow(true)
+    setIsMenuOpen(false)
+    setIsLogoutModalShow(true)
+    openModal(), setModalView('LOGOUTMODAL_VIEW')
   }
 
   return (
@@ -77,7 +88,7 @@ const NavDropDown = () => {
         </div>
       )}
       <div className="h-12 flex items-center font-medium cursor-pointer text-[#848484] hover:text-primary">
-        <p className="px-3 " onClick={handleDropMenu}>
+        <p className="px-3 " onClick={handleLogout}>
           Logout
         </p>
       </div>
