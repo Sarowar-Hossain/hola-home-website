@@ -17,7 +17,7 @@ const MyProfile = () => {
   const [isPhoneNoEdit, setIsPhoneNoEdit] = useState(false)
   const [uploader, setUploader] = useState(false)
   const [loading, setLoading] = useState(false)
-  const [editedData, setEditedData] = useState({ phoneNo: '+8619513583884' })
+  const [editedData, setEditedData] = useState({})
   const [validatePhnNo, setValidatePhnNo] = useState(false)
   const [validEmail, setValidateEmail] = useState(false)
   const [validName, setValidateName] = useState(false)
@@ -99,7 +99,7 @@ const MyProfile = () => {
       >
         Personal info
       </Text>
-      <div className="flex justify-center items-center flex-col-reverse lg:grid lg:grid-cols-2">
+      <div className="flex justify-center items-center flex-col-reverse lg:grid lg:grid-cols-2 ">
         {/* Forms */}
         <div className="space-y-4 lg:space-y-7 w-full">
           <div className="flex justify-between">
@@ -128,8 +128,9 @@ const MyProfile = () => {
               <input
                 readOnly={`${isNameEdit ? '' : 'readOnly'}`}
                 className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full  ${
-                  isNameEdit &&
-                  'focus:outline-none  bg-accent-2  rounded-lg ps-4'
+                  isNameEdit
+                    ? 'focus:outline-none  bg-accent-2  rounded-lg ps-4'
+                    : 'bg-white'
                 }`}
                 placeholder="Enter Your Full Name"
                 type="text"
@@ -187,9 +188,16 @@ const MyProfile = () => {
                 }`}
                 numberInputProps={{
                   className: `rounded-md px-4 focus:outline-none ${
-                    isPhoneNoEdit ? 'bg-accent-2 focus:bg-accent-2 ' : ''
+                    isPhoneNoEdit
+                      ? 'bg-accent-2 focus:bg-accent-2 '
+                      : 'bg-white'
                   } `,
                 }}
+                // containerStyle={{ backgroundColor: 'white' }}
+                // flagComponent={{ backgroundColor: 'white' }}
+                // focusInputOnCountrySelection={{ backgroundColor: 'white' }}
+                // countrySelectProps={{ backgroundColor: 'white' }}
+                
               />
 
               {validatePhnNo && (
@@ -227,8 +235,9 @@ const MyProfile = () => {
               <input
                 readOnly={`${isEmailEdit ? '' : 'readOnly'}`}
                 className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full ${
-                  isEmailEdit &&
-                  'focus:outline-none  bg-accent-2  rounded-lg ps-4'
+                  isEmailEdit
+                    ? 'focus:outline-none  bg-accent-2  rounded-lg ps-4'
+                    : 'bg-white'
                 }`}
                 placeholder="user@gmail.com"
                 type="text"
