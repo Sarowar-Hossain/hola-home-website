@@ -3,6 +3,12 @@ import { createContext, useState } from 'react'
 export const GlobalContext = createContext()
 
 export const GlobalProvider = ({ children }) => {
+  // for nav menu
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  // for logout modal
+  const [isLogoutModalShow, setIsLogoutModalShow] = useState(false)
+
   // states of reservartion
   const [acceptPolicy, setAcceptPolicy] = useState(false)
   const [confirmPay, setConfirmPay] = useState(false)
@@ -10,6 +16,7 @@ export const GlobalProvider = ({ children }) => {
 
   // bookmark data
   const [bookmarkList, setBookMarkList] = useState([])
+  const [currentBookMarkItem, setCurrentBookmarkItem] = useState(null)
 
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
@@ -40,10 +47,14 @@ export const GlobalProvider = ({ children }) => {
     setConfirmDelection,
     allReview,
     setAllReview,
-    // propertyDetails,
-    // setPropertyDetails,
+    isMenuOpen,
+    setIsMenuOpen,
     bookmarkList,
     setBookMarkList,
+    isLogoutModalShow,
+    setIsLogoutModalShow,
+    currentBookMarkItem,
+    setCurrentBookmarkItem,
   }
 
   return (

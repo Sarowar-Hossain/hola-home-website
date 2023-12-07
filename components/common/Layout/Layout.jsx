@@ -46,6 +46,13 @@ const BookmarkView = dynamic(
   }
 )
 
+const LogoutView = dynamic(
+  () => import('@components/ModalComponent/LogoutModal/LogoutModal'),
+  {
+    ...dynamicProps,
+  }
+)
+
 const ForgotPassword = dynamic(
   () => import('@components/auth/ForgotPassword'),
   {
@@ -73,6 +80,7 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'SHARE_VIEW' && <ShareView />}
       {modalView === 'REVIEW_ALERT' && <LoginAlertView />}
       {modalView === 'REVIEW_SUCCESS_VIEW' && <ReviewSuccessView />}
+      {modalView === 'LOGOUTMODAL_VIEW' && <LogoutView />}
     </Modal>
   )
 }

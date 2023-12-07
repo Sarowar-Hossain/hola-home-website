@@ -1,5 +1,5 @@
 :root {
-  --primary: #FFD33C;
+  --primary: #ffd33c;
   --primary-2: #f1f3f5;
   --secondary: #000000;
   --secondary-2: #111;
@@ -30,7 +30,6 @@
   --accent-7: #333333;
   --accent-8: #111111;
   --accent-9: #000;
-
 }
 
 /* [data-theme='dark'] {

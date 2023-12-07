@@ -1,7 +1,7 @@
 {
 	"hosting": {
 		"source": ".",
-		"site": "hola-home",
+		"site": "hola-home-testing",
 		"ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
 		"frameworksBackend": {
 			"region": "us-central1",
