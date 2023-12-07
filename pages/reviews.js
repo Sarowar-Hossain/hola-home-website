@@ -63,7 +63,10 @@ const reviews = [
 const Reviews = () => {
     const router = useRouter()
     const { setModalView, openModal } = useUI()
-
+    const handleReviewPage = () => {
+        openModal()
+        setModalView("REVIEW_ALERT")
+    }
 
     return (
         <Container className='relative'>
@@ -112,13 +115,13 @@ const Reviews = () => {
                             <Text className='flex items-center text-2xl leading-5'>5.0</Text>
                             <Star className="mt-1" />
                         </div>
-                        <Text className='w-24'>22 Reviews</Text>
+                        <Text className='w-24 mt-2'>22 Reviews</Text>
                     </div>
                 </div>
                 <div className=' mx-auto mt-10'>
-                    <Button onClick={() => setModalView("REVIEW_ALERT")} className="w-full">Write a Review</Button>
+                    <Button onClick={handleReviewPage} className="w-full">Write a Review</Button>
                 </div>
-                <div className='mt-10 md:mt-20'>
+                <div className='my-10 md:my-20 flex flex-col gap-10'>
                     {
                         reviews?.map((review, i) => {
                             return (

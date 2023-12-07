@@ -54,12 +54,10 @@
 }
 
 .naked {
-  @apply bg-transparent font-semibold border-none shadow-none outline-none py-0 px-0;
+  @apply bg-transparent font-semibold shadow-none outline-none py-1 px-8 text-accent-8 border-2 border-accent-4;
 }
-
-.naked:hover,
-.naked:focus {
-  @apply bg-transparent border-none;
+.naked:hover {
+  @apply bg-yellow-200 border-yellow-200;
 }
 
 .disabled,

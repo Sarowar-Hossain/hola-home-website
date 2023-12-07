@@ -1,15 +1,15 @@
-import Image from "next/image";
-import React, { useState, useRef, useEffect, useContext } from "react";
-import { Autoplay, Pagination, A11y, FreeMode } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import Link from "next/link";
-import Dot from "@components/icons/Dot";
-import CardStar from "@components/icons/CardStar";
-import Bookmark from "@components/icons/Bookmark";
-import { GlobalContext } from "Context/Context";
-import { useUI } from "@components/ui";
+import Image from 'next/image'
+import React, { useState, useRef, useEffect, useContext } from 'react'
+import { Autoplay, Pagination, A11y, FreeMode } from 'swiper/modules'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/css'
+import 'swiper/css/pagination'
+import Link from 'next/link'
+import Dot from '@components/icons/Dot'
+import CardStar from '@components/icons/CardStar'
+import Bookmark from '@components/icons/Bookmark'
+import { GlobalContext } from 'Context/Context'
+import { useUI } from '@components/ui'
 
 const Card = ({ property }) => {
   const [bookmark, setBookmark] = useState(false)
@@ -27,33 +27,29 @@ const Card = ({ property }) => {
     totalCost,
   } = property
 
-	const handleBookMark = (data) => {
-		if (bookmarkList.find((item) => item.id === data.id)) {
-			const updateData = bookmarkList.filter((pt) => pt.id !== data.id);
-			openModal(), setModalView("BOOKMARKMODAL_VIEW");
-			setBookMarkList(updateData);
-			//   setBookmark(false)
-		} else {
-			setBookMarkList([...bookmarkList, data]);
-			//   setBookmark(true)
-		}
-	};
+  const handleBookMark = (data) => {
+    if (bookmarkList.find((item) => item.id === data.id)) {
+      const updateData = bookmarkList.filter((pt) => pt.id !== data.id)
+      openModal(), setModalView('BOOKMARKMODAL_VIEW')
+      setBookMarkList(updateData)
+      //   setBookmark(false)
+    } else {
+      setBookMarkList([...bookmarkList, data])
+      //   setBookmark(true)
+    }
+  }
 
-	useEffect(() => {
-		if (
-			swiperRef.current &&
-			isHovered &&
-			!swiperRef.current.autoplay.running
-		) {
-			swiperRef.current.autoplay.start();
-		} else if (
-			swiperRef.current &&
-			!isHovered &&
-			swiperRef.current.autoplay.running
-		) {
-			swiperRef.current.autoplay.stop();
-		}
-	}, [isHovered]);
+  useEffect(() => {
+    if (swiperRef.current && isHovered && !swiperRef.current.autoplay.running) {
+      swiperRef.current.autoplay.start()
+    } else if (
+      swiperRef.current &&
+      !isHovered &&
+      swiperRef.current.autoplay.running
+    ) {
+      swiperRef.current.autoplay.stop()
+    }
+  }, [isHovered])
 
   return (
     <div
@@ -65,7 +61,7 @@ const Card = ({ property }) => {
         style={{
           '--swiper-pagination-color': '#FCCF12',
           '--swiper-pagination-bullet-inactive-color': '#999999',
-          '--swiper-pagination-bullet-inactive-opacity': '1'
+          '--swiper-pagination-bullet-inactive-opacity': '1',
         }}
         modules={[Autoplay, Pagination, A11y, FreeMode]}
         spaceBetween={10}
@@ -132,4 +128,4 @@ const Card = ({ property }) => {
   )
 }
 
-export default Card;
+export default Card
