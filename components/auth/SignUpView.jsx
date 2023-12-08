@@ -93,7 +93,7 @@ const SignUpView = () => {
                   {...register('firstName')}
                   id="firstName"
                   placeholder="Please provide your first name"
-                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
+                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="text"
                 />
                 {errors.firstName && (
@@ -110,7 +110,7 @@ const SignUpView = () => {
                   {...register('lastName')}
                   id="lastName"
                   placeholder="Please provide your last name"
-                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
+                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="text"
                 />
                 {errors.lastName && (
@@ -128,7 +128,7 @@ const SignUpView = () => {
                 <input
                   {...register('email')}
                   id="email"
-                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
+                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="email"
                   placeholder="Please provide your email"
                 />
@@ -147,7 +147,7 @@ const SignUpView = () => {
                   id="dateOfBirth"
                   required
                   placeholder="Please provide your date of birth"
-                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
+                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="date"
                 />
                 {errors.dateOfBirth && (
@@ -166,7 +166,7 @@ const SignUpView = () => {
                   <input
                     id="password"
                     {...register('password')}
-                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
+                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                     type={passwordType}
                     placeholder="Password"
                   />
@@ -194,7 +194,7 @@ const SignUpView = () => {
                   <input
                     id="confirmPassword"
                     {...register('confirmPassword')}
-                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
+                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                     type={confirmPasswordType}
                     placeholder="Confirm Password"
                   />
