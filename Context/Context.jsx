@@ -1,3 +1,4 @@
+import { allProperty } from 'data/AllProperty'
 import { createContext, useState } from 'react'
 
 export const GlobalContext = createContext()
@@ -20,6 +21,11 @@ export const GlobalProvider = ({ children }) => {
 
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
+
+
+  // all property data
+  const [properties, setProperties] = useState(allProperty)
+  const [searchResult, setSearchResult] = useState([])
 
   // Profile states
   const [profilePage, setProfilePage] = useState(true)
@@ -59,6 +65,10 @@ export const GlobalProvider = ({ children }) => {
     setCurrentBookmarkItem,
     marked,
     setMarked,
+    properties,
+    setProperties,
+    searchResult,
+    setSearchResult,
   }
 
   return (
