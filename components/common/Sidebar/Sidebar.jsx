@@ -15,6 +15,7 @@ import { useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
 
 const Sidebar = () => {
+  const user = null
   const [isLanguageSubMenuHidden, setLanguageSubMenuHidden] = useState(false)
   const [isHelpSubMenuHidden, setHelpSubMenuHidden] = useState(false)
   const [isProfileSubMenuHidden, setProfileSubMenuHidden] = useState(false)
@@ -45,6 +46,9 @@ const Sidebar = () => {
     // toggleSidebar()
     setIsLogoutModalShow(true)
     openModal(), setModalView('LOGOUTMODAL_VIEW')
+  }
+  const handleLogin = () => {
+    openModal(), setModalView('LOGIN_VIEW')
   }
 
   const sidebar = {
@@ -169,12 +173,25 @@ const Sidebar = () => {
                 </Link>
               )
             })}
-            <p
-              onClick={handleLogout}
-              className="cursor-pointer py-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal"
-            >
-              Logout
-            </p>
+            {user ? (
+              <>
+                <p
+                  onClick={handleLogout}
+                  className="cursor-pointer py-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal"
+                >
+                  Logout
+                </p>
+              </>
+            ) : (
+              <>
+                <p
+                  onClick={handleLogin}
+                  className="cursor-pointer py-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal"
+                >
+                  Login
+                </p>
+              </>
+            )}
           </div>
 
           <div className="mt-6 bg-[#C4C4C4] h-[1px]"></div>

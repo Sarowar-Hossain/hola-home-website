@@ -2,7 +2,6 @@ import cn from 'clsx'
 import s from './Layout.module.css'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
-import LoginView from '@components/auth/LoginView'
 import { useUI } from '@components/ui/context'
 import { Sidebar, LoadingDots } from '@components/ui'
 import { MenuSidebarView } from '@components/common/UserNav'
@@ -20,7 +19,7 @@ const dynamicProps = {
   loading: Loading,
 }
 
-const SignUpView = dynamic(() => import('@components/auth/SignUpView'), {
+const LoginView = dynamic(() => import('@components/auth/LoginModal'), {
   ...dynamicProps,
 })
 const ShareView = dynamic(() => import('@components/Share/Share'), {
