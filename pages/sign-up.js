@@ -98,7 +98,7 @@ const SignUp = () => {
                                     {...register('firstName')}
                                     id="firstName"
                                     placeholder="Please provide your first name"
-                                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
+                                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                                     type="text"
                                 />
                                 {errors.firstName && (
@@ -115,7 +115,7 @@ const SignUp = () => {
                                     {...register('lastName')}
                                     id="lastName"
                                     placeholder="Please provide your last name"
-                                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
+                                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                                     type="text"
                                 />
                                 {errors.lastName && (
@@ -133,7 +133,7 @@ const SignUp = () => {
                                 <input
                                     {...register('email')}
                                     id="email"
-                                    className="w-full border-2 px-2 py-2 focus:outline-gray-400"
+                                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                                     type="email"
                                     placeholder="Please provide your email"
                                 />
@@ -152,7 +152,7 @@ const SignUp = () => {
                                     id="dateOfBirth"
                                     required
                                     placeholder="Please provide your date of birth"
-                                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
+                                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                                     type="date"
                                 />
                                 {errors.dateOfBirth && (
@@ -171,7 +171,7 @@ const SignUp = () => {
                                     <input
                                         id="password"
                                         {...register('password')}
-                                        className="w-full border-2 px-2 py-2 focus:outline-gray-400"
+                                        className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                                         type={passwordType}
                                         placeholder="Password"
                                     />
@@ -199,7 +199,7 @@ const SignUp = () => {
                                     <input
                                         id="confirmPassword"
                                         {...register('confirmPassword')}
-                                        className="w-full border-2 px-2 py-2 focus:outline-gray-400"
+                                        className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                                         type={confirmPasswordType}
                                         placeholder="Confirm Password"
                                     />

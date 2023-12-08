@@ -128,7 +128,7 @@ const SignUpView = () => {
                 <input
                   {...register('email')}
                   id="email"
-                  className="w-full border-2 px-2 py-2 focus:outline-gray-400"
+                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
                   type="email"
                   placeholder="Please provide your email"
                 />
@@ -166,7 +166,7 @@ const SignUpView = () => {
                   <input
                     id="password"
                     {...register('password')}
-                    className="w-full border-2 px-2 py-2 focus:outline-gray-400"
+                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
                     type={passwordType}
                     placeholder="Password"
                   />
@@ -194,7 +194,7 @@ const SignUpView = () => {
                   <input
                     id="confirmPassword"
                     {...register('confirmPassword')}
-                    className="w-full border-2 px-2 py-2 focus:outline-gray-400"
+                    className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white focus:outline-[#E6E6E6]"
                     type={confirmPasswordType}
                     placeholder="Confirm Password"
                   />
