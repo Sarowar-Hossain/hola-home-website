@@ -1,22 +1,17 @@
 import React, { useCallback, useMemo } from 'react'
 import { ThemeProvider } from 'next-themes'
 
-
-
 const initialState = {
   displaySidebar: false,
   displayDropdown: false,
   displayModal: false,
-  modalView: 'LOGIN_VIEW',
-  // allscreenmodal mean it visible in all screen sizes
+  modalView: 'AUTH_MODAL',
+  uiView: 'SIGN_UP_VIEW',
   displayallScreenModal: false,
   allScreenModalView: '',
   sidebarView: 'CART_VIEW',
   userAvatar: '',
 }
-
-
-
 
 export const UIContext = React.createContext(initialState)
 
@@ -78,6 +73,12 @@ function uiReducer(state, action) {
       return {
         ...state,
         modalView: action.view,
+      }
+    }
+    case 'SET_UI_VIEW': {
+      return {
+        ...state,
+        uiView: action.view,
       }
     }
     case 'SET_ALLSCREENMODAL_VIEW': {
@@ -159,7 +160,10 @@ export const UIProvider = (props) => {
     (view) => dispatch({ type: 'SET_MODAL_VIEW', view }),
     [dispatch]
   )
-  
+  const setUIView = useCallback(
+    (view) => dispatch({ type: 'SET_UI_VIEW', view }),
+    [dispatch]
+  )
   const setAllScreenModalView = useCallback(
     (view) => dispatch({ type: 'SET_ALLSCREENMODAL_VIEW', view }),
     [dispatch]
@@ -184,6 +188,7 @@ export const UIProvider = (props) => {
       openAllScreenModal,
       closeAllScreenModal,
       setModalView,
+      setUIView,
       setAllScreenModalView,
       setSidebarView,
       setUserAvatar,
@@ -203,9 +208,7 @@ export const useUI = () => {
   return context
 }
 
-export const ManagedUIContext = ({
-  children,
-}) => (
+export const ManagedUIContext = ({ children }) => (
   <UIProvider>
     <ThemeProvider>{children}</ThemeProvider>
   </UIProvider>

@@ -13,8 +13,10 @@ import Searchbar from '../Searchbar'
 import Link from 'next/link'
 import { useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
+import { useRouter } from 'next/router'
 
 const Sidebar = () => {
+  const user = null
   const [isLanguageSubMenuHidden, setLanguageSubMenuHidden] = useState(false)
   const [isHelpSubMenuHidden, setHelpSubMenuHidden] = useState(false)
   const [isProfileSubMenuHidden, setProfileSubMenuHidden] = useState(false)
@@ -24,7 +26,7 @@ const Sidebar = () => {
 
   const { setIsLogoutModalShow } = useContext(GlobalContext)
 
-  const { openModal, setModalView, closeModal } = useUI()
+  const { openModal, setModalView, closeModal, closeSidebar } = useUI()
 
   const toggleProfileSubMenu = () => {
     setProfileSubMenuHidden(!isProfileSubMenuHidden)
@@ -45,6 +47,9 @@ const Sidebar = () => {
     // toggleSidebar()
     setIsLogoutModalShow(true)
     openModal(), setModalView('LOGOUTMODAL_VIEW')
+  }
+  const handleLogin = () => {
+    openModal(), setModalView('LOGIN_VIEW')
   }
 
   const sidebar = {
@@ -79,6 +84,13 @@ const Sidebar = () => {
       enableBodyScroll(containerRef.current)
     }
   }, [isOpen])
+
+  const router = useRouter()
+
+  const handleLoginPage = () => {
+    setSidebarHidden(false)
+    router.push('/sign-up')
+  }
 
   return (
     <div className="relative container mx-auto">
@@ -169,12 +181,31 @@ const Sidebar = () => {
                 </Link>
               )
             })}
-            <p
-              onClick={handleLogout}
-              className="cursor-pointer py-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal"
-            >
-              Logout
-            </p>
+            {user ? (
+              <>
+                <p
+                  onClick={handleLogout}
+                  className="cursor-pointer py-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal"
+                >
+                  Logout
+                </p>
+              </>
+            ) : (
+              <>
+                <p
+                  onClick={handleLogin}
+                  className="cursor-pointer py-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal hidden md:block"
+                >
+                  Login
+                </p>
+                <p
+                  onClick={handleLoginPage}
+                  className="cursor-pointer py-2 rounded-md mt-1 text-[20px] text-[#484C52] font-normal md:hidden"
+                >
+                  Login
+                </p>
+              </>
+            )}
           </div>
 
           <div className="mt-6 bg-[#C4C4C4] h-[1px]"></div>

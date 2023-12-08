@@ -1,30 +1,45 @@
-import { memo, useEffect } from 'react'
+import { memo, useContext, useEffect } from 'react'
 import cn from 'clsx'
 import s from './Searchbar.module.css'
 import { useRouter } from 'next/router'
+import { GlobalContext } from 'Context/Context'
 
-const Searchbar = ({ className, id = 'search' }) => {
+const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
   const router = useRouter()
 
-  useEffect(() => {
-    router.prefetch('/search')
-  }, [router])
+  const { properties, setSearchResult } = useContext(GlobalContext)
+
+  const handleSearch = (searchData) => {
+    if (searchData.length) {
+      setSearchText(searchData)
+      const searchResult = properties.filter((property) => {
+        const matchesHotelName = property.hotelName
+          .toLowerCase()
+          .includes(searchData.toLowerCase())
+        const matchesLocation = property.location
+          .toLowerCase()
+          .includes(searchData.toLowerCase())
+        return matchesHotelName || matchesLocation
+      })
+
+      const refinedSearchResult = searchResult.map(
+        ({ hotelName, id, location }) => ({
+          id,
+          hotelName,
+          location,
+        })
+      )
+      setSearchResult(refinedSearchResult)
+    } else {
+      setSearchResult([])
+      setSearchText(null)
+    }
+  }
 
   const handleKeyUp = (e) => {
     e.preventDefault()
-
-    if (e.key === 'Enter') {
-      const q = e.currentTarget.value
-
-      router.push(
-        {
-          pathname: `/search`,
-          query: q ? { q } : {},
-        },
-        undefined,
-        { shallow: true }
-      )
-    }
+    const searchData = e.currentTarget.value
+    handleSearch(searchData)
   }
 
   return (
@@ -39,7 +54,8 @@ const Searchbar = ({ className, id = 'search' }) => {
         />
       </div>
       <div
-        className={`${s.iconContainer} my-1.5 me-2 py-[10px] px-[10px] bg-[#FCCF12] rounded-full`}
+        // onClick={handleSearch}
+        className={`absolute inset-y-0 right-8  pr-3 flex items-center my-1.5 me-2 cursor-pointer py-[10px] px-[10px] bg-[#FCCF12] rounded-full`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

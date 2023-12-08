@@ -92,11 +92,13 @@ const Card = ({ property }) => {
         <div className="flex items-center gap-1">
           <CardStar />
           <p className="text-xl font-semibold">5.0</p>
-          <p className="text-accent-5">({reviews} reviews)</p>
-          <p className="italic text-accent-5">{hostType}</p>
+          <p className="text-[#878787] font-normal">({reviews} reviews)</p>
+          <p className="italic text-[#878787] font-normal">{hostType}</p>
         </div>
         <Link href="/properties/654d6a4d6ad4a6d74">
-          <p className="mt-1 text-2xl font-bold">{hotelName}</p>
+          <p className="mt-1 text-2xl font-bold hover:text-accent-5">
+            {hotelName}
+          </p>
         </Link>
         <ul className={`mt-2 flex gap-2`}>
           {propertyDetails?.map((detail, i) => (
@@ -111,8 +113,10 @@ const Card = ({ property }) => {
           ))}
         </ul>
         <p className="my-2 font-semibold">${dailyCost} per night</p>
-        <p className="">
-          <span className="text-2xl font-bold text-accent-6">${totalCost}</span>{' '}
+        <p className="text-[#878787]">
+          <span className="text-2xl font-bold text-[#484C52]">
+            ${totalCost}
+          </span>{' '}
           total
         </p>
       </div>
@@ -120,11 +124,17 @@ const Card = ({ property }) => {
         onClick={() => handleBookMark(property)}
         className={`absolute ${
           bookmarkList.some((item) => item.id === property.id)
-            ? 'text-[#FCCF12]'
-            : 'text-white'
+            ? 'bg-white h-[35px] w-[30px] flex justify-center items-center rounded-md'
+            : ''
         } right-3 top-3 z-10 cursor-pointer`}
       >
-        <Bookmark />
+        <Bookmark
+          fill={
+            bookmarkList.some((item) => item.id === property.id)
+              ? '#FCCF12'
+              : '#313131B2'
+          }
+        />
       </div>
     </div>
   )

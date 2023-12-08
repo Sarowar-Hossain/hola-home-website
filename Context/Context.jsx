@@ -1,3 +1,4 @@
+import { allProperty } from 'data/AllProperty'
 import { createContext, useState } from 'react'
 
 export const GlobalContext = createContext()
@@ -21,6 +22,11 @@ export const GlobalProvider = ({ children }) => {
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
 
+
+  // all property data
+  const [properties, setProperties] = useState(allProperty)
+  const [searchResult, setSearchResult] = useState([])
+
   // Profile states
   const [profilePage, setProfilePage] = useState(true)
   const [deleteAccount, setDeleteAccount] = useState(false)
@@ -29,6 +35,8 @@ export const GlobalProvider = ({ children }) => {
   // Property details
   const [allReview, setAllReview] = useState(false)
   // const [propertyDetails, setPropertyDetails] = useState(true)
+
+  const [marked, setMarked] = useState(false)
 
   const info = {
     acceptPolicy,
@@ -55,6 +63,12 @@ export const GlobalProvider = ({ children }) => {
     setIsLogoutModalShow,
     currentBookMarkItem,
     setCurrentBookmarkItem,
+    marked,
+    setMarked,
+    properties,
+    setProperties,
+    searchResult,
+    setSearchResult,
   }
 
   return (
