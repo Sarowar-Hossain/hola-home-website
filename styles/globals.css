@@ -50,3 +50,10 @@ body {
     width: 100% !important;
   }
 }
+
+input[type='checkbox'] {
+  accent-color: #313C66 !important;
+  mix-blend-mode: multiply;
+  width: 16px !important;
+  height: 16px !important;
+}

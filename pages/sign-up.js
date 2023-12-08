@@ -226,7 +226,7 @@ const SignUp = () => {
                 </>
                 <div className="mt-8">
                     <div className="flex items-center gap-2 text-sm md:text-base">
-                        <input type="checkbox" {...register('remember')} />
+                        <input className='check-box-custom' type="checkbox" {...register('remember')} />
                         <p>Remember me</p>
                     </div>
                     {errors.remember && (
@@ -240,7 +240,7 @@ const SignUp = () => {
                             checked={isChecked}
                             onClick={() => setIsChecked(!isChecked)}
                             {...register('agreement')}
-                            className="mt-1"
+                            className="mt-1 check-box-custom"
                         />
                         <p className="text-start">
                             I agree to all the{' '}
