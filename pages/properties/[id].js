@@ -1,9 +1,9 @@
 import { Layout } from '@components/common';
-import { ActivityArea, AirConditioning, Baths, BeachAccess, Bedroom, Cross2, DarkStar, FirePit, Gym, HotTub, Location, PageBackButton, Parking, Pool, Save, Share, Star, Star3, TV, Villa, Wifi } from '@components/icons';
+import { ActivityArea, AirConditioning, Baths, BeachAccess, Bedroom, Cross2, Cross3, DarkStar, FirePit, Gym, HotTub, Location, PageBackButton, Parking, Pool, Save, Share, Star, Star3, TV, Villa, Wifi } from '@components/icons';
 import { Button, Container, Text, useUI } from '@components/ui';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeftCircle, ChevronRightCircle } from 'lucide-react';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -15,6 +15,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import ReviewCard from '@components/common/ReviewCard/ReviewCard';
 import toast from 'react-hot-toast';
+import { GlobalContext } from 'Context/Context';
 
 const images = [
     'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
@@ -125,6 +126,7 @@ const DetailsPage = () => {
             showNext();
         }
     };
+    const { setMarked, marked } = useContext(GlobalContext)
     const [startDate, setStartDate] = useState(new Date("2023/02/08"));
     const [endDate, setEndDate] = useState(new Date("2025/02/10"));
     const [bookmarked, setBookMarked] = useState(false)
@@ -159,11 +161,10 @@ const DetailsPage = () => {
     }
 
     const handleBookmark = () => {
-        setBookMarked(true)
-        if (bookmarked) {
+        setMarked(true)
+        if (marked) {
             openModal(),
-                setModalView('BOOKMARKMODAL_VIEW')
-            setBookMarked(false)
+                setModalView('DETAILS_PAGE_BOOKMARK_VIEW')
         }
     }
 
@@ -198,13 +199,13 @@ const DetailsPage = () => {
                     <div className='flex gap-5'>
                         <div className='text-accent-6 font-semibold flex items-center gap-1 cursor-pointer' onClick={handleModal}>
                             <Share />
-                            <span className='hidden sm:block'>Share</span>
+                            <span className='hidden sm:block font-bold text-[#484C52]'>Share</span>
                         </div>
                         <div className='font-semibold flex items-center gap-1 cursor-pointer' onClick={handleBookmark}>
-                            <span className={`${bookmarked ? "text-yellow-500" : "text-transparent"}`}>
+                            <span className={`${marked ? "text-yellow-500" : "text-transparent"}`}>
                                 <Save />
                             </span>
-                            <span className='hidden sm:block'>Save</span>
+                            <span className='hidden sm:block font-bold text-[#484C52]'>Save</span>
                         </div>
                     </div>
                 </div>
@@ -249,7 +250,7 @@ const DetailsPage = () => {
                     </div>
                 </div>
                 {isModalOpen && (
-                    <div className='fixed inset-0 bg-black bg-opacity-60 backdrop-blur-md flex justify-center items-center z-50'>
+                    <div className='fixed inset-0 bg-black flex justify-center items-center z-50'>
                         <AnimatePresence initial={false}>
                             <motion.img
                                 key={currentImageIndex}
@@ -263,19 +264,19 @@ const DetailsPage = () => {
                         </AnimatePresence>
                         <button onClick={showPrev} className='absolute bottom-5 mr-10 md:left-5 md:top-1/2 transform -translate-y-1/2 text-white hover:text-yellow-400 transition-all duration-200 max-h-10'><ChevronLeftCircle className='w-8 md:w-10 h-8 md:h-10' /></button>
                         <button onClick={showNext} className='absolute bottom-5 ml-10 md:right-5 md:top-1/2 transform -translate-y-1/2 text-white hover:text-yellow-400 transition-all duration-200 max-h-10'><ChevronRightCircle className='w-8 md:w-10 h-8 md:h-10' /></button>
-                        <button onClick={closeModal} className='absolute left-5 top-5 text-white hover:text-yellow-400 transition-all duration-200'>X Close</button>
-                        <p className='top-5 absolute text-accent-9 text-lg text-white'>{currentImageIndex + 1}/{images?.length}</p>
+                        <button onClick={closeModal} className='absolute text-lg left-5 top-5 text-white hover:text-yellow-400 transition-all duration-200 flex items-center gap-1'><Cross3 /> Close</button>
+                        <p className='top-4 absolute text-accent-9 text-lg text-white'>{currentImageIndex + 1} / {images?.length}</p>
                     </div>
                 )}
                 <div className='mt-8 lg:flex gap-5'>
                     <div>
                         <div className='sm:border-b sm:pb-3'>
                             <Text variant='pageHeading' className='text-accent-6'>The Astin Villa Hotel</Text>
-                            <span className='flex items-center gap-1'><Location /><Text variant='body' className='text-accent-6'>12 Eze Adele Road, Rumuomasi Lagos,Wallace, Australia.</Text></span>
+                            <span className='flex md:items-center gap-1 text-[14px] md:text-base mt-2'><Location className='mt-1 md:mt-0' /><Text variant='body' className='text-accent-6 leading-5'>12 Eze Adele Road, Rumuomasi Lagos,Wallace, Australia.</Text></span>
                         </div>
                         <div className='mt-8 border-b pb-4'>
                             <Text variant='sectionHeading'>Details</Text>
-                            <div className='flex gap-10'>
+                            <div className='flex flex-wrap gap-5 md:gap-10'>
                                 {
                                     details?.map((d, i) => {
                                         return (
@@ -283,7 +284,7 @@ const DetailsPage = () => {
                                                 <span className='bg-slate-100 p-2 rounded'>
                                                     {d?.logo}
                                                 </span>
-                                                <Text>{d?.type}</Text>
+                                                <Text className='text-xs sm:text-[14px] md:text-base'>{d?.type}</Text>
                                             </div>
                                         )
                                     })
@@ -296,7 +297,7 @@ const DetailsPage = () => {
                         </div>
                         <div className='mt-8 border-b pb-8'>
                             <Text variant='sectionHeading' className='mb-5'>Amenities</Text>
-                            <div className='flex flex-wrap gap-10'>
+                            <div className='grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 xl:grid-cols-6 gap-5 max-w-3xl sm:-ml-4'>
                                 {
                                     amenities?.map((d, i) => {
                                         return (
@@ -304,7 +305,7 @@ const DetailsPage = () => {
                                                 <span className='bg-slate-100 p-2 rounded'>
                                                     {d?.logo}
                                                 </span>
-                                                <Text>{d?.title}</Text>
+                                                <Text className='leading-5 text-center text-xs sm:text-[14px] md:text-base'>{d?.title}</Text>
                                             </div>
                                         )
                                     })
@@ -331,14 +332,14 @@ const DetailsPage = () => {
                             <Image className='mt-5' src="/map.png" height={445} width={820} alt='map' />
                         </div>
                     </div>
-                    <div className='max-w-[486px] mx-auto rounded-xl px-3 py-10 shadow-md h-[100%] flex flex-col gap-5'>
+                    <div className='max-w-[486px] mx-auto rounded-xl px-3 py-10 shadow-md h-[100%] flex flex-col gap-5 mt-10 lg:mt-0'>
                         <div className='flex justify-between'>
                             <Text className='text-xl text-[#484C52] font-semibold'>$208 <span className='font-normal text-base'>night</span></Text>
-                            <Text className='flex items-center gap-1'><DarkStar /> 4.85 · 20 reviews</Text>
+                            <Text className='flex items-center gap-1 font-semibold'><DarkStar /> 4.85 · <span className='text-[#717171] font-normal'>20 reviews</span></Text>
                         </div>
                         <div className='flex border rounded-md py-2'>
                             <div className='border-r pl-2'>
-                                <Text className='font-medium text-accent-6 leading-5 -mb-1'>CHECK IN</Text>
+                                <Text className='font-medium text-accent-6 leading-5 sm:-mb-1'>CHECK IN</Text>
                                 <DatePicker
                                     selected={startDate}
                                     onChange={(date) => setStartDate(date)}
@@ -348,7 +349,7 @@ const DetailsPage = () => {
                                 />
                             </div>
                             <div className='pl-2'>
-                                <Text className='font-medium text-accent-6 leading-5 -mb-1'>CHECK OUT</Text>
+                                <Text className='font-medium text-accent-6 leading-5 sm:-mb-1'>CHECK OUT</Text>
                                 <DatePicker
                                     selected={endDate}
                                     onChange={(date) => setEndDate(date)}
@@ -403,7 +404,7 @@ const DetailsPage = () => {
                         <div className='relative w-20 h-20 sm:w-36 sm:h-36'>
                             <Image src="/host.png" fill alt='' className='object-cover' />
                         </div>
-                        <div className='flex flex-col'>
+                        <div className='flex gap-3 flex-col'>
                             <Text className='text-accent-9 leading-5 sm:leading-7'><span className='font-semibold'>Name:</span> Charles</Text>
                             <Text className='text-accent-9 leading-5 sm:leading-7'><span className='font-semibold'>Mobile Number :</span> +91 123 456 7894</Text>
                             <Text className='text-accent-9 leading-5 sm:leading-7'><span className='font-semibold'>Email :</span> charlesma@gmail.com</Text>

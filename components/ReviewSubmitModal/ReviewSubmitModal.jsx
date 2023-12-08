@@ -12,7 +12,7 @@ const ReviewSubmitModal = () => {
     <div className="flex flex-col justify-center items-center gap-6">
       <CheckLarge />
       <Text className="text-xl">Thank You</Text>
-      <Text className="text-lg text-center">
+      <Text className="text-lg text-center max-w-xs">
         Your review submission has been received.
       </Text>
       <Button className="w-[80%] mx-auto" onClick={handleClose}>
