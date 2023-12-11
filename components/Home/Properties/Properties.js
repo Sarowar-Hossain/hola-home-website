@@ -2,14 +2,24 @@ import { Searchbar } from '@components/common'
 import Card from '@components/common/Card/Card'
 import { Location } from '@components/icons'
 import { GlobalContext } from 'Context/Context'
-import { allProperty } from 'data/AllProperty'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useContext, useState } from 'react'
 
 const Properties = () => {
   const router = useRouter()
-  const { showSearch, properties, searchResult } = useContext(GlobalContext)
+  const {
+    showSearch,
+    properties,
+    searchSuggestion,
+    searchResult,
+    setSearchResult,
+    searchSuggestionShow,
+    setSearchSuggestionShow,
+  } = useContext(GlobalContext)
   const [searchText, setSearchText] = useState(null)
+
+  const combinedDataLength = searchResult?.length || properties?.length
 
   return (
     <div className="flex flex-col items-center justify-center my-6">
@@ -24,13 +34,16 @@ const Properties = () => {
         </div>
         <div
           className={`${
-            searchResult.length > 0 ? 'inline-block' : 'hidden'
+            searchSuggestion?.length > 0 && searchSuggestionShow
+              ? 'inline-block'
+              : 'hidden'
           } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-50 space-y-3 py-6`}
         >
-          {searchResult.slice(0, 8)?.map((item, index) => {
+          {searchSuggestion?.slice(0, 8)?.map((item, index) => {
             return (
-              <div
-              onClick={() => window.open(`/properties/${item.id}`, '_blank')}
+              <Link
+                href={`/properties/${item.id}`}
+                target="_blank"
                 key={index}
                 className="flex justify-start gap-8 items-center py-1 rounded-xl px-5 hover:bg-accent-2 cursor-pointer"
               >
@@ -50,13 +63,13 @@ const Properties = () => {
                     </span>{' '}
                   </p>
                 </div>
-              </div>
+              </Link>
             )
           })}
 
           <div
             className={`flex justify-center items-center ${
-              searchResult.length > 8 ? 'inline-block' : 'hidden'
+              searchSuggestion?.length > 8 ? 'inline-block' : 'hidden'
             }`}
           >
             <button className={`underline font-medium hover:text-accent-5 `}>
@@ -65,7 +78,7 @@ const Properties = () => {
           </div>
         </div>
 
-        {searchText && searchResult.length == 0 && (
+        {searchText && searchSuggestion?.length === 0 && (
           <div className="bg-white flex justify-center items-center font-medium text-lg mx-auto w-2/3 lg:w-2/6 rounded-xl text-accent-6 absolute top-12 z-50 py-6">
             No data found!
           </div>
@@ -73,13 +86,24 @@ const Properties = () => {
       </div>
 
       <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
-        {properties.slice(0, 12).map((property, index) => (
-          <Card property={property} key={index + 1} />
-        ))}
+        {searchResult?.length > 0
+          ? searchResult
+              ?.slice(0, 12)
+              .map((property, index) => (
+                <Card property={property} key={index + 1} />
+              ))
+          : properties
+              .slice(0, 12)
+              .map((property, index) => (
+                <Card property={property} key={index + 1} />
+              ))}
       </div>
-      <button className="hover:bg-primary px-6 py-2 rounded-full font-bold hover:text-accent-7 bg-white border-2 border-primary text-[#FCCF12]">
-        Show More
-      </button>
+
+      {combinedDataLength > 11 && (
+        <button className="hover:bg-primary px-6 py-2 rounded-full font-bold hover:text-accent-7 bg-white border-2 border-primary text-[#FCCF12]">
+          Show More
+        </button>
+      )}
     </div>
   )
 }

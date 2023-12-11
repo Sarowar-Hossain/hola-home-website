@@ -7,11 +7,19 @@ import { GlobalContext } from 'Context/Context'
 const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
   const router = useRouter()
 
-  const { properties, setSearchResult } = useContext(GlobalContext)
+  const {
+    properties,
+    setSearchSuggestion,
+    searchResult,
+    setSearchResult,
+    searchSuggestionShow,
+    setSearchSuggestionShow,
+  } = useContext(GlobalContext)
 
-  const handleSearch = (searchData) => {
+  const handleSearchSuggestion = (searchData) => {
     if (searchData.length) {
       setSearchText(searchData)
+      setSearchSuggestionShow(true)
       const searchResult = properties.filter((property) => {
         const matchesHotelName = property.hotelName
           .toLowerCase()
@@ -29,17 +37,42 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
           location,
         })
       )
-      setSearchResult(refinedSearchResult)
+      setSearchSuggestion(refinedSearchResult)
+    } else {
+      setSearchSuggestionShow(false)
+      setSearchSuggestion([])
+      setSearchText(null)
+    }
+  }
+
+  const handleSearchResult = () => {
+    if (searchText?.length) {
+      setSearchSuggestionShow(false)
+      const searchResult = properties.filter((property) => {
+        const matchesHotelName = property.hotelName
+          .toLowerCase()
+          .includes(searchText.toLowerCase())
+        const matchesLocation = property.location
+          .toLowerCase()
+          .includes(searchText.toLowerCase())
+        return matchesHotelName || matchesLocation
+      })
+      // setSearchSuggestion([])
+      setSearchResult(searchResult)
     } else {
       setSearchResult([])
-      setSearchText(null)
     }
   }
 
   const handleKeyUp = (e) => {
     e.preventDefault()
     const searchData = e.currentTarget.value
-    handleSearch(searchData)
+    setSearchText(searchData)
+    if (e.key === 'Enter') {
+      handleSearchResult()
+    } else {
+      handleSearchSuggestion(searchData)
+    }
   }
 
   return (
@@ -54,7 +87,7 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
         />
       </div>
       <div
-        // onClick={handleSearch}
+        onClick={handleSearchResult}
         className={`absolute inset-y-0 right-8  pr-3 flex items-center my-1.5 me-2 cursor-pointer py-[10px] px-[10px] bg-[#FCCF12] rounded-full`}
       >
         <svg
