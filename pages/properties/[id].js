@@ -132,6 +132,7 @@ const DetailsPage = () => {
     const { setModalView, openModal } = useUI()
     const [currentImageIndex, setCurrentImageIndex] = useState(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    
     const openImageModal = (index) => {
         setCurrentImageIndex(index);
         setIsModalOpen(true);
