@@ -286,7 +286,7 @@ const SignUpView = () => {
         Already have an account?
         <span
           className="ml-1 cursor-pointer font-semibold text-yellow-500"
-          // onClick={() => setUIView('SIGN_IN_VIEW')}
+          onClick={() => setUIView('SIGN_IN_VIEW')}
         >
           Sign-In
         </span>
