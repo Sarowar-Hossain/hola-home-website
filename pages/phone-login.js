@@ -21,33 +21,27 @@ const PhoneLoginPage = () => {
     } = useForm()
 
     const onSubmit = (data) => {
-        // Add your form submission logic here
         setOTPView(true)
     }
-    const [otp, setOtp] = useState(['', '', '', '']) // Array to store OTP values
-    const refs = [useRef(), useRef(), useRef(), useRef()] // Refs for each input field
+    const [otp, setOtp] = useState(['', '', '', ''])
+    const refs = [useRef(), useRef(), useRef(), useRef()]
 
     const handleOtpChange = (index, value) => {
-        // Ensure only numeric input
         const sanitizedValue = value.replace(/\D/g, '')
-
-        // Update the OTP array with the new value
         setOtp((prevOtp) => {
             const newOtp = [...prevOtp]
             newOtp[index] = sanitizedValue
             return newOtp
         })
 
-        // Move focus to the previous or next input field
         if (sanitizedValue === '' && index > 0) {
-            refs[index - 1].current.focus() // Move to the previous input field
+            refs[index - 1].current.focus()
         } else if (sanitizedValue !== '' && index < 3) {
-            refs[index + 1].current.focus() // Move to the next input field
+            refs[index + 1].current.focus()
         }
     }
 
     const handleBackspace = (index) => {
-        // Clear the current input field and move focus to the previous input field
         setOtp((prevOtp) => {
             const newOtp = [...prevOtp]
             newOtp[index] = ''
@@ -55,7 +49,7 @@ const PhoneLoginPage = () => {
         })
 
         if (index > 0) {
-            refs[index - 1].current.focus() // Move to the previous input field
+            refs[index - 1].current.focus()
         }
     }
 
