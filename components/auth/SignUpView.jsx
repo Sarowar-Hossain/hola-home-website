@@ -170,7 +170,7 @@ const SignUpView = () => {
                     type={passwordType}
                     placeholder="Password"
                   />
-                  <span className="absolute right-2 top-2 cursor-pointer">
+                  <span className="absolute right-2 top-2 cursor-pointer text-[#BBBFC4]">
                     {passwordType === 'password' ? (
                       <span onClick={togglePasswordVisibility}>
                         <EyeOff />
@@ -198,7 +198,7 @@ const SignUpView = () => {
                     type={confirmPasswordType}
                     placeholder="Confirm Password"
                   />
-                  <span className="absolute right-2 top-2 cursor-pointer">
+                  <span className="absolute right-2 top-2 cursor-pointer text-[#BBBFC4]">
                     {confirmPasswordType === 'password' ? (
                       <span onClick={toggleConfirmPasswordVisibility}>
                         <EyeOff />
@@ -261,13 +261,13 @@ const SignUpView = () => {
           )}
         </div>
         {isError && <p className="text-red">{isError}</p>}
-        <Button className="mt-10 w-full max-w-xs">
+        <Button className="mt-10 w-full max-w-xs flex items-center justify-center mx-auto">
           {loading ? (
             <>
               <Oval
                 height={22}
                 width={22}
-                color="#313C66"
+                color="#FFFFFF"
                 wrapperStyle={{}}
                 wrapperClass=""
                 visible={true}
@@ -285,10 +285,10 @@ const SignUpView = () => {
       <p className="my-2">
         Already have an account?
         <span
-          className="ml-1 cursor-pointer font-semibold text-yellow-500"
+          className="ml-1 cursor-pointer font-semibold text-yellow-500 hover:underline"
           onClick={() => setUIView('SIGN_IN_VIEW')}
         >
-          Sign-In
+          Login
         </span>
       </p>
 
