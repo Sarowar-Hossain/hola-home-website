@@ -37,6 +37,8 @@ export const GlobalProvider = ({ children }) => {
   const [allReview, setAllReview] = useState(false)
   // const [propertyDetails, setPropertyDetails] = useState(true)
 
+  const [marked, setMarked] = useState(false)
+
   const info = {
     acceptPolicy,
     setAcceptPolicy,
@@ -62,6 +64,8 @@ export const GlobalProvider = ({ children }) => {
     setIsLogoutModalShow,
     currentBookMarkItem,
     setCurrentBookmarkItem,
+    marked,
+    setMarked,
     properties,
     setProperties,
     searchSuggestion,

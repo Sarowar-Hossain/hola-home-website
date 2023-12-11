@@ -4,8 +4,8 @@ const Villa = ({ ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="75"
-      height="75"
+      width="60"
+      height="60"
       viewBox="0 0 75 75"
       fill="none"
       {...props}

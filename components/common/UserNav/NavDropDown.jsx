@@ -6,6 +6,7 @@ import Link from 'next/link'
 import React, { useContext, useState, useEffect, useRef } from 'react'
 
 const NavDropDown = () => {
+  const user = null
   const { isMenuOpen, setIsMenuOpen, setIsLogoutModalShow } =
     useContext(GlobalContext)
   const { openModal, setModalView, closeModal } = useUI()
@@ -38,6 +39,10 @@ const NavDropDown = () => {
     setIsMenuOpen(false)
     setIsLogoutModalShow(true)
     openModal(), setModalView('LOGOUTMODAL_VIEW')
+  }
+
+  const handleLogin = () => {
+    openModal(), setModalView('LOGIN_VIEW')
   }
 
   return (
@@ -87,11 +92,23 @@ const NavDropDown = () => {
           })}
         </div>
       )}
-      <div className="h-12 flex items-center font-medium cursor-pointer text-[#848484] hover:text-primary">
-        <p className="px-3 " onClick={handleLogout}>
-          Logout
-        </p>
-      </div>
+      {user ? (
+        <>
+          <div className="h-12 flex items-center font-medium cursor-pointer text-[#848484] hover:text-primary">
+            <p className="px-3 " onClick={handleLogout}>
+              Logout
+            </p>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="h-12 flex items-center font-medium cursor-pointer text-[#848484] hover:text-primary">
+            <p className="px-3 " onClick={handleLogin}>
+              Login
+            </p>
+          </div>
+        </>
+      )}
     </div>
   )
 }

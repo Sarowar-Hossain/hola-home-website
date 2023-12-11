@@ -26,11 +26,34 @@ body {
   border-radius: 4px !important;
   background-color: #fccf12 !important;
 }
+.modal-card .swiper-pagination-bullet {
+  opacity: 80 !important;
+  background-color: white !important;
+}
 
-.react-datepicker__input-container input{
+.modal-card .swiper-pagination-bullet-active {
+  width: 20px !important;
+  border-radius: 4px !important;
+  background-color: #fccf12 !important;
+}
+
+.react-datepicker__input-container input {
   padding: 3px !important;
   background-color: white !important;
 }
-.react-datepicker__input-container input:focus{
+.react-datepicker__input-container input:focus {
   outline: none !important;
+}
+
+@media screen and (max-width: 480px) {
+  .react-datepicker__input-container input {
+    width: 100% !important;
+  }
+}
+
+input[type='checkbox'] {
+  accent-color: #313C66 !important;
+  mix-blend-mode: multiply;
+  width: 16px !important;
+  height: 16px !important;
 }
