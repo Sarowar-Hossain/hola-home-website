@@ -3,6 +3,7 @@ import { Button, useUI } from '@components/ui'
 import { Mail } from 'lucide-react'
 import Image from 'next/image'
 import React, { useContext, useState } from 'react'
+import toast from 'react-hot-toast'
 import { Oval } from 'react-loader-spinner'
 
 const ForgotPassword = () => {
@@ -17,6 +18,7 @@ const ForgotPassword = () => {
     e.preventDefault()
 
     if (!email.trim() == '') {
+      setMessageView(true)
       // forgotPassword(email)
       //   .then((res) => {
       //     setError("Please, Check your email");
@@ -29,6 +31,7 @@ const ForgotPassword = () => {
       //     setLoading(false);
       //   });
     } else {
+      toast.error('Invalid Email Address')
       // setError("Please add your email");
       // setLoading(false);
     }
@@ -97,7 +100,7 @@ const ForgotPassword = () => {
                     />
                   </>
                 ) : (
-                  'Sign-In'
+                  'Continue'
                 )}
               </Button>
             </form>

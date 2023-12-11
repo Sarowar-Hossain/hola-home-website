@@ -4,8 +4,11 @@ import FocusTrap from '@lib/focus-trap'
 import { Cross } from '@components/icons'
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock'
 import { GlobalContext } from 'Context/Context'
+import { useUI } from '../context'
+import cn from 'clsx'
 
 const Modal = ({ children, onClose }) => {
+  const { setUIView, uiView } = useUI()
   const { setIsLogoutModalShow, isLogoutModalShow } = useContext(GlobalContext)
   const ref = useRef()
 
@@ -32,14 +35,19 @@ const Modal = ({ children, onClose }) => {
     }
   }, [handleKey])
 
+  const handleCloseModal = () => {
+    setUIView('SIGN_UP_VIEW')
+    onClose()
+  }
+
   return (
     <div className={s.root}>
       <div className={s.modal} role="dialog" ref={ref}>
         {!isLogoutModalShow && (
           <button
-            onClick={() => onClose()}
+            onClick={handleCloseModal}
             aria-label="Close panel"
-            className={s.close}
+            className={cn(s.close, `${uiView === "PHONE_LOGIN_VIEW" && 'hidden'}`)}
           >
             <Cross className="h-6 w-6 bg-accent-8 text-white rounded-full hover:bg-accent-6" />
           </button>

@@ -26,6 +26,10 @@ const LoginModal = ({ closeModal }) => {
     ...dynamicProps,
     ssr: true,
   })
+  const PhoneLoginView = dynamic(() => import('./PhoneLoginView'), {
+    ...dynamicProps,
+    ssr: true,
+  })
   return (
     <>
       {(uiView === 'SIGN_IN_VIEW' || uiView === 'SIGN_UP_VIEW') && (
@@ -48,6 +52,7 @@ const LoginModal = ({ closeModal }) => {
         </div>
       )}
       {uiView === 'FORGOT_PASSWORD_VIEW' && <ForgotPassword />}
+      {uiView === 'PHONE_LOGIN_VIEW' && <PhoneLoginView />}
     </>
   )
 }

@@ -294,6 +294,7 @@ const SignUpView = () => {
 
       <div className="mb-5 flex justify-center gap-3">
         <Image
+          onClick={() => setUIView('PHONE_LOGIN_VIEW')}
           src="/phone.png"
           height={30}
           width={30}

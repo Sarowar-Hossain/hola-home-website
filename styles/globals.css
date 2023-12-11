@@ -67,3 +67,18 @@ input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
   box-shadow: inset 0 0 20px 20px #ffffff29;
 }
+
+.PhoneInputInput {
+  border: none !important;
+  outline: none !important;
+  background-color: white !important;
+}
+
+.PhoneInputCountrySelect{
+  background-color: white !important;
+}
+
+/* .PhoneInputCountryIconImg{
+  border-radius: 5px !important;
+  margin-left: 3px !important;
+} */
