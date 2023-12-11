@@ -95,7 +95,7 @@ const Card = ({ property }) => {
           <p className="text-[#878787] font-normal">({reviews} reviews)</p>
           <p className="italic text-[#878787] font-normal">{hostType}</p>
         </div>
-        <Link href="/properties/654d6a4d6ad4a6d74">
+        <Link href={`/properties/${property?.id}`} target='_blank'>
           <p className="mt-1 text-2xl font-bold hover:text-accent-5">
             {hotelName}
           </p>

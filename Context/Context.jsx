@@ -21,11 +21,12 @@ export const GlobalProvider = ({ children }) => {
 
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
-
+  const [searchSuggestion, setSearchSuggestion] = useState([])
+  const [searchSuggestionShow, setSearchSuggestionShow] = useState(false)
+  const [searchResult, setSearchResult] = useState([])
 
   // all property data
   const [properties, setProperties] = useState(allProperty)
-  const [searchResult, setSearchResult] = useState([])
 
   // Profile states
   const [profilePage, setProfilePage] = useState(true)
@@ -63,8 +64,11 @@ export const GlobalProvider = ({ children }) => {
     setCurrentBookmarkItem,
     properties,
     setProperties,
+    searchSuggestion,
+    setSearchSuggestion,
     searchResult,
     setSearchResult,
+    searchSuggestionShow, setSearchSuggestionShow
   }
 
   return (
