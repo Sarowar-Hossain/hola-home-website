@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 import { LoadingDots, useUI } from '@components/ui'
 
 const Loading = () => (
-  <div className="flex h-80 w-80 items-center justify-center p-3 text-center">
+  <div className="flex h-[45vh] w-full items-center justify-center p-3 text-center">
     <LoadingDots />
   </div>
 )
@@ -23,6 +23,10 @@ const LoginModal = ({ closeModal }) => {
     ssr: true,
   })
   const ForgotPassword = dynamic(() => import('./ForgotPassword'), {
+    ...dynamicProps,
+    ssr: true,
+  })
+  const PhoneLoginView = dynamic(() => import('./PhoneLoginView'), {
     ...dynamicProps,
     ssr: true,
   })
@@ -48,6 +52,7 @@ const LoginModal = ({ closeModal }) => {
         </div>
       )}
       {uiView === 'FORGOT_PASSWORD_VIEW' && <ForgotPassword />}
+      {uiView === 'PHONE_LOGIN_VIEW' && <PhoneLoginView />}
     </>
   )
 }

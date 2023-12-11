@@ -79,7 +79,7 @@ const SignUp = () => {
     const handlePrivacy = () => { }
 
     return (
-        <div className="mt-5 mb-16 max-w-[400px] mx-auto px-4">
+        <div className="mt-5 mb-16 max-w-[400px] mx-auto px-2">
             <div className='max-w-sm mx-auto bg-[#FCCF12] p-2 rounded-md'>
                 <div className='w-full rounded-md h-48 relative mx-auto overflow-hidden'>
                     <Image className='object-contain' src="/mobile_auth_cover.png" fill alt='' />
@@ -175,7 +175,7 @@ const SignUp = () => {
                                         type={passwordType}
                                         placeholder="Password"
                                     />
-                                    <span className="absolute right-2 top-2 cursor-pointer">
+                                    <span className="absolute right-2 top-2 cursor-pointer text-[#BBBFC4]">
                                         {passwordType === 'password' ? (
                                             <span onClick={togglePasswordVisibility}>
                                                 <EyeOff />
@@ -203,7 +203,7 @@ const SignUp = () => {
                                         type={confirmPasswordType}
                                         placeholder="Confirm Password"
                                     />
-                                    <span className="absolute right-2 top-2 cursor-pointer">
+                                    <span className="absolute right-2 top-2 cursor-pointer text-[#BBBFC4]">
                                         {confirmPasswordType === 'password' ? (
                                             <span onClick={toggleConfirmPasswordVisibility}>
                                                 <EyeOff />
@@ -287,18 +287,19 @@ const SignUp = () => {
                     )}
                 </Button>
             </form>
-            <p className="my-2 text-center">
+            <p className="my-5 text-center">
                 Already have an account?
                 <span
                     className="ml-1 cursor-pointer font-semibold text-[#FCCF12]"
-                // onClick={() => setUIView('SIGN_IN_VIEW')}
+                    onClick={() => router.push('/login')}
                 >
-                    Sign-In
+                    Login
                 </span>
             </p>
 
             <div className="mb-5 flex justify-center gap-3">
                 <Image
+                    onClick={() => router.push('/phone-login')}
                     src="/phone.png"
                     height={30}
                     width={30}
