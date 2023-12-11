@@ -2,6 +2,7 @@ import { Searchbar } from '@components/common'
 import Card from '@components/common/Card/Card'
 import { Location } from '@components/icons'
 import { GlobalContext } from 'Context/Context'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useContext, useState } from 'react'
 
@@ -33,13 +34,16 @@ const Properties = () => {
         </div>
         <div
           className={`${
-            searchSuggestion?.length > 0 && searchSuggestionShow ? 'inline-block' : 'hidden'
+            searchSuggestion?.length > 0 && searchSuggestionShow
+              ? 'inline-block'
+              : 'hidden'
           } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-50 space-y-3 py-6`}
         >
           {searchSuggestion?.slice(0, 8)?.map((item, index) => {
             return (
-              <div
-                onClick={() => window.open(`/properties/${item.id}`, '_blank')}
+              <Link
+                href={`/properties/${item.id}`}
+                target="_blank"
                 key={index}
                 className="flex justify-start gap-8 items-center py-1 rounded-xl px-5 hover:bg-accent-2 cursor-pointer"
               >
@@ -59,7 +63,7 @@ const Properties = () => {
                     </span>{' '}
                   </p>
                 </div>
-              </div>
+              </Link>
             )
           })}
 
