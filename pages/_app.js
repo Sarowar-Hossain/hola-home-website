@@ -9,6 +9,7 @@ import {
 import '@styles/globals.css'
 import { GlobalProvider } from 'Context/Context'
 import { SessionProvider } from 'next-auth/react'
+import Head from 'next/head'
 
 export default function App({ Component, pageProps }) {
   return (
@@ -16,6 +17,9 @@ export default function App({ Component, pageProps }) {
       <SessionProvider>
         <GlobalProvider>
           <ManagedUIContext>
+            <Head>
+              <title>Hola Home</title>
+            </Head>
             <motion.div className="max-w-screen overflow-hidden">
               <Layout>
                 <Component {...pageProps} />
