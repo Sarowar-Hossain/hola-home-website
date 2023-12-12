@@ -161,11 +161,11 @@ const FilterModal = () => {
           <Text variant="sectionHeading">Stay Type</Text>
           <div className="flex items-center justify-between">
             <Text>Overnight</Text>
-            <input type="checkbox" />
+            <input type="checkbox" className="bg-transparent" />
           </div>
           <div className="flex items-center justify-between">
             <Text>Hourly (Day Use)</Text>
-            <input type="checkbox" />
+            <input type="checkbox" className="bg-transparent" />
           </div>
         </div>
       </div>
