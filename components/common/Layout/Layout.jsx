@@ -50,6 +50,12 @@ const DetailsPageBookmarkView = dynamic(
     ...dynamicProps,
   }
 )
+const PropertyPageLogModalView = dynamic(
+  () => import('../../Home/PropertyPageModal/PropertyPageModal'),
+  {
+    ...dynamicProps,
+  }
+)
 
 const LogoutView = dynamic(
   () => import('@components/ModalComponent/LogoutModal/LogoutModal'),
@@ -87,6 +93,7 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'REVIEW_SUCCESS_VIEW' && <ReviewSuccessView />}
       {modalView === 'LOGOUTMODAL_VIEW' && <LogoutView />}
       {modalView === 'DETAILS_PAGE_BOOKMARK_VIEW' && <DetailsPageBookmarkView />}
+      {modalView === 'PROPERTY_DETAILS_PAGE_LOG_VIEW' && <PropertyPageLogModalView />}
     </Modal>
   )
 }

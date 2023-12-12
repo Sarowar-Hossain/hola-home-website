@@ -9,6 +9,7 @@ export const GlobalProvider = ({ children }) => {
 
   // for logout modal
   const [isLogoutModalShow, setIsLogoutModalShow] = useState(false)
+  const [propertyPageLogModal, setPropertyPageLogModal] = useState(false)
 
   // states of reservartion
   const [acceptPolicy, setAcceptPolicy] = useState(false)
@@ -72,7 +73,10 @@ export const GlobalProvider = ({ children }) => {
     setSearchSuggestion,
     searchResult,
     setSearchResult,
-    searchSuggestionShow, setSearchSuggestionShow
+    searchSuggestionShow,
+    setSearchSuggestionShow,
+    propertyPageLogModal,
+    setPropertyPageLogModal,
   }
 
   return (

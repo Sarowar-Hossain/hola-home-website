@@ -14,10 +14,7 @@ const Navbar = ({ links }) => {
 
   return (
     <NavbarRoot>
-      <Container
-        clean
-        className="container w-full   2xl:w-[98%] xl:w-[93%] mx-auto"
-      >
+      <Container clean className="container  mx-auto">
         <div className={s.nav}>
           <div className="flex flex-1 items-center">
             <Link href="/" className={s.logo} aria-label="Logo">
