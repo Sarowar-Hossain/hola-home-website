@@ -58,7 +58,7 @@ const LoginView = () => {
   }
 
   return (
-    <div className="text-center flex flex-col justify-center items-center md:h-[50vh]">
+    <div className="text-center flex flex-col justify-center items-center">
       <Text className="text-3xl font-bold text-[#484C52]">Login</Text>
       <Text className="text-[#848484]">Login to continue to our website</Text>
       <form

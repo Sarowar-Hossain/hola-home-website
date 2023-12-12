@@ -76,7 +76,7 @@ const Card = ({ property }) => {
         {images?.map((image, i) => (
           <SwiperSlide key={i}>
             <div>
-              <Link href="">
+              <Link href={`/properties/${property?.id}`}>
                 <Image
                   src={image}
                   height={415}
@@ -95,7 +95,7 @@ const Card = ({ property }) => {
           <p className="text-[#878787] font-normal">({reviews} reviews)</p>
           <p className="italic text-[#878787] font-normal">{hostType}</p>
         </div>
-        <Link href={`/properties/${property?.id}`} target='_blank'>
+        <Link href={`/properties/${property?.id}`}>
           <p className="mt-1 text-2xl font-bold hover:text-accent-5">
             {hotelName}
           </p>
