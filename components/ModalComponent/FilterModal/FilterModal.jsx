@@ -59,7 +59,7 @@ const FilterModal = () => {
   }
 
   return (
-    <div className="max-h-[100vh] min-h-[70vh] md:max-h-[80vh] xl:min-w-[900px] xl:min-h-[600px] overflow-y-auto">
+    <div className="max-h-[100vh] min-h-[70vh] md:max-h-[80vh] xl:min-w-[900px] xl:min-h-[600px] overflow-y-auto pb-5">
       {/* <input type="text" className="sr-only" /> */}
       <div className="flex justify-between px-5 py-3">
         <Text className="" variant="pageHeading">
