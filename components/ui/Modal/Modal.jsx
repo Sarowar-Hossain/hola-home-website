@@ -8,7 +8,7 @@ import { useUI } from '../context'
 import cn from 'clsx'
 
 const Modal = ({ children, onClose }) => {
-  const { setUIView, uiView } = useUI()
+  const { setUIView, uiView, modalView } = useUI()
   const { setIsLogoutModalShow, isLogoutModalShow } = useContext(GlobalContext)
   const ref = useRef()
 
@@ -42,12 +42,17 @@ const Modal = ({ children, onClose }) => {
 
   return (
     <div className={s.root}>
-      <div className={s.modal} role="dialog" ref={ref}>
+      <div className={cn(s.modal, `${modalView === 'FILTERS_VIEW' && 'p-0 rounded-none md:rounded-xl'}`)} role="dialog" ref={ref}>
         {!isLogoutModalShow && (
           <button
             onClick={handleCloseModal}
             aria-label="Close panel"
-            className={cn(s.close, `${uiView === "PHONE_LOGIN_VIEW" && 'hidden'}`)}
+            className={cn(
+              s.close,
+              `${uiView === 'PHONE_LOGIN_VIEW' && 'hidden'} ${
+                modalView === 'FILTERS_VIEW' && 'hidden'
+              }`
+            )}
           >
             <Cross className="h-6 w-6 bg-accent-8 text-white rounded-full hover:bg-accent-6" />
           </button>

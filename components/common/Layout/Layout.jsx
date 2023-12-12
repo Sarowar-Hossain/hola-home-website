@@ -64,6 +64,12 @@ const ForgotPassword = dynamic(
     ...dynamicProps,
   }
 )
+const FilterModalView = dynamic(
+  () => import('@components/ModalComponent/FilterModal/FilterModal'),
+  {
+    ...dynamicProps,
+  }
+)
 
 const FeatureBar = dynamic(() => import('@components/common/FeatureBar'), {
   ...dynamicProps,
@@ -75,7 +81,6 @@ const Modal = dynamic(() => import('@components/ui/Modal'), {
 })
 
 const ModalView = ({ modalView, closeModal }) => {
-  console.log(modalView)
   return (
     <Modal onClose={closeModal}>
       {modalView === 'LOGIN_VIEW' && <LoginView />}
@@ -86,7 +91,10 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'REVIEW_ALERT' && <LoginAlertView />}
       {modalView === 'REVIEW_SUCCESS_VIEW' && <ReviewSuccessView />}
       {modalView === 'LOGOUTMODAL_VIEW' && <LogoutView />}
-      {modalView === 'DETAILS_PAGE_BOOKMARK_VIEW' && <DetailsPageBookmarkView />}
+      {modalView === 'DETAILS_PAGE_BOOKMARK_VIEW' && (
+        <DetailsPageBookmarkView />
+      )}
+      {modalView === 'FILTERS_VIEW' && <FilterModalView />}
     </Modal>
   )
 }
