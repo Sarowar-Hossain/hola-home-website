@@ -80,7 +80,7 @@ const FilterModal = () => {
             <legend className="pt-1 text-[12px]">Minimum</legend>
             <input
               type="text"
-              className="outline-none pb-[2px] w-full ps-[9px] text-lg"
+              className="outline-none pb-[2px] w-full ps-[9px] text-lg bg-transparent"
               defaultValue={0}
             />
             <span className="absolute left-[11px] text-lg">$</span>
@@ -90,7 +90,7 @@ const FilterModal = () => {
             <legend className="pt-1 text-[12px]">Maximum</legend>
             <input
               type="text"
-              className="outline-none pb-[2px] w-full ps-[9px] text-lg"
+              className="outline-none pb-[2px] w-full ps-[9px] text-lg bg-transparent"
               defaultValue={500}
             />
             <span className="absolute left-[11px] text-lg">$</span>
