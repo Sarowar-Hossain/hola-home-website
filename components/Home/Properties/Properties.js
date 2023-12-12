@@ -37,7 +37,7 @@ const Properties = () => {
             searchSuggestion?.length > 0 && searchSuggestionShow
               ? 'inline-block'
               : 'hidden'
-          } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-50 space-y-3 py-6`}
+          } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-40  py-6 `}
         >
           {searchSuggestion?.slice(0, 8)?.map((item, index) => {
             return (
@@ -45,9 +45,10 @@ const Properties = () => {
                 href={`/properties/${item.id}`}
                 target="_blank"
                 key={index}
-                className="flex justify-start gap-8 items-center py-1 rounded-xl px-5 hover:bg-accent-2 cursor-pointer"
+                className="flex justify-start gap-8 items-center py-2 px-5 hover:bg-accent-2 cursor-pointer border-b"
               >
                 <Location className="h-[25px] w-[20px] " />
+
                 <div className="">
                   <p>
                     Name:{' '}
@@ -68,7 +69,7 @@ const Properties = () => {
           })}
 
           <div
-            className={`flex justify-center items-center ${
+            className={`flex justify-center items-center shadow-xl ${
               searchSuggestion?.length > 8 ? 'inline-block' : 'hidden'
             }`}
           >
