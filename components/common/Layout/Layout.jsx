@@ -92,8 +92,12 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'REVIEW_ALERT' && <LoginAlertView />}
       {modalView === 'REVIEW_SUCCESS_VIEW' && <ReviewSuccessView />}
       {modalView === 'LOGOUTMODAL_VIEW' && <LogoutView />}
-      {modalView === 'DETAILS_PAGE_BOOKMARK_VIEW' && <DetailsPageBookmarkView />}
-      {modalView === 'PROPERTY_DETAILS_PAGE_LOG_VIEW' && <PropertyPageLogModalView />}
+      {modalView === 'DETAILS_PAGE_BOOKMARK_VIEW' && (
+        <DetailsPageBookmarkView />
+      )}
+      {modalView === 'PROPERTY_DETAILS_PAGE_LOG_VIEW' && (
+        <PropertyPageLogModalView />
+      )}
     </Modal>
   )
 }
@@ -152,7 +156,9 @@ const Layout = ({ children }) => {
     <>
       <div className={cn(s.root)}>
         <Toaster position="top-center" />
-        <Navbar />
+        <div className='mb-[100px]'>
+          <Navbar />
+        </div>
         <main className="fit min-h-screen">{children}</main>
         <Footer />
         <ModalUI />
