@@ -15,9 +15,9 @@ const BeginHotelInfo = () => {
         </h1>
         <p className="text-sm font-normal text-[#484C52]">Jaipur, RJ, IN</p>
       </div>
-      <div className="border-2 min-w-[400px] min-h-[100px] rounded-xl">
-        <div className="flex justify-between border-b-2 w-full">
-          <div className="border-r-2 w-1/2 ps-4 py-1">
+      <div className="border-[#C4C4C4] border min-w-[400px] min-h-[100px] rounded-xl">
+        <div className="flex justify-between border-b border-[#C4C4C4] w-full">
+          <div className="border-r border-[#C4C4C4] w-1/2 ps-4 py-1">
             <p className="text-xs text-[#848484]">Check In</p>
             <p className=" text-[#848484]">July 5</p>
           </div>
