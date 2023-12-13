@@ -46,7 +46,7 @@ export const HelpNavLink = [
   {
     id: 1,
     name: 'Contact Us',
-    href: '/contact',
+    href: '/contact-us',
   },
   {
     id: 2,
