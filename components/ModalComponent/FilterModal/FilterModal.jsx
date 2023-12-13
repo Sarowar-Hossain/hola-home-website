@@ -33,135 +33,153 @@ import { Text, useUI } from '@components/ui'
 import Image from 'next/image'
 import React, { useState } from 'react'
 
+const types = [
+  {
+    logo: <House />,
+    name: 'House',
+  },
+  {
+    logo: <Flat />,
+    name: 'Flat',
+  },
+  {
+    logo: <Villa />,
+    name: 'Villa',
+  },
+  {
+    logo: <GuestHouse />,
+    name: 'Guest House',
+  },
+  {
+    logo: <CamperVan />,
+    name: 'Campervan',
+  },
+  {
+    logo: <Hotel />,
+    name: 'Hotel',
+  },
+  {
+    logo: <Cabin />,
+    name: 'Cabin',
+  },
+  {
+    logo: <HouseBoat />,
+    name: 'House Boat',
+  },
+]
+const amenities = [
+  {
+    logo: <Wifi />,
+    name: 'WIFI',
+  },
+  {
+    logo: <TV />,
+    name: 'TV',
+  },
+  {
+    logo: <Kitchen />,
+    name: 'Kitchen',
+  },
+  {
+    logo: <WashingMachine />,
+    name: 'Washing Machine',
+  },
+  {
+    logo: <Parking />,
+    name: 'Parking',
+  },
+  {
+    logo: <AirConditioner />,
+    name: 'Air Conditioner',
+  },
+  {
+    logo: <DedicatedWorkplace />,
+    name: 'Dedicated Workplace',
+  },
+  {
+    logo: <Pool />,
+    name: 'Pool',
+  },
+  {
+    logo: <HotTub />,
+    name: 'Hot Tub',
+  },
+  {
+    logo: <Patio />,
+    name: '',
+  },
+  {
+    logo: <Patio />,
+    name: 'Patio',
+  },
+  {
+    logo: <FirePit />,
+    name: 'Fire Pit',
+  },
+  {
+    logo: <PoolTable />,
+    name: 'Pool Table',
+  },
+  {
+    logo: <IndoorFireplace />,
+    name: 'Indoor Fireplace',
+  },
+  {
+    logo: <Gym />,
+    name: 'Gym',
+  },
+  {
+    logo: <BeachAccess />,
+    name: 'Beach access',
+  },
+  {
+    logo: <ActivityArea />,
+    name: 'Activity Area',
+  },
+  {
+    logo: <FirstAidKit />,
+    name: 'First Aid Kit',
+  },
+  {
+    logo: <FireExtinguisher />,
+    name: 'Fire Extinguisher',
+  },
+  {
+    logo: <CarbonMonoxideAlarm />,
+    name: 'Carbon monoxide alarm',
+  },
+  {
+    logo: <SmokeDetector />,
+    name: 'Smoke Detector',
+  },
+]
+
 const FilterModal = () => {
   const { closeModal } = useUI()
-
-  const types = [
-    {
-      logo: <House />,
-      name: 'House',
-    },
-    {
-      logo: <Flat />,
-      name: 'Flat',
-    },
-    {
-      logo: <Villa />,
-      name: 'Villa',
-    },
-    {
-      logo: <GuestHouse />,
-      name: 'Guest House',
-    },
-    {
-      logo: <CamperVan />,
-      name: 'Campervan',
-    },
-    {
-      logo: <Hotel />,
-      name: 'Hotel',
-    },
-    {
-      logo: <Cabin />,
-      name: 'Cabin',
-    },
-    {
-      logo: <HouseBoat />,
-      name: 'House Boat',
-    },
-  ]
-  const amenities = [
-    {
-      logo: <Wifi />,
-      name: 'WIFI',
-    },
-    {
-      logo: <TV />,
-      name: 'TV',
-    },
-    {
-      logo: <Kitchen />,
-      name: 'Kitchen',
-    },
-    {
-      logo: <WashingMachine />,
-      name: 'Washing Machine',
-    },
-    {
-      logo: <Parking />,
-      name: 'Parking',
-    },
-    {
-      logo: <AirConditioner />,
-      name: 'Air Conditioner',
-    },
-    {
-      logo: <DedicatedWorkplace />,
-      name: 'Dedicated Workplace',
-    },
-    {
-      logo: <Pool />,
-      name: 'Pool',
-    },
-    {
-      logo: <HotTub />,
-      name: 'Hot Tub',
-    },
-    {
-      logo: <Patio />,
-      name: '',
-    },
-    {
-      logo: <Patio />,
-      name: 'Patio',
-    },
-    {
-      logo: <FirePit />,
-      name: 'Fire Pit',
-    },
-    {
-      logo: <PoolTable />,
-      name: 'Pool Table',
-    },
-    {
-      logo: <IndoorFireplace />,
-      name: 'Indoor Fireplace',
-    },
-    {
-      logo: <Gym />,
-      name: 'Gym',
-    },
-    {
-      logo: <BeachAccess />,
-      name: 'Beach access',
-    },
-    {
-      logo: <ActivityArea />,
-      name: 'Activity Area',
-    },
-    {
-      logo: <FirstAidKit />,
-      name: 'First Aid Kit',
-    },
-    {
-      logo: <FireExtinguisher />,
-      name: 'Fire Extinguisher',
-    },
-    {
-      logo: <CarbonMonoxideAlarm />,
-      name: 'Carbon monoxide alarm',
-    },
-    {
-      logo: <SmokeDetector />,
-      name: 'Smoke Detector',
-    },
-  ]
   const [selectedType, setSelectedType] = useState('')
+  const [amenitiesSelected, setAmenitiesSelected] = useState([])
   const [selectedMin, setSelectedMin] = useState(0)
   const [selectedMax, setSelectedMax] = useState(0)
+  const [limit, setLimit] = useState(8)
+  const [less, setLess] = useState(false)
 
   const handleTypeClick = (t) => {
     setSelectedType(t?.name)
+  }
+
+  const handleAmenitiesClick = (name) => {
+    const isAlreadySelected = amenitiesSelected.includes(name)
+    if (isAlreadySelected) {
+      setAmenitiesSelected(amenitiesSelected.filter((type) => type !== name))
+    } else {
+      setAmenitiesSelected([...amenitiesSelected, name])
+    }
+  }
+  const handleShow = () => {
+    setLimit(amenities?.length)
+  }
+  const handleHide = () => {
+    setLimit(8)
   }
 
   return (
@@ -291,20 +309,39 @@ const FilterModal = () => {
           </div>
         </div>
         <div className="mt-6 max-w-5xl">
-          <Text variant="sectionHeading">Amenities</Text>
-          <div className="flex flex-wrap gap-4">
-            {amenities?.map((t, i) => (
+          <div className='flex items-center justify-between max-w-[990px]'>
+            <Text variant="sectionHeading">Amenities</Text>
+            <div>
+              {!less ? (
+                <>
+                  <span className="font-semibold cursor-pointer text-[#FCCF12] hover:text-yellow-500 underline">
+                    Show more
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span className="font-semibold cursor-pointer text-[#FCCF12] hover:text-yellow-500 underline">
+                    Show less
+                  </span>
+                </>
+              )}
+            </div>
+          </div>
+          <div className="flex flex-wrap gap-4 mt-5">
+            {amenities?.slice(0)?.map((t, i) => (
               <div
-                onClick={() => handleTypeClick(t)}
+                onClick={() => handleAmenitiesClick(t?.name)}
                 key={i}
-                className={`w-[110px] h-[100px] hover:bg-[#FFF8DB] flex flex-col justify-center items-center gap-1 border-2 hover:border-[#FCCF12] rounded-md transition-all duration-150 cursor-pointer ${
-                  selectedType === t?.name
+                className={`w-[110px] h-[100px] hover:bg-[#FFF8DB] flex flex-col justify-center items-center gap-1 border-2 hover:border-[#FCCF12] rounded-md transition-all duration-150 cursor-pointer $${
+                  amenitiesSelected.includes(t?.name)
                     ? 'bg-[#FFF8DB] border-[#FCCF12]'
                     : 'bg-[#F7F8FA] border-accent-2'
                 }`}
               >
                 <div className="">{t?.logo}</div>
-                <Text className="text-[14px] leading-4 text-center px-[2px]">{t?.name}</Text>
+                <Text className="text-[14px] leading-4 text-center px-[2px]">
+                  {t?.name}
+                </Text>
               </div>
             ))}
           </div>
