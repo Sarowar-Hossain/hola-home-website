@@ -42,7 +42,7 @@ const Modal = ({ children, onClose }) => {
 
   return (
     <div className={s.root}>
-      <div className={cn(s.modal, `${modalView === 'FILTERS_VIEW' && 'p-0 rounded-none md:rounded-xl'}`)} role="dialog" ref={ref}>
+      <div className={cn(s.modal, `${modalView === 'FILTERS_VIEW' && 'p-0 rounded-none md:rounded-t-xl'}`)} role="dialog" ref={ref}>
         {!isLogoutModalShow && (
           <button
             onClick={handleCloseModal}

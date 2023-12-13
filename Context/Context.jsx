@@ -14,7 +14,6 @@ export const GlobalProvider = ({ children }) => {
   const [acceptPolicy, setAcceptPolicy] = useState(false)
   const [confirmPay, setConfirmPay] = useState(false)
   const [bookingPage, setBookingPage] = useState(true)
-
   // bookmark data
   const [bookmarkList, setBookMarkList] = useState([])
   const [currentBookMarkItem, setCurrentBookmarkItem] = useState(null)
@@ -24,20 +23,17 @@ export const GlobalProvider = ({ children }) => {
   const [searchSuggestion, setSearchSuggestion] = useState([])
   const [searchSuggestionShow, setSearchSuggestionShow] = useState(false)
   const [searchResult, setSearchResult] = useState([])
-
   // all property data
   const [properties, setProperties] = useState(allProperty)
-
   // Profile states
   const [profilePage, setProfilePage] = useState(true)
   const [deleteAccount, setDeleteAccount] = useState(false)
   const [confirmDelection, setConfirmDelection] = useState(false)
-
   // Property details
   const [allReview, setAllReview] = useState(false)
   // const [propertyDetails, setPropertyDetails] = useState(true)
-
   const [marked, setMarked] = useState(false)
+  const [uiLoader, setUiLoader] = useState(false)
 
   const info = {
     acceptPolicy,
@@ -72,7 +68,10 @@ export const GlobalProvider = ({ children }) => {
     setSearchSuggestion,
     searchResult,
     setSearchResult,
-    searchSuggestionShow, setSearchSuggestionShow
+    searchSuggestionShow,
+    setSearchSuggestionShow,
+    uiLoader,
+    setUiLoader,
   }
 
   return (
