@@ -71,6 +71,14 @@ const FilterModalView = dynamic(
   }
 )
 
+
+const ContactUsModalView = dynamic(
+  () => import('@components/ModalComponent/ContactUsModal'),
+  {
+    ...dynamicProps,
+  }
+)
+
 const FeatureBar = dynamic(() => import('@components/common/FeatureBar'), {
   ...dynamicProps,
 })
@@ -94,7 +102,8 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'DETAILS_PAGE_BOOKMARK_VIEW' && (
         <DetailsPageBookmarkView />
       )}
-      {modalView === 'FILTERS_VIEW' && <FilterModalView />}
+      { modalView === 'FILTERS_VIEW' && <FilterModalView /> }
+      {modalView ==='CONTACT_US' && <ContactUsModalView/>}
     </Modal>
   )
 }

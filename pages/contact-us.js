@@ -1,4 +1,5 @@
-import { Button } from "@components/ui";
+import { Button, useUI } from "@components/ui";
+
 import Image from "next/image";
 import React, { useState } from "react";
 
@@ -20,6 +21,7 @@ function Index() {
 		setDropdownOpen(false);
 	};
 
+	const { openModal, setModalView } = useUI();
 	const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 	const handleNextClick = async () => {
 		let emailHasError = false;
@@ -49,7 +51,8 @@ function Index() {
 		}
 
 		if (!emailHasError && !subHasError && !msgHasError) {
-			console.log("hii");
+            openModal(), setModalView("CONTACT_US");
+            setSelectedOption(""), setEmail(""), setMsg("")
 		}
 	};
 
@@ -120,7 +123,7 @@ function Index() {
 						id="dropdown"
 						className={`z-10 ${
 							isDropdownOpen ? "" : "hidden"
-						} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl lg:w-[28%] 2xl:w-[21%]`}
+						} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[28%] 2xl:w-[21%]`}
 					>
 						<button
 							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
