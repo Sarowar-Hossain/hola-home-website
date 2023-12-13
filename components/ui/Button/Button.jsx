@@ -27,6 +27,7 @@ const Button = forwardRef((props, buttonRef) => {
       [s.light]: variant === 'light',
       [s.slim]: variant === 'slim',
       [s.naked]: variant === 'naked',
+      [s.text]: variant === 'text',
       [s.bordered]: variant === 'bordered',
       [s.fullWidth]: variant === 'fullWidth',
       [s.loading]: loading,

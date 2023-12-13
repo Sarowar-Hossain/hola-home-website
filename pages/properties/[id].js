@@ -159,12 +159,11 @@ const DetailsPage = () => {
             <div
               className="font-semibold flex items-center gap-1 cursor-pointer"
 
-              // onClick={handleBookmark}
+            // onClick={handleBookmark}
             >
               <span
-                className={`${
-                  bookmarked ? 'text-yellow-500' : 'text-transparent'
-                }`}
+                className={`${bookmarked ? 'text-yellow-500' : 'text-transparent'
+                  }`}
               >
                 <Save />
               </span>
@@ -179,7 +178,7 @@ const DetailsPage = () => {
             loop={true}
             slidesPerView={1}
             pagination={{ clickable: true }}
-            // autoplay={{ delay: 1000 }}
+          // autoplay={{ delay: 1000 }}
           >
             {DemoPropertyImage?.map((image, index) => (
               <SwiperSlide key={index}>

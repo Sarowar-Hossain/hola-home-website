@@ -147,7 +147,7 @@ const PhoneLoginPage = () => {
                                     <p className="text-red">{errors.name.message}</p>
                                 )}
                             </div>
-                            <div className="">
+                            <div className="phone-number-input-container">
                                 <Text>Mobile Number</Text>
                                 <div className="flex flex-col">
                                     <Controller

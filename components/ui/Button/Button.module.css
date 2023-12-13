@@ -60,6 +60,16 @@
   @apply bg-yellow-200 border-yellow-200;
 }
 
+.text{
+  @apply text-accent-9 font-semibold bg-transparent shadow-none
+}
+.text:hover{
+  @apply bg-transparent text-yellow-400
+}
+.text:active{
+  @apply bg-transparent text-accent-9
+}
+
 .disabled,
 .disabled:hover {
   @apply text-accent-4 border-accent-2 bg-accent-1 cursor-not-allowed;

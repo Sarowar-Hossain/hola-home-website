@@ -7,6 +7,7 @@
 
 body {
   background-color: white;
+   font-family: 'Poppins', sans-serif;
 }
 
 /* this ccs for edit profile */
@@ -69,12 +70,13 @@ input:-webkit-autofill:active {
 }
 
 /* .PhoneInputInput {
+.phone-number-input-container .PhoneInputInput {
   border: none !important;
   outline: none !important;
   background-color: white !important;
 } */
 
-.PhoneInputCountrySelect{
+.phone-number-input-container .PhoneInputCountrySelect {
   background-color: white !important;
 }
 
@@ -82,3 +84,63 @@ input:-webkit-autofill:active {
   border-radius: 5px !important;
   margin-left: 3px !important;
 } */
+
+.checkbox-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.checkbox-container input {
+  visibility: hidden;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  border: 1px solid #fccf12; /* You can change the color */
+  border-radius: 4px;
+}
+
+.checkbox-container:hover input ~ .checkmark {
+  background-color: #f4f4f4;
+}
+
+.checkbox-container input:checked ~ .checkmark {
+  background-color: #fff8db; /* You can change the color */
+}
+
+/* Customize the checkmark with a custom SVG */
+.checkmark svg {
+  fill: black; /* You can change the color */
+  height: 13px; /* You can change the size */
+  width: 13px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+}
+
+.checkbox-container input:checked ~ .checkmark svg {
+  display: block;
+}
+
+.scroll-hidden::-webkit-scrollbar {
+  /* width: 10px; */
+  display: none;
+}
+
+.scroll-hidden::-moz-scrollbar {
+  /* width: 10px; */
+  display: none;
+}
+
+.scroll-hidden::-ms-scrollbar {
+  /* width: 10px; */
+  display: none;
+}

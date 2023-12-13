@@ -124,7 +124,6 @@ const Sidebar = () => {
             </div>
           </div>
 
-
           <div className="mt-6 bg-[#C4C4C4] h-[1px]"></div>
 
           {SideNavLinks.map((item, index) => {
@@ -164,7 +163,7 @@ const Sidebar = () => {
           </div>
 
           <div
-            className={`text-left text-sm mt-2 w-4/5 mx-auto text-[#484C52] font-bold ${
+            className={`text-left text-sm  w-4/5 mx-auto text-[#484C52] font-bold ${
               isProfileSubMenuHidden ? 'hidden' : ''
             }`}
             id=""

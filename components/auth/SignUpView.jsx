@@ -92,7 +92,7 @@ const SignUpView = () => {
                 <input
                   {...register('firstName')}
                   id="firstName"
-                  placeholder="Please provide your first name"
+                  placeholder="Enter your first name"
                   className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="text"
                 />
@@ -109,7 +109,7 @@ const SignUpView = () => {
                 <input
                   {...register('lastName')}
                   id="lastName"
-                  placeholder="Please provide your last name"
+                  placeholder="Enter your last name"
                   className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="text"
                 />
@@ -130,7 +130,7 @@ const SignUpView = () => {
                   id="email"
                   className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="email"
-                  placeholder="Please provide your email"
+                  placeholder="Enter your email"
                 />
                 {errors.email && (
                   <span className="text-red" role="alert">
@@ -146,7 +146,7 @@ const SignUpView = () => {
                   {...register('dateOfBirth')}
                   id="dateOfBirth"
                   required
-                  placeholder="Please provide your date of birth"
+                  placeholder="Enter your date of birth"
                   className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="date"
                 />

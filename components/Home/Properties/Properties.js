@@ -1,6 +1,7 @@
 import { Searchbar } from '@components/common'
 import Card from '@components/common/Card/Card'
-import { Location } from '@components/icons'
+import { DownArrow, Filter, Location } from '@components/icons'
+import { Text, useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -8,6 +9,7 @@ import React, { useContext, useState } from 'react'
 
 const Properties = () => {
   const router = useRouter()
+  const { setModalView, openModal } = useUI()
   const {
     showSearch,
     properties,
@@ -21,16 +23,33 @@ const Properties = () => {
 
   const combinedDataLength = searchResult?.length || properties?.length
 
+  const handleOpenFilters = () => {
+    openModal()
+    setModalView('FILTERS_VIEW')
+  }
+
   return (
     <div className="flex flex-col items-center justify-center my-6">
       <div className="relative w-full flex flex-col items-center justify-center">
         <div className="hidden lg:inline-block w-full lg:w-1/2">
           {showSearch && (
-            <Searchbar setSearchText={setSearchText} searchText={searchText} />
+            <div>
+              <Searchbar setSearchText={setSearchText} searchText={searchText} />
+              <div onClick={handleOpenFilters} className='absolute right-3 top-2 flex items-center gap-1 font-semibold border-2 border-[#DDD] hover:border-[#b8b8b8] active:border-[#DDD] px-4 py-1 rounded-lg cursor-pointer'>
+                <Filter />
+                <Text>Filters</Text>
+                <DownArrow />
+              </div>
+            </div>
           )}
         </div>
-        <div className="inline-block lg:hidden w-full">
+        <div className="lg:hidden w-full flex justify-center">
           <Searchbar setSearchText={setSearchText} searchText={searchText} />
+          <div onClick={handleOpenFilters} className='flex items-center gap-1 font-semibold border-2 border-[#DDD] hover:border-[#b8b8b8] active:border-[#DDD] px-4 py-1 rounded-lg cursor-pointer mr-8'>
+            <Filter />
+            <Text>Filters</Text>
+            <DownArrow />
+          </div>
         </div>
         <div
           className={`${
@@ -89,15 +108,15 @@ const Properties = () => {
       <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
         {searchResult?.length > 0
           ? searchResult
-              ?.slice(0, 12)
-              .map((property, index) => (
-                <Card property={property} key={index + 1} />
-              ))
+            ?.slice(0, 12)
+            .map((property, index) => (
+              <Card property={property} key={index + 1} />
+            ))
           : properties
-              .slice(0, 12)
-              .map((property, index) => (
-                <Card property={property} key={index + 1} />
-              ))}
+            .slice(0, 12)
+            .map((property, index) => (
+              <Card property={property} key={index + 1} />
+            ))}
       </div>
 
       {combinedDataLength > 11 && (

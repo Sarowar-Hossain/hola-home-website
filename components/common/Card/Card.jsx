@@ -76,7 +76,7 @@ const Card = ({ property }) => {
         {images?.map((image, i) => (
           <SwiperSlide key={i}>
             <div>
-              <Link href="">
+              <Link href={`/properties/${property?.id}`}>
                 <Image
                   src={image}
                   height={415}

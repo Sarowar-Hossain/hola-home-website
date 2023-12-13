@@ -8,6 +8,9 @@ import { MenuSidebarView } from '@components/common/UserNav'
 import Navbar from '../Navbar/Navbar'
 import Footer from '../Footer/Footer'
 import { Toaster } from 'react-hot-toast'
+import CommonLoader from '../CommonLoader/CommonLoader'
+import { useContext } from 'react'
+import { GlobalContext } from 'Context/Context'
 
 const Loading = () => (
   <div className="w-80 h-80 flex items-center text-center justify-center p-3">
@@ -70,6 +73,20 @@ const ForgotPassword = dynamic(
     ...dynamicProps,
   }
 )
+const FilterModalView = dynamic(
+  () => import('@components/ModalComponent/FilterModal/FilterModal'),
+  {
+    ...dynamicProps,
+  }
+)
+
+
+const ContactUsModalView = dynamic(
+  () => import('@components/ModalComponent/ContactUsModal'),
+  {
+    ...dynamicProps,
+  }
+)
 
 const FeatureBar = dynamic(() => import('@components/common/FeatureBar'), {
   ...dynamicProps,
@@ -81,7 +98,6 @@ const Modal = dynamic(() => import('@components/ui/Modal'), {
 })
 
 const ModalView = ({ modalView, closeModal }) => {
-  console.log(modalView)
   return (
     <Modal onClose={closeModal}>
       {modalView === 'LOGIN_VIEW' && <LoginView />}
@@ -98,6 +114,8 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'PROPERTY_DETAILS_PAGE_LOG_VIEW' && (
         <PropertyPageLogModalView />
       )}
+      { modalView === 'FILTERS_VIEW' && <FilterModalView /> }
+      {modalView ==='CONTACT_US' && <ContactUsModalView/>}
     </Modal>
   )
 }
@@ -147,6 +165,7 @@ const navLinks = [
   },
 ]
 const Layout = ({ children }) => {
+  const { uiLoader } = useContext(GlobalContext)
   const navBarlinks = navLinks.slice(0, 2).map((c) => ({
     label: c.name,
     href: `/${c.slug}`,
@@ -162,6 +181,7 @@ const Layout = ({ children }) => {
         <main className="fit min-h-screen">{children}</main>
         <Footer />
         <ModalUI />
+        {uiLoader && <CommonLoader />}
         <SidebarUI links={navBarlinks} />
       </div>
     </>

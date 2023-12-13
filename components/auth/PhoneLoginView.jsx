@@ -74,7 +74,7 @@ const PhoneLoginView = () => {
   }
 
   return (
-    <div className="md:min-w-[40vw] xl:min-w-[20vw] min-h-[40vh] flex flex-col items-center justify-center relative">
+    <div className="md:min-w-[40vw] xl:min-w-[25vw] min-h-[40vh] flex flex-col items-center justify-center relative">
       {OTPView ? (
         <>
           <div className="mt-5">
@@ -120,7 +120,7 @@ const PhoneLoginView = () => {
         </>
       ) : (
         <>
-          <div className="flex flex-col justify-center items-center">
+          <div className="flex flex-col justify-center items-center w-full">
             <span
               onClick={handleCloseModal}
               className="absolute -top-5 -left-5 cursor-pointer"
@@ -153,7 +153,7 @@ const PhoneLoginView = () => {
                   <p className="text-red">{errors.name.message}</p>
                 )}
               </div>
-              <div className="">
+              <div className="phone-number-input-container">
                 <Text>Mobile Number</Text>
                 <div className="flex flex-col">
                   <Controller
