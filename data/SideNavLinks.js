@@ -46,11 +46,11 @@ export const NavLinksHelp = {
   pathList: [
     {
       name: 'Contact Us',
-      path: '',
+      path: '/contact-us',
     },
     {
       name: 'Report a bug',
-      path: '',
+      path: '/report-bug',
     },
   ],
 }
