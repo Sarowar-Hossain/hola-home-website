@@ -192,12 +192,7 @@ const MyProfile = () => {
                       ? 'bg-accent-2 focus:bg-accent-2 '
                       : 'bg-white'
                   } `,
-                }}
-                // containerStyle={{ backgroundColor: 'white' }}
-                // flagComponent={{ backgroundColor: 'white' }}
-                // focusInputOnCountrySelection={{ backgroundColor: 'white' }}
-                // countrySelectProps={{ backgroundColor: 'white' }}
-                
+                }}                
               />
 
               {validatePhnNo && (

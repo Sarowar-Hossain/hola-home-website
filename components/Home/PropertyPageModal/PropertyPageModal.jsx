@@ -2,6 +2,7 @@ import Home from '@components/icons/Home'
 import { useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
 import { useSession } from 'next-auth/react'
+import Link from 'next/link'
 import React, { useContext } from 'react'
 
 const PropertyPageModal = () => {
@@ -42,6 +43,13 @@ const PropertyPageModal = () => {
           Login
         </button>
       </div>
+      <Link
+        href={'/properties/begin-booking'}
+        onClick={() => closeModal()}
+        className="border  border-accent-6 px-8 py-1 hover:bg-primary  rounded-xl font-medium bg-white text-accent-7"
+      >
+        Start Booking (only for testing)
+      </Link>
     </div>
   )
 }

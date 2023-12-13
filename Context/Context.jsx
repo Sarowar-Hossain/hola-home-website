@@ -29,6 +29,10 @@ export const GlobalProvider = ({ children }) => {
   // all property data
   const [properties, setProperties] = useState(allProperty)
 
+  // booking data store
+
+  const [bookingData, setBookingData] = useState(null)
+
   // Profile states
   const [profilePage, setProfilePage] = useState(true)
   const [deleteAccount, setDeleteAccount] = useState(false)
@@ -37,6 +41,8 @@ export const GlobalProvider = ({ children }) => {
   // Property details
   const [allReview, setAllReview] = useState(false)
   // const [propertyDetails, setPropertyDetails] = useState(true)
+
+  const [userData, setUserData] = useState(null)
 
   const [marked, setMarked] = useState(false)
 
@@ -77,6 +83,10 @@ export const GlobalProvider = ({ children }) => {
     setSearchSuggestionShow,
     propertyPageLogModal,
     setPropertyPageLogModal,
+    userData,
+    setUserData,
+    bookingData,
+    setBookingData,
   }
 
   return (
