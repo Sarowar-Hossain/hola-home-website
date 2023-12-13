@@ -29,9 +29,11 @@ import {
   WashingMachine,
   Wifi,
 } from '@components/icons'
-import { Text, useUI } from '@components/ui'
+import { Button, Text, useUI } from '@components/ui'
+import { GlobalContext } from 'Context/Context'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
+import toast from 'react-hot-toast'
 
 const types = [
   {
@@ -161,7 +163,7 @@ const FilterModal = () => {
   const [selectedMin, setSelectedMin] = useState(0)
   const [selectedMax, setSelectedMax] = useState(0)
   const [limit, setLimit] = useState(8)
-  const [less, setLess] = useState(false)
+  const { setUiLoader } = useContext(GlobalContext)
 
   const handleTypeClick = (t) => {
     setSelectedType(t?.name)
@@ -175,16 +177,44 @@ const FilterModal = () => {
       setAmenitiesSelected([...amenitiesSelected, name])
     }
   }
-  const handleShow = () => {
-    setLimit(amenities?.length)
+
+  const handleClearAll = () => {
+    setSelectedType('')
+    setAmenitiesSelected([])
+    setSelectedMin(0)
+    setSelectedMax(0)
+    const inputFields = document.querySelectorAll('input[type="text"]')
+    inputFields.forEach((input) => {
+      input.value = ''
+    })
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]')
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false
+    })
   }
-  const handleHide = () => {
-    setLimit(8)
+
+  const handleShowProperties = () => {
+    if (
+      selectedType ||
+      amenitiesSelected.length > 0 ||
+      selectedMin > 0 ||
+      selectedMax > 0
+    ) {
+      setUiLoader(true)
+
+      // Set uiLoader to false after 3 seconds
+      setTimeout(() => {
+        setUiLoader(false)
+        closeModal()
+      }, 3000)
+    } else {
+      toast.error('Please select at least one value')
+      setUiLoader(false)
+    }
   }
 
   return (
-    <div className="max-h-[100vh] min-h-[70vh] md:max-h-[80vh] xl:min-w-[900px] xl:min-h-[600px] overflow-y-auto pb-5">
-      {/* <input type="text" className="sr-only" /> */}
+    <div className="max-h-[100vh] min-h-[70vh] md:max-h-[80vh] xl:min-w-[900px] xl:min-h-[600px] overflow-y-auto scroll-hidden">
       <div className="flex justify-between px-5 py-3">
         <Text className="" variant="pageHeading">
           Filters
@@ -197,7 +227,13 @@ const FilterModal = () => {
         </div>
       </div>
       <div className="w-full h-[1px] bg-accent-4 mt-1" />
-      <div className="mt-5 px-5">
+      <div className="flex justify-between bg-[#FFFAE7] py-3 px-3 sm:hidden">
+        <Button onClick={handleClearAll} variant="text">
+          Clear all
+        </Button>
+        <Button onClick={handleShowProperties}>Show Properties</Button>
+      </div>
+      <div className="mt-5 px-5 pb-10 sm:pb-20 md:pb-24">
         <Text variant="sectionHeading">Price range</Text>
         <div className="flex items-center max-w-xl gap-3 md:gap-5 xl:gap-8">
           <div className="border-2 border-[#FCCF12] px-3 rounded-lg md:w-full relative">
@@ -222,7 +258,7 @@ const FilterModal = () => {
         </div>
         <div className="mt-5">
           <Text variant="sectionHeading">Property type</Text>
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap gap-4 mt-4">
             {types?.map((t, i) => (
               <div
                 onClick={() => handleTypeClick(t)}
@@ -239,10 +275,10 @@ const FilterModal = () => {
             ))}
           </div>
         </div>
-        <div className="mt-5 flex flex-col md:flex-row gap-5 justify-between max-w-4xl">
+        <div className="mt-6 flex flex-col md:flex-row gap-5 justify-between max-w-4xl">
           <div>
             <Text variant="sectionHeading">Minimum Bedrooms</Text>
-            <div className="flex gap-2 sm:gap-4">
+            <div className="flex gap-2 sm:gap-4 mt-3">
               {Array.from({ length: 7 }).map((_, i) => {
                 return (
                   <div
@@ -261,8 +297,8 @@ const FilterModal = () => {
             </div>
           </div>
           <div>
-            <Text variant="sectionHeading">Maximum Bedrooms</Text>
-            <div className="flex gap-2 sm:gap-4">
+            <Text variant="sectionHeading">Minimum Bathrooms</Text>
+            <div className="flex gap-2 sm:gap-4 mt-3">
               {Array.from({ length: 7 }).map((_, i) => {
                 return (
                   <div
@@ -281,7 +317,7 @@ const FilterModal = () => {
             </div>
           </div>
         </div>
-        <div className="mt-5 max-w-[200px]">
+        <div className="mt-6 max-w-[250px]">
           <Text variant="sectionHeading">Stay Type</Text>
           <div className="flex items-center justify-between">
             <Text>Overnight</Text>
@@ -309,26 +345,32 @@ const FilterModal = () => {
           </div>
         </div>
         <div className="mt-6 max-w-5xl">
-          <div className='flex items-center justify-between max-w-[990px]'>
+          <div className="flex items-center justify-between max-w-[990px]">
             <Text variant="sectionHeading">Amenities</Text>
             <div>
-              {!less ? (
+              {limit === 8 ? (
                 <>
-                  <span className="font-semibold cursor-pointer text-[#FCCF12] hover:text-yellow-500 underline">
+                  <span
+                    onClick={() => setLimit(amenities?.length)}
+                    className="font-semibold cursor-pointer text-[#FCCF12] hover:text-yellow-500 underline"
+                  >
                     Show more
                   </span>
                 </>
               ) : (
                 <>
-                  <span className="font-semibold cursor-pointer text-[#FCCF12] hover:text-yellow-500 underline">
+                  <span
+                    onClick={() => setLimit(8)}
+                    className="font-semibold cursor-pointer text-[#FCCF12] hover:text-yellow-500 underline"
+                  >
                     Show less
                   </span>
                 </>
               )}
             </div>
           </div>
-          <div className="flex flex-wrap gap-4 mt-5">
-            {amenities?.slice(0)?.map((t, i) => (
+          <div className="flex flex-wrap gap-4 mt-3">
+            {amenities?.slice(0, limit)?.map((t, i) => (
               <div
                 onClick={() => handleAmenitiesClick(t?.name)}
                 key={i}
@@ -346,6 +388,51 @@ const FilterModal = () => {
             ))}
           </div>
         </div>
+        <div className="mt-5 max-w-[250px]">
+          <Text variant="sectionHeading">Property Reviews</Text>
+          <div className="flex items-center justify-between">
+            <Text>4+ stars</Text>
+            <label className="checkbox-container">
+              <input type="checkbox" />
+              <span className="checkmark mt-[20%]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                </svg>
+              </span>
+            </label>
+          </div>
+          <div className="flex items-center justify-between">
+            <Text>Rated highly for cleanness</Text>
+            <label className="checkbox-container">
+              <input type="checkbox" />
+              <span className="checkmark mt-[20%]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                </svg>
+              </span>
+            </label>
+          </div>
+          <div className="flex items-center justify-between">
+            <Text>Rated highly for location</Text>
+            <label className="checkbox-container">
+              <input type="checkbox" />
+              <span className="checkmark mt-[20%]">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path d="M0 0h24v24H0z" fill="none" />
+                  <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z" />
+                </svg>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+      <div className="sm:flex justify-between mt-5 bg-[#FFFAE7] absolute bottom-0 left-0 right-0 py-3 sm:px-5 hidden">
+        <Button onClick={handleClearAll} variant="text">
+          Clear all
+        </Button>
+        <Button onClick={handleShowProperties}>Show Properties</Button>
       </div>
     </div>
   )
