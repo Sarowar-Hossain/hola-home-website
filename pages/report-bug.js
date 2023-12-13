@@ -8,8 +8,7 @@ function Index() {
 	const [selectedOption, setSelectedOption] = useState("");
 	const [subError, setSubError] = useState(false);
 
-	const [email, setEmail] = useState("");
-	const [emailError, setEmailError] = useState(false);
+	
 	const [msg, setMsg] = useState("");
 	const [msgError, setMsgError] = useState(false);
 	const toggleDropdown = () => {
@@ -22,19 +21,13 @@ function Index() {
 	};
 
 	const { openModal, setModalView } = useUI();
-	const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+	
 	const handleNextClick = async () => {
-		let emailHasError = false;
-
+		
 		let subHasError = false;
 		let msgHasError = false;
 
-		if (!email.match(emailPattern)) {
-			setEmailError(true);
-			emailHasError = true;
-		} else {
-			setEmailError(false);
-		}
+		
 
 		if (selectedOption == "") {
 			setSubError(true);
@@ -50,9 +43,9 @@ function Index() {
 			setMsgError(false);
 		}
 
-		if (!emailHasError && !subHasError && !msgHasError) {
+		if ( !subHasError && !msgHasError) {
             openModal(), setModalView("CONTACT_US");
-            setSelectedOption(""), setEmail(""), setMsg("")
+            setSelectedOption(""),  setMsg("")
 		}
 	};
 
@@ -60,34 +53,16 @@ function Index() {
 		<div className="px-4 my-12 lg:w-[60%] 2xl:w-[45%] container mx-auto ">
 			{" "}
 			<h1 className="text-3xl text-[#484C52] text-center lg:text-left">
-				Contact Us{" "}
+				Report a bug{" "}
 			</h1>{" "}
 			<div className="flex items-center justify-center">
-				<Image src={"/contact-us.png"} width={300} height={150} />{" "}
+				<Image src={"/report-bug.png"} width={300} height={150} />{" "}
 			</div>
-			<div className="mt-2 flex flex-col lg:flex lg:flex-row justify-between items-start lg:gap-x-12  gap-y-5 lg:gap-y-0">
-				<div className=" w-full">
+			<div className=" mt-7 ">
+				
+				<div className=" lg:w-[55%] ">
 					<label className="block text-black text-lg font-semibold mb-2">
-						Email <span className="text-[#E90000]">*</span>
-					</label>
-					<input
-						type="text"
-						className="w-full px-3 py-3 border border-gray-400  bg-gray-50 rounded-lg shadow-sm focus:ring focus:ring-yellow-200 focus:outline-none focus:border-none focus:ring-opacity-50"
-						placeholder={"Enter Your E-mail"}
-						value={email}
-						onChange={(e) => {
-							setEmail(e.target.value);
-						}}
-					/>
-					{emailError && (
-						<p className="text-[#E90000]">
-							Enter a valid email address
-						</p>
-					)}
-				</div>
-				<div className=" w-full">
-					<label className="block text-black text-lg font-semibold mb-2">
-						Select Subject <span className="text-[#E90000]">*</span>
+						Select the page where bug was found: <span className="text-[#E90000]">*</span>
 					</label>
 					<button
 						className="flex  items-center justify-between w-full px-3 py-3 border border-gray-400  bg-gray-50 rounded-lg shadow-sm focus:ring focus:ring-yellow-200 focus:outline-none focus:border-none focus:ring-opacity-50"
@@ -123,60 +98,60 @@ function Index() {
 						id="dropdown"
 						className={`z-10 ${
 							isDropdownOpen ? "" : "hidden"
-						} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[28%] 2xl:w-[21%]`}
+						} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[31%] 2xl:w-[24%]`}
 					>
 						<button
 							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "General Inquiry"
+								selectedOption === "Home"
 									? "text-yellow-500 "
 									: ""
 							}`}
-							onClick={() => handleOptionClick("General Inquiry")}
+							onClick={() => handleOptionClick("Home")}
 						>
-							General Inquiry
+						Home
 						</button>
 						<button
 							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Technical Support"
+								selectedOption === "Bookings"
 									? "text-yellow-500"
 									: ""
 							}`}
 							onClick={() =>
-								handleOptionClick("Technical Support")
+								handleOptionClick("Bookings")
 							}
 						>
-							Technical Support
+							Bookings
 						</button>
 						<button
 							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Customer Support"
+								selectedOption === "Bookmarks"
 									? "text-yellow-500"
 									: ""
 							}`}
 							onClick={() =>
-								handleOptionClick("Customer Support")
+								handleOptionClick("Bookmarks")
 							}
 						>
-							Customer Support
+							Bookmarks
 						</button>
 						<button
 							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Other Inquiry"
+								selectedOption === "Profile"
 									? "text-yellow-500"
 									: ""
 							}`}
-							onClick={() => handleOptionClick("Other Inquiry")}
+							onClick={() => handleOptionClick("Profile")}
 						>
-							Other Inquiry
+							Profile
 						</button>
 					</div>
 
 					{subError && (
-						<p className="text-[#E90000]">Please select subject</p>
+						<p className="text-[#E90000]">Please, select the page</p>
 					)}
 				</div>
 			</div>
-			<div className=" mt-5">
+			<div className=" lg:mt-5 mt-7">
 				<label className="block text-black text-lg font-semibold mb-2">
 					Message <span className="text-[#E90000]">*</span>
 				</label>
@@ -184,14 +159,14 @@ function Index() {
 				<textarea
 					rows="4"
 					className="w-full px-3 py-3 border border-gray-400  bg-gray-50 rounded-lg shadow-sm focus:ring focus:ring-yellow-200 focus:outline-none focus:border-none focus:ring-opacity-50"
-					placeholder={"Enter your message"}
+					placeholder={"Describe the issue you encountered in as much detail as possible."}
 					value={msg}
 					onChange={(e) => {
 						setMsg(e.target.value);
 					}}
 				/>
 				{msgError && (
-					<p className="text-[#E90000] ">Please write message</p>
+					<p className="text-[#E90000] ">Please provide issue description</p>
 				)}
 			</div>
 			<div className="flex items-center justify-center mt-7 ">
