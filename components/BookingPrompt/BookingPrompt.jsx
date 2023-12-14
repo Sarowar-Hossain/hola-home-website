@@ -1,7 +1,9 @@
-import { DarkStar } from '@components/icons'
+import { DarkStar, DownArrow2 } from '@components/icons'
 import { Button, Text } from '@components/ui'
 import DatePicker from 'react-datepicker'
-import React from 'react'
+import React, { useState } from 'react'
+
+const stayTypes = ['2 hours', '3 hours', '6 hours', '9 hours', 'Night Stay']
 
 const BookingPrompt = ({
   startDate,
@@ -9,12 +11,19 @@ const BookingPrompt = ({
   selectedAdults,
   selectedChildren,
   selectedStayType,
+  setSelectedStayType,
   handleBookNow,
   isDateAvailableDates,
   setStartDate,
   setEndDate,
+  setSelectedAdults,
   setSelectedChildren,
 }) => {
+  const [dropdownActive, setDropdownActive] = useState(false)
+  const handleStay = (s) => {
+    setSelectedStayType(s)
+    setDropdownActive(false)
+  }
   return (
     <div className="max-w-[486px] mx-auto rounded-xl px-3 py-10 shadow-md h-[100%] flex flex-col gap-5">
       <div className="flex justify-between">
@@ -97,9 +106,24 @@ const BookingPrompt = ({
           </select>
         </div>
       </div>
-      <div className="w-full border rounded-md px-2 py-1">
-        <Text>STAY TYPE</Text>
-        <select
+      <div
+        onClick={() => setDropdownActive(!dropdownActive)}
+        className="flex justify-between items-center w-full border rounded-md px-2 py-1 transition-all duration-300"
+      >
+        <div>
+          <Text>STAY TYPE</Text>
+          {selectedStayType !== '' ? (
+            <>
+              <Text className="text-accent-4">{selectedStayType}</Text>
+            </>
+          ) : (
+            <>
+              <Text className="text-accent-4">Choose</Text>
+            </>
+          )}
+        </div>
+        <DownArrow2 />
+        {/* <select
           className="outline-none bg-accent-0 w-full"
           name=""
           id=""
@@ -111,8 +135,34 @@ const BookingPrompt = ({
           <option value="6 hours">6 hours</option>
           <option value="9 hours">9 hours</option>
           <option value="night Stay">night Stay</option>
-        </select>
+        </select> */}
       </div>
+      {dropdownActive && (
+        <div className="transition-all duration-300 flex flex-col gap-2 border rounded-md custom-radio">
+          {stayTypes?.map((s, index) => (
+            <div
+              key={index}
+              className="flex items-center gap-3 hover:bg-[#FFF8DB] p-[10px]"
+            >
+              <input
+                type="radio"
+                id={`s${index}`}
+                name="stayDuration"
+                value={s}
+                className="hidden"
+              />
+              <label
+                onClick={() => handleStay(s)}
+                htmlFor={`s${index}`}
+                className="cursor-pointer custom-radio-label"
+              >
+                <div className="custom-radio-button" />
+                <span className="ml-3 text-[#484C52] font-medium">{s}</span>
+              </label>
+            </div>
+          ))}
+        </div>
+      )}
       <Button
         className="w-full text-[#484C52]"
         variant=""

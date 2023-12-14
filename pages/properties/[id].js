@@ -48,7 +48,7 @@ const DetailsPage = () => {
   const [endDate, setEndDate] = useState()
   const [selectedAdults, setSelectedAdults] = useState(2)
   const [selectedChildren, setSelectedChildren] = useState(0)
-  const [selectedStayType, setSelectedStayType] = useState('night Stay')
+  const [selectedStayType, setSelectedStayType] = useState('')
   const [isDateAvailableDates, setIsDateAvailableDates] = useState(false)
   const [bookmarked, setBookMarked] = useState(false)
   const [profileView, setProfileView] = useState(false)
@@ -278,14 +278,14 @@ const DetailsPage = () => {
             </div>
             <div className="mt-8 border-b pb-4">
               <Text variant="sectionHeading">Details</Text>
-              <div className="flex gap-10">
+              <div className="flex gap-5">
                 {details?.map((d, i) => {
                   return (
                     <div
                       key={i}
                       className="flex flex-col justify-center items-center gap-1"
                     >
-                      <span className="bg-slate-100 p-2 rounded">
+                      <span className="bg-slate-100 p-2 rounded w-20 h-20 flex items-center justify-center">
                         {d?.logo}
                       </span>
                       <Text>{d?.type}</Text>
@@ -307,14 +307,14 @@ const DetailsPage = () => {
               <Text variant="sectionHeading" className="mb-5">
                 Amenities
               </Text>
-              <div className="flex flex-wrap gap-10">
+              <div className="grid grid-cols-3 gap-5 max-w-[405px] mx-auto sm:flex sm:flex-wrap sm:gap-5 sm:max-w-full text-center">
                 {amenities?.map((d, i) => {
                   return (
                     <div
                       key={i}
                       className="flex flex-col justify-center items-center gap-1"
                     >
-                      <span className="bg-slate-100 p-2 rounded">
+                      <span className="bg-slate-100 p-2 rounded w-20 h-20 flex items-center justify-center">
                         {d?.logo}
                       </span>
                       <Text>{d?.title}</Text>
@@ -347,7 +347,7 @@ const DetailsPage = () => {
               />
             </div>
           </div>
-          <BookingPrompt startDate={startDate} endDate={endDate} selectedAdults={selectedAdults} selectedChildren={selectedChildren} selectedStayType={selectedStayType} handleBookNow={handleBookNow} isDateAvailableDates={isDateAvailableDates} setStartDate={setStartDate} setEndDate={setEndDate} setSelectedChildren={setSelectedChildren} />
+          <BookingPrompt startDate={startDate} endDate={endDate} selectedAdults={selectedAdults} selectedChildren={selectedChildren} selectedStayType={selectedStayType} handleBookNow={handleBookNow} isDateAvailableDates={isDateAvailableDates} setStartDate={setStartDate} setEndDate={setEndDate} setSelectedChildren={setSelectedChildren} setSelectedAdults={setSelectedAdults} setSelectedStayType={setSelectedStayType} />
         </div>
       </Container>
       {profileView && (
