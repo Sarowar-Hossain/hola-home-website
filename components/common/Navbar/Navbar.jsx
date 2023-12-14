@@ -8,16 +8,15 @@ import { GlobalContext } from 'Context/Context'
 import { NavLinks } from 'data/NavLinks'
 import { useContext } from 'react'
 import Search from '@components/icons/Search'
+import { useRouter } from 'next/router'
 
 const Navbar = ({ links }) => {
   const { showSearch, setShowSearch } = useContext(GlobalContext)
+  const router = useRouter()
 
   return (
     <NavbarRoot>
-      <Container
-        clean
-        className="container w-full   2xl:w-[98%] xl:w-[93%] mx-auto"
-      >
+      <Container clean className="container  mx-auto">
         <div className={s.nav}>
           <div className="flex flex-1 items-center">
             <Link href="/" className={s.logo} aria-label="Logo">
@@ -34,15 +33,17 @@ const Navbar = ({ links }) => {
                 {l.name}
               </Link>
             ))}
-            <p
-              className="font-medium hover:text-white text-[#484C52] flex items-center cursor-pointer gap-2"
-              onClick={() => {
-                showSearch ? setShowSearch(false) : setShowSearch(true)
-              }}
-            >
-              <Search />
-              Search
-            </p>
+            {router?.pathname === '/' && (
+              <p
+                className="font-medium hover:text-white text-[#484C52] flex items-center cursor-pointer gap-2"
+                onClick={() => {
+                  showSearch ? setShowSearch(false) : setShowSearch(true)
+                }}
+              >
+                <Search />
+                Search
+              </p>
+            )}
           </nav>
           <div className="flex flex-1 items-center justify-end space-x-8">
             <UserNav />

@@ -1,4 +1,5 @@
 import { Button, useUI } from "@components/ui";
+import { Layout } from '@components/common'
 
 import Image from "next/image";
 import React, { useState } from "react";
@@ -51,13 +52,13 @@ function Index() {
 		}
 
 		if (!emailHasError && !subHasError && !msgHasError) {
-            openModal(), setModalView("CONTACT_US");
-            setSelectedOption(""), setEmail(""), setMsg("")
+			openModal(), setModalView("CONTACT_US");
+			setSelectedOption(""), setEmail(""), setMsg("")
 		}
 	};
 
 	return (
-		<div className="px-4 my-12 lg:w-[60%] 2xl:w-[45%] container mx-auto ">
+		<div className="px-4 mt-32 mb-12 lg:w-[60%] 2xl:w-[45%] container mx-auto ">
 			{" "}
 			<h1 className="text-3xl text-[#484C52] text-center lg:text-left">
 				Contact Us{" "}
@@ -101,9 +102,8 @@ function Index() {
 							</p>
 						)}
 						<svg
-							className={`w-2.5 h-2.5 ${
-								isDropdownOpen ? "transform rotate-180" : ""
-							} ms-3`}
+							className={`w-2.5 h-2.5 ${isDropdownOpen ? "transform rotate-180" : ""
+								} ms-3`}
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -121,26 +121,23 @@ function Index() {
 
 					<div
 						id="dropdown"
-						className={`z-10 ${
-							isDropdownOpen ? "" : "hidden"
-						} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[28%] 2xl:w-[21%]`}
+						className={`z-10 ${isDropdownOpen ? "" : "hidden"
+							} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[28%] 2xl:w-[21%]`}
 					>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "General Inquiry"
-									? "text-yellow-500 "
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "General Inquiry"
+								? "text-yellow-500 "
+								: ""
+								}`}
 							onClick={() => handleOptionClick("General Inquiry")}
 						>
 							General Inquiry
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Technical Support"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Technical Support"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() =>
 								handleOptionClick("Technical Support")
 							}
@@ -148,11 +145,10 @@ function Index() {
 							Technical Support
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Customer Support"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Customer Support"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() =>
 								handleOptionClick("Customer Support")
 							}
@@ -160,11 +156,10 @@ function Index() {
 							Customer Support
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Other Inquiry"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Other Inquiry"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() => handleOptionClick("Other Inquiry")}
 						>
 							Other Inquiry
@@ -208,3 +203,4 @@ function Index() {
 }
 
 export default Index;
+Layout.Index = Layout

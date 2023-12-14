@@ -1,7 +1,7 @@
-import { FC, useState, useEffect, ReactNode } from 'react'
-import throttle from 'lodash.throttle'
-import cn from 'clsx'
-import s from './Navbar.module.css'
+import React, { useState, useEffect } from 'react';
+import throttle from 'lodash.throttle';
+import cn from 'clsx';
+import s from './Navbar.module.css';
 
 const NavbarRoot= ({ children }) => {
   const [hasScrolled, setHasScrolled] = useState(false)
@@ -30,4 +30,4 @@ const NavbarRoot= ({ children }) => {
   )
 }
 
-export default NavbarRoot
+export default NavbarRoot;

@@ -123,10 +123,6 @@ const Sidebar = () => {
               />
             </div>
           </div>
-          <div className="my-2  h-[1px]"></div>
-          <div>
-            <Searchbar className={``} />
-          </div>
 
           <div className="mt-6 bg-[#C4C4C4] h-[1px]"></div>
 
@@ -146,7 +142,7 @@ const Sidebar = () => {
 
           {/* profile */}
           <div
-            className="p-2.5 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer  "
+            className="pt-2 mt-2 flex items-center rounded-md px-4 duration-300 cursor-pointer  "
             onClick={toggleProfileSubMenu}
           >
             <i className="bi bi-chat-left-text-fill"></i>
@@ -167,7 +163,7 @@ const Sidebar = () => {
           </div>
 
           <div
-            className={`text-left text-sm mt-2 w-4/5 mx-auto text-[#484C52] font-bold ${
+            className={`text-left text-sm  w-4/5 mx-auto text-[#484C52] font-bold ${
               isProfileSubMenuHidden ? 'hidden' : ''
             }`}
             id=""

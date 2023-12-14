@@ -79,6 +79,7 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
     <div className={cn(s.root, className)}>
       <div className="mx-8">
         <input
+          type="text"
           id={id}
           className={s.input}
           placeholder="Start your search"
