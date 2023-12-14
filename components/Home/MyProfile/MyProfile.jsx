@@ -92,20 +92,17 @@ const MyProfile = () => {
   }
 
   return (
-    <Container clear className="text-accent-7 space-y-5 md:space-y-10">
-      <Text
-        variant="heroBody"
-        className=" hidden md:block text-2xl xl:text-4xl mt-10"
-      >
-        Personal info
-      </Text>
-      <div className="flex justify-center items-center flex-col-reverse lg:grid lg:grid-cols-2 ">
+    <div className="container mx-auto w-full space-y-10">
+      <div className="w-full flex flex-col-reverse md:flex-row justify-around items-center px-4">
         {/* Forms */}
-        <div className="space-y-4 lg:space-y-7 w-full">
+        <div className="w-full md:w-3/5 space-y-4 lg:space-y-7">
+          <h1 className=" hidden md:block text-3xl font-medium text-[#484C52] mt-10">
+            Personal info
+          </h1>
           <div className="flex justify-between">
             <div className="text-base md:text-2xl w-full">
               <div className="flex items-center justify-between">
-                <h1 className="font-medium">Full Name</h1>
+                <h1 className="text-2xl">Full Name</h1>
 
                 {isNameEdit ? (
                   <button
@@ -152,7 +149,7 @@ const MyProfile = () => {
           <div className="flex justify-between">
             <div className="text-base md:text-2xl w-full">
               <div className="flex items-center justify-between ">
-                <h1 className="font-medium">Phone Number</h1>
+                <h1 className="text-2xl">Phone Number</h1>
                 {isPhoneNoEdit ? (
                   <button
                     onClick={validatePhoneNumber}
@@ -193,11 +190,6 @@ const MyProfile = () => {
                       : 'bg-white'
                   } `,
                 }}
-                // containerStyle={{ backgroundColor: 'white' }}
-                // flagComponent={{ backgroundColor: 'white' }}
-                // focusInputOnCountrySelection={{ backgroundColor: 'white' }}
-                // countrySelectProps={{ backgroundColor: 'white' }}
-                
               />
 
               {validatePhnNo && (
@@ -211,7 +203,7 @@ const MyProfile = () => {
           <div className="flex justify-between ">
             <div className="text-base md:text-2xl w-full">
               <div className="flex items-center justify-between ">
-                <h1 className="font-medium">Email Address</h1>
+                <h1 className="text-2xl">Email Address</h1>
                 <p>
                   {isEmailEdit ? (
                     <button
@@ -255,19 +247,25 @@ const MyProfile = () => {
           </div>
 
           <hr />
+          <div className="flex justify-center lg:justify-start pb-6">
+            <Button
+              className=" text-xl font-medium text-accent-8"
+              variant="slim"
+              onClick={() => {
+                setProfilePage(false)
+                setDeleteAccount(true)
+              }}
+            >
+              Delete Account
+            </Button>
+          </div>
         </div>
         {/* Dp */}
-        <div className="mb-7 flex flex-col items-center justify-center space-y-7">
+        <div className=" mb-7 flex flex-col items-center justify-center space-y-7">
           <h2 className="text-base font-normal text-[#484C52] md:text-2xl  hidden md:block">
             Display Picture
           </h2>
           <div className="relative rounded-full border">
-            {/* <Image
-              src={displayPic}
-              sizes="100vw"
-              alt="userIcon"
-              className="h-auto w-[150px] md:w-[245px]"
-            /> */}
             <div className="md:h-[245px] h-[150px] w-[150px] md:w-[245px] overflow-hidden rounded-full">
               {editedData?.dpUrl ? (
                 <Image
@@ -305,20 +303,7 @@ const MyProfile = () => {
           </div>
         </div>
       </div>
-      {/* Delete Button */}
-      <div className="flex justify-center lg:justify-start pb-6">
-        <Button
-          className=" text-xl font-medium text-accent-8"
-          variant="slim"
-          onClick={() => {
-            setProfilePage(false)
-            setDeleteAccount(true)
-          }}
-        >
-          Delete Account
-        </Button>
-      </div>
-    </Container>
+    </div>
   )
 }
 

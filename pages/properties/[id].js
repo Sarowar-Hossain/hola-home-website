@@ -21,7 +21,6 @@ import 'swiper/css/pagination'
 import Link from 'next/link'
 import 'react-datepicker/dist/react-datepicker.css'
 import ReviewCard from '@components/common/ReviewCard/ReviewCard'
-import toast from 'react-hot-toast'
 import { DemoPropertyImage } from 'data/DemoPropertyImage'
 import { amenities, details, reviews } from 'data/Details'
 import { GlobalContext } from 'Context/Context'
@@ -44,6 +43,9 @@ const DetailsPage = () => {
 
   const { bookmarkList, setBookMarkList, setCurrentBookmarkItem } =
     useContext(GlobalContext)
+
+  const { setModalView, openModal } = useUI()
+
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
   const [selectedAdults, setSelectedAdults] = useState(2)
@@ -52,21 +54,20 @@ const DetailsPage = () => {
   const [isDateAvailableDates, setIsDateAvailableDates] = useState(false)
   const [bookmarked, setBookMarked] = useState(false)
   const [profileView, setProfileView] = useState(false)
-  const { setModalView, openModal } = useUI()
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
   //this function will used for handle the bookmark
   //onClick={() => handleBookMark(data)}
 
-  const handleBookMark = (data) => {
-    if (bookmarkList.find((item) => item?.id === router?.query?.id)) {
-      setCurrentBookmarkItem(router?.query?.id)
-      openModal(), setModalView('BOOKMARKMODAL_VIEW')
-    } else {
-      setBookMarkList([...bookmarkList, data])
-    }
-  }
+  // const handleBookMark = (data) => {
+  //   if (bookmarkList.find((item) => item?.id === router?.query?.id)) {
+  //     setCurrentBookmarkItem(router?.query?.id)
+  //     openModal(), setModalView('BOOKMARKMODAL_VIEW')
+  //   } else {
+  //     setBookMarkList([...bookmarkList, data])
+  //   }
+  // }
 
   const handleBookNow = () => {
     const bookingData = {
@@ -79,11 +80,10 @@ const DetailsPage = () => {
 
     for (const key in bookingData) {
       if (bookingData[key] === undefined || bookingData[key] === null) {
-        return CustomErrorToast(
-          `Please provide valid ${key.toLowerCase().replace(/_/g, ' ')}`
-        )
+        return CustomErrorToast(`Please add dates to view availability!`)
       }
     }
+    openModal(), setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW')
     setIsDateAvailableDates(true)
   }
 

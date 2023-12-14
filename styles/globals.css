@@ -69,11 +69,12 @@ input:-webkit-autofill:active {
   box-shadow: inset 0 0 20px 20px #ffffff29;
 }
 
+/* .PhoneInputInput {
 .phone-number-input-container .PhoneInputInput {
   border: none !important;
   outline: none !important;
   background-color: white !important;
-}
+} */
 
 .phone-number-input-container .PhoneInputCountrySelect {
   background-color: white !important;
