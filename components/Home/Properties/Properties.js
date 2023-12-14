@@ -21,6 +21,8 @@ const Properties = () => {
   } = useContext(GlobalContext)
   const [searchText, setSearchText] = useState(null)
 
+  console.log(searchText)
+
   const combinedDataLength = searchResult?.length || properties?.length
 
   const handleOpenFilters = () => {
@@ -52,11 +54,10 @@ const Properties = () => {
           </div>
         </div>
         <div
-          className={`${
-            searchSuggestion?.length > 0 && searchSuggestionShow
-              ? 'inline-block'
-              : 'hidden'
-          } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-40  py-6 `}
+          className={`${searchSuggestion?.length > 0 && searchSuggestionShow
+            ? 'inline-block'
+            : 'hidden'
+            } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-40  py-6 `}
         >
           {searchSuggestion?.slice(0, 8)?.map((item, index) => {
             return (
@@ -88,9 +89,8 @@ const Properties = () => {
           })}
 
           <div
-            className={`flex justify-center items-center shadow-xl ${
-              searchSuggestion?.length > 8 ? 'inline-block' : 'hidden'
-            }`}
+            className={`flex justify-center items-center shadow-xl ${searchSuggestion?.length > 8 ? 'inline-block' : 'hidden'
+              }`}
           >
             <button className={`underline font-medium hover:text-accent-5 `}>
               Show More

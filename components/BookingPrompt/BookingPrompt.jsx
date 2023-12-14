@@ -25,7 +25,7 @@ const BookingPrompt = ({
     setDropdownActive(false)
   }
   return (
-    <div className="max-w-[486px] mx-auto rounded-xl px-3 py-10 shadow-md h-[100%] flex flex-col gap-5">
+    <div className="max-w-[486px] mx-auto rounded-xl px-3 py-10 shadow-md h-[100%] flex flex-col gap-5 booking-prompt">
       <div className="flex justify-between">
         <Text className="text-xl text-[#484C52] font-semibold">
           $208 <span className="font-normal text-base">night</span>
@@ -40,6 +40,7 @@ const BookingPrompt = ({
             CHECK IN
           </Text>
           <DatePicker
+            placeholderText="Add date"
             selected={startDate}
             onChange={(date) => setStartDate(date)}
             selectsStart
@@ -53,6 +54,7 @@ const BookingPrompt = ({
             CHECK OUT
           </Text>
           <DatePicker
+            placeholderText="Add date"
             selected={endDate}
             onChange={(date) => setEndDate(date)}
             selectsEnd
@@ -108,7 +110,7 @@ const BookingPrompt = ({
       </div>
       <div
         onClick={() => setDropdownActive(!dropdownActive)}
-        className="flex justify-between items-center w-full border rounded-md px-2 py-1 transition-all duration-300"
+        className="flex justify-between items-center w-full border rounded-md px-2 py-1 transition-all duration-300 cursor-pointer"
       >
         <div>
           <Text>STAY TYPE</Text>
@@ -122,7 +124,13 @@ const BookingPrompt = ({
             </>
           )}
         </div>
-        <DownArrow2 />
+        <span
+          className={`${
+            dropdownActive ? 'rotate-180' : 'rotate-0'
+          } transition-all duration-200`}
+        >
+          <DownArrow2 />
+        </span>
         {/* <select
           className="outline-none bg-accent-0 w-full"
           name=""
@@ -150,6 +158,7 @@ const BookingPrompt = ({
                 name="stayDuration"
                 value={s}
                 className="hidden"
+                checked={s === selectedStayType}
               />
               <label
                 onClick={() => handleStay(s)}
