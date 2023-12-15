@@ -252,8 +252,7 @@ const MyProfile = () => {
               className=" text-xl font-medium text-accent-8"
               variant="slim"
               onClick={() => {
-                setProfilePage(false)
-                setDeleteAccount(true)
+                router.push("/delete-account")
               }}
             >
               Delete Account
