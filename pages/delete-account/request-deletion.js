@@ -1,9 +1,13 @@
-import { Button } from "@components/ui";
+import { Button, useUI } from "@components/ui";
 import { useRouter } from "next/router";
 import React from "react";
 
 function Index() {
-	const router = useRouter();
+	const handleNextClick = () => {
+		openModal(), setModalView("DELETE_MODAL");
+	};
+    const { openModal, setModalView } = useUI();
+    const router = useRouter()
 	return (
 		<div className=" ">
 			<div className="lg:w-[70%] 2xl:w-[40%] container mx-auto lg:flex  lg:flex-row flex flex-col items-start py-8 lg:px-0 px-6">
@@ -64,9 +68,7 @@ function Index() {
 
 					<Button
 						className="text-base my-12"
-						onClick={() =>
-							router.push("/delete-account/request-deletion")
-						}
+						onClick={() => handleNextClick()}
 					>
 						Request Deletion
 					</Button>

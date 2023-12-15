@@ -88,6 +88,12 @@ const ContactUsModalView = dynamic(
   }
 )
 
+const DeleteModalView = dynamic(
+  () => import('@components/ModalComponent/DeleteModal'),
+  {
+    ...dynamicProps,
+  }
+)
 const FeatureBar = dynamic(() => import('@components/common/FeatureBar'), {
   ...dynamicProps,
 })
@@ -115,7 +121,8 @@ const ModalView = ({ modalView, closeModal }) => {
         <PropertyPageLogModalView />
       )}
       { modalView === 'FILTERS_VIEW' && <FilterModalView /> }
-      {modalView ==='CONTACT_US' && <ContactUsModalView/>}
+      { modalView === 'CONTACT_US' && <ContactUsModalView /> }
+           {modalView ==='DELETE_MODAL' && <DeleteModalView/>}
     </Modal>
   )
 }
