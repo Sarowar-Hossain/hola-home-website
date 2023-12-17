@@ -11,6 +11,10 @@ import * as z from 'zod'
 import { Button, useUI } from '@components/ui'
 
 const SignUpView = () => {
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    return new Date(dateString).toLocaleDateString('en-US', options)
+  }
   const signUpSchema = z
     .object({
       firstName: z
@@ -25,6 +29,15 @@ const SignUpView = () => {
       password: z.string().min(5, { message: 'Min. 5 characters req.' }),
       confirmPassword: z.string().min(5, { message: 'Min. 5 characters req.' }),
       agreement: z.boolean(),
+      dateOfBirth: z
+        .string()
+        .nonempty({ message: 'Date of birth is required' })
+        .refine(
+          (val) => {
+            return new Date(val) <= new Date()
+          },
+          { message: 'Invalid date of birth' }
+        ),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: 'Password do not match',
@@ -36,7 +49,6 @@ const SignUpView = () => {
     })
 
   const { setUIView, closeModal, setModalView } = useUI()
-  const [userStatus, setUSerStatus] = useState('student')
   const [isError, setIserror] = useState()
   const [loading, setLoading] = useState(false)
   const [isChecked, setIsChecked] = useState(true)
@@ -70,9 +82,56 @@ const SignUpView = () => {
 
   const googleProvider = new GoogleAuthProvider()
 
-  const handleGoogleLogIn = () => {}
+  const handleGoogleLogIn = () => {
+    const loginProcess = new Promise((resolve, reject) => {
+      providerLogin(googleProvider)
+        .then((res) => {
+          // axios
+          //   .post(
+          //     `https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user`,
+          //     { id: res?.user?.uid }
+          //   )
+          //   .then((res) => {
+          //     if (res?.data === 'User does not exists') {
+          //       setShowModal(true)
+          //       reject('User does not exist')
+          //     } else {
+          //       if (res?.data?.type !== userStatus) {
+          //         logOut()
+          //         reject('Wrong user type. Please check!')
+          //       } else {
+          //         setUserData(res?.data)
+          //         closeModal()
+          //         if (res?.data?.isRAISEC) {
+          //           router.push('/dashboard')
+          //         } else {
+          //           router.push('/raisec-test')
+          //         }
+          //         resolve('Successfully logged in')
+          //       }
+          //     }
+          //   })
+          //   .catch((err) => {
+          //     console.error(err.message)
+          //     reject(err.message)
+          //   })
+          resolve('Successfully logged in')
+        })
+        .catch((err) => {
+          console.error(err.message)
+          reject(err.message)
+        })
+    })
+    toast.promise(loginProcess, {
+      loading: 'Logging in...',
+      success: 'Successfully logged in!',
+      error: (err) => `Login failed: ${err}`,
+    })
+  }
 
-  const onSubmit = (data) => {}
+  const onSubmit = (data) => {
+    const dob = formatDate(data?.dateOfBirth)
+  }
 
   const handleTerm = () => {}
 
@@ -133,7 +192,7 @@ const SignUpView = () => {
                   placeholder="Enter your email"
                 />
                 {errors.email && (
-                  <span className="text-red" role="alert">
+                  <span className="text-red text-start" role="alert">
                     {errors.email?.message}
                   </span>
                 )}
@@ -145,7 +204,6 @@ const SignUpView = () => {
                 <input
                   {...register('dateOfBirth')}
                   id="dateOfBirth"
-                  required
                   placeholder="Enter your date of birth"
                   className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="date"
@@ -285,7 +343,7 @@ const SignUpView = () => {
       <p className="my-2">
         Already have an account?
         <span
-          className="ml-1 cursor-pointer font-semibold text-yellow-500 hover:underline"
+          className="ml-1 cursor-pointer font-medium text-yellow-500 hover:underline"
           onClick={() => setUIView('SIGN_IN_VIEW')}
         >
           Login
@@ -302,6 +360,7 @@ const SignUpView = () => {
           alt="Logo"
         />
         <Image
+          onClick={handleGoogleLogIn}
           src="/google.png"
           height={30}
           width={30}

@@ -6,10 +6,13 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { Button, Text, useUI } from '@components/ui'
+import { GoogleAuthProvider } from 'firebase/auth'
+import { AuthContext } from 'Context/AuthProvider'
 
 const LoginView = () => {
   const [error, setError] = useState(false)
   const { setUIView, closeModal } = useUI()
+  const { providerLogin, user } = useContext(AuthContext)
   const [loading, setLoading] = useState(false)
   const [show, setShow] = useState('password')
   const router = useRouter()
@@ -17,40 +20,105 @@ const LoginView = () => {
     email: '',
     password: '',
   })
+  const googleProvider = new GoogleAuthProvider()
 
-  const handleGoogleLogIn = () => {}
+  const handleGoogleLogIn = () => {
+    const loginProcess = new Promise((resolve, reject) => {
+      providerLogin(googleProvider)
+        .then((res) => {
+          // axios
+          //   .post(
+          //     `https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user`,
+          //     { id: res?.user?.uid }
+          //   )
+          //   .then((res) => {
+          //     if (res?.data === 'User does not exists') {
+          //       setShowModal(true)
+          //       reject('User does not exist')
+          //     } else {
+          //       if (res?.data?.type !== userStatus) {
+          //         logOut()
+          //         reject('Wrong user type. Please check!')
+          //       } else {
+          //         setUserData(res?.data)
+          //         closeModal()
+          //         if (res?.data?.isRAISEC) {
+          //           router.push('/dashboard')
+          //         } else {
+          //           router.push('/raisec-test')
+          //         }
+          //         resolve('Successfully logged in')
+          //       }
+          //     }
+          //   })
+          //   .catch((err) => {
+          //     console.error(err.message)
+          //     reject(err.message)
+          //   })
+          resolve('Successfully logged in')
+        })
+        .catch((err) => {
+          console.error(err.message)
+          reject(err.message)
+        })
+    })
+    toast.promise(loginProcess, {
+      loading: 'Logging in...',
+      success: 'Successfully logged in!',
+      error: (err) => `Login failed: ${err}`,
+    })
+  }
 
   const handleSignIn = (e) => {
-    e.preventDefault()
-    // e.preventDefault()
-    // setError(false)
-    // setLoading(true)
+    // e.preventDefault();
+    // setError(false);
+    // setLoading(true);
     // signIn(credential?.email, credential?.password)
     //   .then((res) => {
     //     try {
     //       axios
     //         .post(
-    //           'https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user',
+    //           "https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user",
     //           {
     //             id: res?.user?.uid,
-    //           }
+    //           },
     //         )
     //         .then((response) => {
-    //           setLoading(false)
+    //           setLoading(false);
+    //           setUserData(response?.data);
+    //           if (response?.data?.type !== userStatus) {
+    //             toast.error("Wrong user type. Please check!");
+    //             logOut();
+    //             localStorage.removeItem("userData");
+    //             return;
+    //           } else {
+    //             toast.success("Successfully signed in");
+    //             setCredential({
+    //               email: "",
+    //               password: "",
+    //             });
+    //             setLoading(false);
+    //             closeModal();
+    //             if (response?.data?.isRAISEC) {
+    //               router.push("/dashboard");
+    //             } else {
+    //               router.push("/raisec-test");
+    //             }
+    //           }
     //         })
     //         .catch((error) => {
-    //           setLoading(false)
-    //           console.error('Error:', error)
-    //         })
+    //           setLoading(false);
+    //           console.error("Error:", error);
+    //         });
     //     } catch (error) {
-    //       setLoading(false)
+    //       setLoading(false);
     //     }
     //   })
     //   .catch((error) => {
-    //     setError(true)
-    //     console.error(error.status)
-    //     setLoading(false)
-    //   })
+    //     setError(true);
+    //     console.error(error.status);
+    //     setLoading(false);
+    //   });
   }
 
   const handleForgotPassword = () => {
@@ -145,7 +213,7 @@ const LoginView = () => {
         <p className="my-2">
           Don’t have an account?
           <span
-            className="ml-1 cursor-pointer font-semibold text-[#FCCF12] hover:underline"
+            className="ml-1 cursor-pointer font-medium text-[#FCCF12] hover:underline"
             onClick={() => setUIView('SIGN_UP_VIEW')}
           >
             Sign up
@@ -162,6 +230,7 @@ const LoginView = () => {
           alt="Logo"
         />
         <Image
+          onClick={handleGoogleLogIn}
           src="/google.png"
           height={30}
           width={30}
