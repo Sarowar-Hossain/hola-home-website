@@ -12,7 +12,7 @@ import { AuthContext } from 'Context/AuthProvider'
 const LoginView = () => {
   const [error, setError] = useState(false)
   const { setUIView, closeModal } = useUI()
-  const { providerLogin, user } = useContext(AuthContext)
+  const { providerLogin, user, signIn } = useContext(AuthContext)
   const [loading, setLoading] = useState(false)
   const [show, setShow] = useState('password')
   const router = useRouter()
@@ -56,6 +56,7 @@ const LoginView = () => {
           //     reject(err.message)
           //   })
           resolve('Successfully logged in')
+          closeModal()
         })
         .catch((err) => {
           console.error(err.message)
@@ -70,10 +71,22 @@ const LoginView = () => {
   }
 
   const handleSignIn = (e) => {
+    e.preventDefault()
+    setLoading(true)
+    signIn(credential?.email, credential?.password)
+      .then((res) => {
+        closeModal()
+        toast.success('Successfully logged in')
+        setUIView('SIGN_UP_VIEW')
+        setLoading(false)
+      })
+      .catch((err) => {
+        console.log(err)
+        setLoading(false)
+      })
     // e.preventDefault();
     // setError(false);
     // setLoading(true);
-    // signIn(credential?.email, credential?.password)
     //   .then((res) => {
     //     try {
     //       axios
@@ -187,10 +200,7 @@ const LoginView = () => {
             Forgot Password?
           </p>
         </div>
-        <Button
-          disabled={loading}
-          className="mt-10 w-full max-w-xs flex items-center justify-center mx-auto"
-        >
+        <Button className="mt-10 w-full max-w-xs flex items-center justify-center mx-auto">
           {loading ? (
             <>
               <Oval

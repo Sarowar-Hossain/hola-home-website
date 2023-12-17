@@ -4,21 +4,13 @@ import { GlobalContext } from 'Context/Context'
 import React, { useContext } from 'react'
 import toast from 'react-hot-toast'
 
-const LogoutModal = () => {
-  const { closeModal } = useUI()
+const LoginNavigate = () => {
+  const { closeModal, setModalView, setUIView } = useUI()
   const { setIsLogoutModalShow } = useContext(GlobalContext)
-  const { logOut } = useContext(AuthContext)
 
-  const handleLogOut = () => {
-    logOut()
-      .then(() => {
-        toast.success('Successfully logged out')
-      })
-      .catch((err) => {
-        console.log(err.message)
-      })
-    closeModal()
-    setIsLogoutModalShow(false)
+  const handleLogin = () => {
+    setModalView('LOGIN_VIEW')
+    setUIView('SIGN_IN_VIEW')
   }
 
   const handleCancel = () => {
@@ -27,8 +19,9 @@ const LogoutModal = () => {
   }
   return (
     <div className=" bg-white rounded-md flex flex-col justify-center items-center  gap-2 text-center">
-      <h1 className="font-bold text-xl">Logout</h1>
-      <p className="text-accent-3">Are you sure you want to logout?</p>
+      <p className="text-accent-3">
+        Account created successfully, please login
+      </p>
       <div className="flex justify-center gap-10 items-center mt-4">
         <button
           onClick={handleCancel}
@@ -37,14 +30,14 @@ const LogoutModal = () => {
           Cancel
         </button>
         <button
-          onClick={handleLogOut}
+          onClick={handleLogin}
           className=" px-6 py-0.5 rounded-md font-medium bg-primary text-accent-7"
         >
-          Logout
+          Login
         </button>
       </div>
     </div>
   )
 }
 
-export default LogoutModal
+export default LoginNavigate

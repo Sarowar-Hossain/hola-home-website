@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Image from 'next/image'
 import { Oval } from 'react-loader-spinner'
@@ -9,8 +9,13 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Button, useUI } from '@components/ui'
+import { AuthContext } from 'Context/AuthProvider'
+import axios from 'axios'
 
 const SignUpView = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+  const { providerLogin } = useContext(AuthContext)
+  const [error, setError] = useState('')
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: 'long', day: 'numeric' }
     return new Date(dateString).toLocaleDateString('en-US', options)
@@ -116,6 +121,7 @@ const SignUpView = () => {
           //     reject(err.message)
           //   })
           resolve('Successfully logged in')
+          closeModal()
         })
         .catch((err) => {
           console.error(err.message)
@@ -130,7 +136,36 @@ const SignUpView = () => {
   }
 
   const onSubmit = (data) => {
-    const dob = formatDate(data?.dateOfBirth)
+    setLoading(true)
+    try {
+      const body = {
+        name: data?.firstName + ' ' + data?.lastName,
+        email: data?.email,
+        password: data?.password,
+        dob: formatDate(data?.dateOfBirth),
+      }
+      axios
+        .post(baseUrl + '/manageUsersApis/create-user', body)
+        .then((response) => {
+          if (response.status === 200) {
+            setLoading(false)
+            toast.success('User created successfully')
+            reset()
+            setModalView('NAVIGATE_LOGIN')
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+          if (error.response.status === 500) {
+            setLoading(false)
+            setError(error?.response?.data)
+          }
+        })
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+      setError('error')
+    }
   }
 
   const handleTerm = () => {}
