@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Image from 'next/image'
 import { Oval } from 'react-loader-spinner'
@@ -9,8 +9,18 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Button, useUI } from '@components/ui'
+import { AuthContext } from 'Context/AuthProvider'
+import axios from 'axios'
 
 const SignUp = () => {
+    const [error, setError] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [isChecked, setIsChecked] = useState(true)
+    const router = useRouter()
+    const [passwordType, setPasswordType] = useState('password')
+    const [confirmPasswordType, setConfirmPasswordType] = useState('password')
+    const { providerLogin } = useContext(AuthContext)
+
     const signUpSchema = z
         .object({
             firstName: z
@@ -34,15 +44,6 @@ const SignUp = () => {
             message: 'You must agree to the terms and conditions',
             path: ['agreement'],
         })
-
-    const { setUIView, closeModal, setModalView } = useUI()
-    const [userStatus, setUSerStatus] = useState('student')
-    const [isError, setIserror] = useState()
-    const [loading, setLoading] = useState(false)
-    const [isChecked, setIsChecked] = useState(true)
-    const router = useRouter()
-    const [passwordType, setPasswordType] = useState('password')
-    const [confirmPasswordType, setConfirmPasswordType] = useState('password')
 
     const togglePasswordVisibility = () => {
         setPasswordType((prevType) =>
@@ -70,9 +71,74 @@ const SignUp = () => {
 
     const googleProvider = new GoogleAuthProvider()
 
-    const handleGoogleLogIn = () => { }
+    const handleGoogleLogIn = () => {
+        const loginProcess = new Promise((resolve, reject) => {
+            providerLogin(googleProvider)
+                .then((res) => {
+                    const body = {
+                        name: res?.user?.displayName,
+                        email: res?.user?.email,
+                        dpUrl: res?.user?.photoURL,
+                        uid: res?.user?.uid,
+                    }
+                    axios
+                        .post(
+                            baseUrl + '/manageUsersApis/add-user-details-in-google-login',
+                            body
+                        )
+                        .then((res) => {
+                            resolve(res?.data)
+                            router.push('/')
+                        })
+                        .catch((err) => {
+                            console.error(err.message)
+                            reject(err.message)
+                        })
+                })
+                .catch((err) => {
+                    console.error(err.message)
+                    reject(err.message)
+                })
+        })
+        toast.promise(loginProcess, {
+            loading: 'Logging in...',
+            success: 'Successfully logged in!',
+            error: (err) => `Login failed: ${err}`,
+        })
+    }
 
-    const onSubmit = (data) => { }
+    const onSubmit = (data) => {
+        setLoading(true)
+        try {
+            const body = {
+                name: data?.firstName + ' ' + data?.lastName,
+                email: data?.email,
+                password: data?.password,
+                dob: formatDate(data?.dateOfBirth),
+            }
+            axios
+                .post(baseUrl + '/manageUsersApis/create-user', body)
+                .then((response) => {
+                    if (response.status === 200) {
+                        setLoading(false)
+                        toast.success('User created successfully! Please log in')
+                        reset()
+                        router.push("/login")
+                    }
+                })
+                .catch((error) => {
+                    console.error(error)
+                    if (error.response.status === 500) {
+                        setLoading(false)
+                        setError(error?.response?.data)
+                    }
+                })
+        } catch (error) {
+            setLoading(false)
+            console.log(error)
+            setError('error')
+        }
+    }
 
     const handleTerm = () => { }
 
@@ -265,7 +331,7 @@ const SignUp = () => {
                         </span>
                     )}
                 </div>
-                {isError && <p className="text-red">{isError}</p>}
+                {error && <p className="text-red">{error}</p>}
                 <Button className="w-full mt-10 py-3 flex justify-center items-center">
                     {loading ? (
                         <>
@@ -307,6 +373,7 @@ const SignUp = () => {
                     alt="Logo"
                 />
                 <Image
+                    onClick={handleGoogleLogIn}
                     src="/google.png"
                     height={30}
                     width={30}

@@ -14,9 +14,10 @@ import Link from 'next/link'
 import { useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
 import { useRouter } from 'next/router'
+import { AuthContext } from 'Context/AuthProvider'
 
 const Sidebar = () => {
-  const user = null
+  const { user } = useContext(AuthContext)
   const [isLanguageSubMenuHidden, setLanguageSubMenuHidden] = useState(false)
   const [isHelpSubMenuHidden, setHelpSubMenuHidden] = useState(false)
   const [isProfileSubMenuHidden, setProfileSubMenuHidden] = useState(false)

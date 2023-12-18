@@ -6,51 +6,72 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { Button, Text, useUI } from '@components/ui'
+import { AuthContext } from 'Context/AuthProvider'
+import { Cross } from '@components/icons'
 
 const LoginPage = () => {
     const [error, setError] = useState(false)
-    const { setUIView, closeModal } = useUI()
     const [loading, setLoading] = useState(false)
     const [show, setShow] = useState('password')
     const router = useRouter()
+    const { providerLogin, signIn } = useContext(AuthContext);
     const [credential, setCredential] = useState({
         email: '',
         password: '',
     })
 
-    const handleGoogleLogIn = () => { }
+    const handleGoogleLogIn = () => {
+        const loginProcess = new Promise((resolve, reject) => {
+            providerLogin(googleProvider)
+                .then((res) => {
+                    const body = {
+                        name: res?.user?.displayName,
+                        email: res?.user?.email,
+                        dpUrl: res?.user?.photoURL,
+                        uid: res?.user?.uid,
+                    }
+                    axios
+                        .post(
+                            baseUrl + '/manageUsersApis/add-user-details-in-google-login',
+                            body
+                        )
+                        .then((res) => {
+                            resolve(res?.data)
+                            router.push('/')
+                        })
+                        .catch((err) => {
+                            console.error(err.message)
+                            reject(err.message)
+                        })
+                })
+                .catch((err) => {
+                    console.error(err.message)
+                    reject(err.message)
+                })
+        })
+        toast.promise(loginProcess, {
+            loading: 'Logging in...',
+            success: 'Successfully logged in!',
+            error: (err) => `Login failed: ${err}`,
+        })
+    }
 
     const handleSignIn = (e) => {
+        setError('')
         e.preventDefault()
-        // e.preventDefault()
-        // setError(false)
-        // setLoading(true)
-        // signIn(credential?.email, credential?.password)
-        //   .then((res) => {
-        //     try {
-        //       axios
-        //         .post(
-        //           'https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user',
-        //           {
-        //             id: res?.user?.uid,
-        //           }
-        //         )
-        //         .then((response) => {
-        //           setLoading(false)
-        //         })
-        //         .catch((error) => {
-        //           setLoading(false)
-        //           console.error('Error:', error)
-        //         })
-        //     } catch (error) {
-        //       setLoading(false)
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     setError(true)
-        //     console.error(error.status)
-        //     setLoading(false)
-        //   })
+        setLoading(true)
+        signIn(credential?.email, credential?.password)
+            .then((res) => {
+                toast.success('Successfully logged in')
+                router.push('/')
+                setLoading(false)
+            })
+            .catch((err) => {
+                if (err?.message === 'Firebase: Error (auth/wrong-password).') {
+                    setError('Wrong password! please check again')
+                }
+                setLoading(false)
+            })
     }
 
     const handleForgotPassword = () => {
@@ -72,15 +93,15 @@ const LoginPage = () => {
             >
                 <div className="flex flex-col gap-3">
                     {error && (
-                        <div className="flex items-center gap-1 border border-red-700 bg-red-200 px-1 text-start text-red-600">
+                        <div className="flex items-center gap-1 border border-red-700 bg-red-200 px-1 text-start text-red">
                             <p className="">
-                                {error && 'Incorrect Username or Password, Please try again!'}
+                                {error}
                             </p>
                             <span
                                 onClick={() => setError(false)}
                                 className="cursor-pointer text-sm text-black"
                             >
-                                <CrossIcon />
+                                <Cross className="h-5 w-5" />
                             </span>
                         </div>
                     )}
@@ -167,6 +188,7 @@ const LoginPage = () => {
                     alt="Logo"
                 />
                 <Image
+                    onClick={handleGoogleLogIn}
                     src="/google.png"
                     height={30}
                     width={30}

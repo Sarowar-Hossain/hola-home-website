@@ -1,6 +1,7 @@
 import { Cross, GoBack, ModalBack } from '@components/icons'
 import { Button, Text, useUI } from '@components/ui'
 import { AuthContext } from 'Context/AuthProvider'
+import axios from 'axios'
 import Image from 'next/image'
 import { useContext, useRef, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
@@ -11,11 +12,14 @@ import 'react-phone-number-input/style.css'
 const PhoneLoginView = () => {
   const { OTPUser } = useContext(AuthContext)
   const [otp, setOtp] = useState(['', '', '', '', '', ''])
+  const [userName, setUserName] = useState('')
+  const [userNumber, setUserNumber] = useState('')
   const [loading, setLoading] = useState(false)
   const [otpObj, setOtpObj] = useState()
   const refs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]
   const [OTPView, setOTPView] = useState(false)
   const { closeModal, setUIView } = useUI()
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
   const {
     handleSubmit,
@@ -25,6 +29,8 @@ const PhoneLoginView = () => {
   } = useForm()
 
   const onSubmit = (data) => {
+    setUserName(data?.name)
+    setUserNumber(data?.phone)
     OTPUser(data.phone)
       .then((result) => {
         console.log(result)
@@ -77,10 +83,29 @@ const PhoneLoginView = () => {
       try {
         const result = await otpObj.confirm(fullOtp)
         if (result?.user?.uid) {
-          closeModal()
-          setUIView('SOME_SUCCESS_VIEW')
-          toast.success('OTP Verified Successfully')
-          setLoading(false)
+          const phone = result?.user?.phoneNumber
+          const uid = result?.user?.uid
+          const data = {
+            name: userName,
+            phone: phone,
+            uid: uid,
+          }
+          axios
+            .post(
+              baseUrl + '/manageUsersApis/add-user-details-in-phone-login',
+              data
+            )
+            .then((res) => {
+              closeModal()
+              setUIView('SIGN_UP_VIEW')
+              toast.success('OTP Verified Successfully')
+              setLoading(false)
+              setUserName('')
+              setUserNumber('')
+            })
+            .catch((err) => {
+              console.error(err.message)
+            })
         } else {
           toast.error('OTP Verification Failed!')
         }
@@ -112,7 +137,12 @@ const PhoneLoginView = () => {
             </span>
             <div>
               <Text className="text-2xl font-bold">Login</Text>
-              <Text className="">OTP shared on 88*****755</Text>
+              <Text className="">
+                OTP shared on{' '}
+                {userNumber.substring(0, 4) +
+                  '*******' +
+                  userNumber.substring(11)}
+              </Text>
             </div>
             <Text className="mt-8 font-medium">OTP</Text>
             <form
@@ -202,7 +232,7 @@ const PhoneLoginView = () => {
                   )}
                 </div>
               </div>
-              <div id="recaptcha-container" className="mb-3" />
+              <div id="recaptcha-container" />
               <div className="text-center mt-14">
                 <Button>Get OTP & Create account</Button>
               </div>
