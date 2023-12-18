@@ -2,7 +2,11 @@ import { Button } from '@components/ui'
 import Image from 'next/image'
 import React from 'react'
 
-const BeginHotelInfo = () => {
+const BeginHotelInfo = ({ validateAndSubmit  }) => {
+  const handleBookNowClick = async () => {
+    // Call the validateAndSubmit function from BeginBookingForm
+    await validateAndSubmit()
+  }
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-center gap-4">
@@ -53,6 +57,7 @@ const BeginHotelInfo = () => {
       </div>
       <div>
         <Button
+          onClick={handleBookNowClick}
           className="w-full text-xl font-medium text-[#000000]"
           variant="slim"
         >

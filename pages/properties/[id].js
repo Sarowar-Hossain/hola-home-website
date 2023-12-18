@@ -41,8 +41,15 @@ const DetailsPage = () => {
     }
   }
 
-  const { bookmarkList, setBookMarkList, setCurrentBookmarkItem } =
-    useContext(GlobalContext)
+  const {
+    bookmarkList,
+    setBookMarkList,
+    setCurrentBookmarkItem,
+    bookingData,
+    setBookingData,
+  } = useContext(GlobalContext)
+
+  console.log(bookingData)
 
   const { setModalView, openModal } = useUI()
 
@@ -70,18 +77,11 @@ const DetailsPage = () => {
   // }
 
   const handleBookNow = () => {
-    const bookingData = {
-      startDate,
-      endDate,
-      selectedAdults,
-      selectedChildren,
-      selectedStayType,
-    }
-
-    for (const key in bookingData) {
-      if (bookingData[key] === undefined || bookingData[key] === null) {
-        return CustomErrorToast(`Please add dates to view availability!`)
-      }
+    if (
+      bookingData?.checkIN === undefined ||
+      bookingData?.checkOut === undefined
+    ) {
+      return CustomErrorToast(`Please add dates to view availability!`)
     }
     openModal(), setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW')
     setIsDateAvailableDates(true)
@@ -159,11 +159,12 @@ const DetailsPage = () => {
             <div
               className="font-semibold flex items-center gap-1 cursor-pointer"
 
-            // onClick={handleBookmark}
+              // onClick={handleBookmark}
             >
               <span
-                className={`${bookmarked ? 'text-yellow-500' : 'text-transparent'
-                  }`}
+                className={`${
+                  bookmarked ? 'text-yellow-500' : 'text-transparent'
+                }`}
               >
                 <Save />
               </span>
@@ -178,7 +179,7 @@ const DetailsPage = () => {
             loop={true}
             slidesPerView={1}
             pagination={{ clickable: true }}
-          // autoplay={{ delay: 1000 }}
+            // autoplay={{ delay: 1000 }}
           >
             {DemoPropertyImage?.map((image, index) => (
               <SwiperSlide key={index}>
@@ -362,11 +363,13 @@ const DetailsPage = () => {
                   CHECK IN
                 </Text>
                 <DatePicker
-                  selected={startDate}
-                  onChange={(date) => setStartDate(date)}
+                  selected={bookingData?.checkIN}
+                  onChange={(date) => {
+                    setBookingData({ ...bookingData, checkIN: date })
+                  }}
                   selectsStart
-                  startDate={startDate}
-                  endDate={endDate}
+                  startDate={bookingData?.checkIN}
+                  endDate={bookingData?.checkOut}
                   minDate={new Date()}
                 />
               </div>
@@ -375,11 +378,13 @@ const DetailsPage = () => {
                   CHECK OUT
                 </Text>
                 <DatePicker
-                  selected={endDate}
-                  onChange={(date) => setEndDate(date)}
+                  selected={bookingData?.checkOut}
+                  onChange={(date) => {
+                    setBookingData({ ...bookingData, checkOut: date })
+                  }}
                   selectsEnd
-                  startDate={startDate}
-                  endDate={endDate}
+                  startDate={bookingData?.checkIN}
+                  endDate={bookingData?.checkOut}
                   minDate={startDate}
                 />
               </div>
@@ -393,10 +398,13 @@ const DetailsPage = () => {
                   className="bg-accent-0 outline-none w-full"
                   name=""
                   id=""
-                  value={selectedAdults}
-                  onChange={(e) =>
-                    setSelectedAdults(parseInt(e.target.value, 10))
-                  }
+                  value={bookingData?.adults}
+                  onChange={(e) => {
+                    setBookingData({
+                      ...bookingData,
+                      adults: parseInt(e.target.value, 10),
+                    })
+                  }}
                 >
                   <option defaultChecked value="0">
                     0
@@ -416,10 +424,13 @@ const DetailsPage = () => {
                   className="bg-accent-0 outline-none w-full"
                   name=""
                   id=""
-                  value={selectedChildren}
-                  onChange={(e) =>
-                    setSelectedChildren(parseInt(e.target.value, 10))
-                  }
+                  value={bookingData?.children}
+                  onChange={(e) => {
+                    setBookingData({
+                      ...bookingData,
+                      children: parseInt(e.target.value, 10),
+                    })
+                  }}
                 >
                   <option defaultChecked value="0">
                     0
@@ -438,8 +449,13 @@ const DetailsPage = () => {
                 className="outline-none bg-accent-0 w-full"
                 name=""
                 id=""
-                value={selectedStayType}
-                onChange={(e) => setSelectedStayType(e.target.value)}
+                value={bookingData?.stayType}
+                onChange={(e) => {
+                  setBookingData({
+                    ...bookingData,
+                    stayType: e.target.value,
+                  })
+                }}
               >
                 <option value="2 hours">2 hours</option>
                 <option value="3 hours">3 hours</option>

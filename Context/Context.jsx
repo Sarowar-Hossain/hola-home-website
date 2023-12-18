@@ -29,7 +29,11 @@ export const GlobalProvider = ({ children }) => {
 
   // booking data store
 
-  const [bookingData, setBookingData] = useState(null)
+  const [bookingData, setBookingData] = useState({
+    adults: 2,
+    children: 0,
+    stayType: 'night Stay',
+  })
 
   // Profile states
   const [profilePage, setProfilePage] = useState(true)
