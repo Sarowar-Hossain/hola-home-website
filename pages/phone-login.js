@@ -56,12 +56,13 @@ const PhoneLoginPage = () => {
     const handleOTPSubmit = (e) => {
         e.preventDefault()
         const fullOtp = otp.join('')
-        if (fullOtp.length === 4) {
-            router.push('/')
-            toast.success('OTP Submitted Successfully')
-        } else {
-            toast.error('Failed to submit an OTP')
-        }
+        console.log(fullOtp)
+        // if (fullOtp.length === 4) {
+        //     router.push('/')
+        //     toast.success('OTP Submitted Successfully')
+        // } else {
+        //     toast.error('Failed to submit an OTP')
+        // }
     }
 
     const handleBackModal = () => {

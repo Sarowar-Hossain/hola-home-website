@@ -1,13 +1,19 @@
 import { Cross, GoBack, ModalBack } from '@components/icons'
 import { Button, Text, useUI } from '@components/ui'
+import { AuthContext } from 'Context/AuthProvider'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 
 const PhoneLoginView = () => {
+  const { OTPUser } = useContext(AuthContext)
+  const [otp, setOtp] = useState(['', '', '', '', '', ''])
+  const [loading, setLoading] = useState(false)
+  const [otpObj, setOtpObj] = useState()
+  const refs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]
   const [OTPView, setOTPView] = useState(false)
   const { closeModal, setUIView } = useUI()
 
@@ -19,10 +25,17 @@ const PhoneLoginView = () => {
   } = useForm()
 
   const onSubmit = (data) => {
-    setOTPView(true)
+    OTPUser(data.phone)
+      .then((result) => {
+        console.log(result)
+        setOtpObj(result)
+        setOTPView(true)
+      })
+      .catch((error) => {
+        console.log(error)
+        toast.error('Error sending OTP: ' + error.message)
+      })
   }
-  const [otp, setOtp] = useState(['', '', '', ''])
-  const refs = [useRef(), useRef(), useRef(), useRef()]
 
   const handleOtpChange = (index, value) => {
     const sanitizedValue = value.replace(/\D/g, '')
@@ -34,8 +47,8 @@ const PhoneLoginView = () => {
     })
 
     if (sanitizedValue === '' && index > 0) {
-      refs[index - 1].current.focus() 
-    } else if (sanitizedValue !== '' && index < 3) {
+      refs[index - 1].current.focus()
+    } else if (sanitizedValue !== '' && index < 5) {
       refs[index + 1].current.focus()
     }
   }
@@ -48,19 +61,32 @@ const PhoneLoginView = () => {
     })
 
     if (index > 0) {
-      refs[index - 1].current.focus() 
+      refs[index - 1].current.focus()
     }
   }
 
-  const handleOTPSubmit = (e) => {
+  const handleOTPSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
     const fullOtp = otp.join('')
-    if (fullOtp.length === 4) {
-      closeModal()
-      setUIView('SIGN_UP_VIEW')
-      toast.success('OTP Submitted Successfully')
+    if (fullOtp.length !== 6) {
+      toast.error('Please enter a valid OTP')
+      setLoading(false)
+      return
     } else {
-      toast.error('Failed to submit an OTP')
+      try {
+        const result = await otpObj.confirm(fullOtp)
+        if (result?.user?.uid) {
+          closeModal()
+          setUIView('SOME_SUCCESS_VIEW')
+          toast.success('OTP Verified Successfully')
+          setLoading(false)
+        } else {
+          toast.error('OTP Verification Failed!')
+        }
+      } catch (err) {
+        setLoading(false)
+      }
     }
   }
 
@@ -176,6 +202,7 @@ const PhoneLoginView = () => {
                   )}
                 </div>
               </div>
+              <div id="recaptcha-container" className="mb-3" />
               <div className="text-center mt-14">
                 <Button>Get OTP & Create account</Button>
               </div>
