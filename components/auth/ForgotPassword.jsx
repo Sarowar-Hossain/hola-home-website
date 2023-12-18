@@ -1,5 +1,6 @@
 import { GoBack } from '@components/icons'
 import { Button, useUI } from '@components/ui'
+import { AuthContext } from 'Context/AuthProvider'
 import { Mail } from 'lucide-react'
 import Image from 'next/image'
 import React, { useContext, useState } from 'react'
@@ -12,28 +13,28 @@ const ForgotPassword = () => {
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
   const { setUIView } = useUI()
+  const { forgotPassword } = useContext(AuthContext)
   const handleEmailSubmit = (e) => {
-    setError('')
-    // setLoading(true);
     e.preventDefault()
-
-    if (!email.trim() == '') {
-      setMessageView(true)
-      // forgotPassword(email)
-      //   .then((res) => {
-      //     setError("Please, Check your email");
-      //     setMessageView(true);
-      //     setLoading(false);
-      //   })
-      //   .catch((err) => {
-      //     console.error(err.message);
-      //     setError("email is not registered");
-      //     setLoading(false);
-      //   });
+    setError('')
+    setLoading(true)
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/
+    if (email.trim() !== '' && emailRegex.test(email)) {
+      forgotPassword(email)
+        .then((res) => {
+          setError('Please, Check your email')
+          setLoading(false)
+          setMessageView(true)
+        })
+        .catch((err) => {
+          console.error(err.message)
+          setError('email is not registered')
+          setLoading(false)
+        })
     } else {
       toast.error('Invalid Email Address')
-      // setError("Please add your email");
-      // setLoading(false);
+      setError('Please add your email')
+      setLoading(false)
     }
   }
 
@@ -78,7 +79,7 @@ const ForgotPassword = () => {
                 className="mb-2 mt-2 w-full rounded-md border-2 px-2 py-2 outline-none bg-white"
                 placeholder="Enter Email Address"
               />
-              {error && <p className="my-2 text-red-500">{error}</p>}
+              {error && <p className="my-2 text-red">{error}</p>}
 
               <Button
                 disabled={loading}

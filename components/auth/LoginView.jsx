@@ -8,6 +8,7 @@ import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { Button, Text, useUI } from '@components/ui'
 import { GoogleAuthProvider } from 'firebase/auth'
 import { AuthContext } from 'Context/AuthProvider'
+import { Cross } from '@components/icons'
 
 const LoginView = () => {
   const [error, setError] = useState(false)
@@ -22,41 +23,32 @@ const LoginView = () => {
   })
   const googleProvider = new GoogleAuthProvider()
 
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+
   const handleGoogleLogIn = () => {
     const loginProcess = new Promise((resolve, reject) => {
       providerLogin(googleProvider)
         .then((res) => {
-          // axios
-          //   .post(
-          //     `https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user`,
-          //     { id: res?.user?.uid }
-          //   )
-          //   .then((res) => {
-          //     if (res?.data === 'User does not exists') {
-          //       setShowModal(true)
-          //       reject('User does not exist')
-          //     } else {
-          //       if (res?.data?.type !== userStatus) {
-          //         logOut()
-          //         reject('Wrong user type. Please check!')
-          //       } else {
-          //         setUserData(res?.data)
-          //         closeModal()
-          //         if (res?.data?.isRAISEC) {
-          //           router.push('/dashboard')
-          //         } else {
-          //           router.push('/raisec-test')
-          //         }
-          //         resolve('Successfully logged in')
-          //       }
-          //     }
-          //   })
-          //   .catch((err) => {
-          //     console.error(err.message)
-          //     reject(err.message)
-          //   })
-          resolve('Successfully logged in')
-          closeModal()
+          const body = {
+            name: res?.user?.displayName,
+            email: res?.user?.email,
+            dpUrl: res?.user?.photoURL,
+            uid: res?.user?.uid,
+          }
+          axios
+            .post(
+              baseUrl + '/manageUsersApis/add-user-details-in-google-login',
+              body
+            )
+            .then((res) => {
+              resolve(res?.data)
+              closeModal()
+              setUIView('SIGN_UP_VIEW')
+            })
+            .catch((err) => {
+              console.error(err.message)
+              reject(err.message)
+            })
         })
         .catch((err) => {
           console.error(err.message)
@@ -71,6 +63,7 @@ const LoginView = () => {
   }
 
   const handleSignIn = (e) => {
+    setError('')
     e.preventDefault()
     setLoading(true)
     signIn(credential?.email, credential?.password)
@@ -81,7 +74,9 @@ const LoginView = () => {
         setLoading(false)
       })
       .catch((err) => {
-        console.log(err)
+        if (err?.message === 'Firebase: Error (auth/wrong-password).') {
+          setError('Wrong password! please check again')
+        }
         setLoading(false)
       })
     // e.preventDefault();
@@ -148,7 +143,7 @@ const LoginView = () => {
       >
         <div className="flex flex-col gap-3">
           {error && (
-            <div className="flex items-center gap-1 border border-red-700 bg-red-200 px-1 text-start text-red-600">
+            <div className="flex items-center gap-1 border border-red-700 bg-red-200 px-1 text-start text-red">
               <p className="">
                 {error && 'Incorrect Username or Password, Please try again!'}
               </p>
@@ -156,7 +151,7 @@ const LoginView = () => {
                 onClick={() => setError(false)}
                 className="cursor-pointer text-sm text-black"
               >
-                <CrossIcon />
+                <Cross className="h-5 w-5" />
               </span>
             </div>
           )}

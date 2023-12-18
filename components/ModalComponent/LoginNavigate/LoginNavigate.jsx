@@ -18,7 +18,7 @@ const LoginNavigate = () => {
     setIsLogoutModalShow(false)
   }
   return (
-    <div className=" bg-white rounded-md flex flex-col justify-center items-center  gap-2 text-center">
+    <div className=" bg-white rounded-md flex flex-col justify-center items-center  gap-2 text-center py-10">
       <p className="text-accent-3">
         Account created successfully, please login
       </p>
