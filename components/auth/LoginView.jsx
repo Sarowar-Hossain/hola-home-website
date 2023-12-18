@@ -6,10 +6,14 @@ import { useRouter } from 'next/router'
 import axios from 'axios'
 import { EyeIcon, EyeOffIcon } from 'lucide-react'
 import { Button, Text, useUI } from '@components/ui'
+import { GoogleAuthProvider } from 'firebase/auth'
+import { AuthContext } from 'Context/AuthProvider'
+import { Cross } from '@components/icons'
 
 const LoginView = () => {
   const [error, setError] = useState(false)
   const { setUIView, closeModal } = useUI()
+  const { providerLogin, user, signIn } = useContext(AuthContext)
   const [loading, setLoading] = useState(false)
   const [show, setShow] = useState('password')
   const router = useRouter()
@@ -17,40 +21,112 @@ const LoginView = () => {
     email: '',
     password: '',
   })
+  const googleProvider = new GoogleAuthProvider()
 
-  const handleGoogleLogIn = () => {}
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+
+  const handleGoogleLogIn = () => {
+    const loginProcess = new Promise((resolve, reject) => {
+      providerLogin(googleProvider)
+        .then((res) => {
+          const body = {
+            name: res?.user?.displayName,
+            email: res?.user?.email,
+            dpUrl: res?.user?.photoURL,
+            uid: res?.user?.uid,
+          }
+          axios
+            .post(
+              baseUrl + '/manageUsersApis/add-user-details-in-google-login',
+              body
+            )
+            .then((res) => {
+              resolve(res?.data)
+              closeModal()
+              setUIView('SIGN_UP_VIEW')
+            })
+            .catch((err) => {
+              console.error(err.message)
+              reject(err.message)
+            })
+        })
+        .catch((err) => {
+          console.error(err.message)
+          reject(err.message)
+        })
+    })
+    toast.promise(loginProcess, {
+      loading: 'Logging in...',
+      success: 'Successfully logged in!',
+      error: (err) => `Login failed: ${err}`,
+    })
+  }
 
   const handleSignIn = (e) => {
+    setError('')
     e.preventDefault()
-    // e.preventDefault()
-    // setError(false)
-    // setLoading(true)
-    // signIn(credential?.email, credential?.password)
+    setLoading(true)
+    signIn(credential?.email, credential?.password)
+      .then((res) => {
+        closeModal()
+        toast.success('Successfully logged in')
+        setUIView('SIGN_UP_VIEW')
+        setLoading(false)
+      })
+      .catch((err) => {
+        if (err?.message === 'Firebase: Error (auth/wrong-password).') {
+          setError('Wrong password! please check again')
+        }
+        setLoading(false)
+      })
+    // e.preventDefault();
+    // setError(false);
+    // setLoading(true);
     //   .then((res) => {
     //     try {
     //       axios
     //         .post(
-    //           'https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user',
+    //           "https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user",
     //           {
     //             id: res?.user?.uid,
-    //           }
+    //           },
     //         )
     //         .then((response) => {
-    //           setLoading(false)
+    //           setLoading(false);
+    //           setUserData(response?.data);
+    //           if (response?.data?.type !== userStatus) {
+    //             toast.error("Wrong user type. Please check!");
+    //             logOut();
+    //             localStorage.removeItem("userData");
+    //             return;
+    //           } else {
+    //             toast.success("Successfully signed in");
+    //             setCredential({
+    //               email: "",
+    //               password: "",
+    //             });
+    //             setLoading(false);
+    //             closeModal();
+    //             if (response?.data?.isRAISEC) {
+    //               router.push("/dashboard");
+    //             } else {
+    //               router.push("/raisec-test");
+    //             }
+    //           }
     //         })
     //         .catch((error) => {
-    //           setLoading(false)
-    //           console.error('Error:', error)
-    //         })
+    //           setLoading(false);
+    //           console.error("Error:", error);
+    //         });
     //     } catch (error) {
-    //       setLoading(false)
+    //       setLoading(false);
     //     }
     //   })
     //   .catch((error) => {
-    //     setError(true)
-    //     console.error(error.status)
-    //     setLoading(false)
-    //   })
+    //     setError(true);
+    //     console.error(error.status);
+    //     setLoading(false);
+    //   });
   }
 
   const handleForgotPassword = () => {
@@ -67,7 +143,7 @@ const LoginView = () => {
       >
         <div className="flex flex-col gap-3">
           {error && (
-            <div className="flex items-center gap-1 border border-red-700 bg-red-200 px-1 text-start text-red-600">
+            <div className="flex items-center gap-1 border border-red-700 bg-red-200 px-1 text-start text-red">
               <p className="">
                 {error && 'Incorrect Username or Password, Please try again!'}
               </p>
@@ -75,7 +151,7 @@ const LoginView = () => {
                 onClick={() => setError(false)}
                 className="cursor-pointer text-sm text-black"
               >
-                <CrossIcon />
+                <Cross className="h-5 w-5" />
               </span>
             </div>
           )}
@@ -119,10 +195,7 @@ const LoginView = () => {
             Forgot Password?
           </p>
         </div>
-        <Button
-          disabled={loading}
-          className="mt-10 w-full max-w-xs flex items-center justify-center mx-auto"
-        >
+        <Button className="mt-10 w-full max-w-xs flex items-center justify-center mx-auto">
           {loading ? (
             <>
               <Oval
@@ -145,7 +218,7 @@ const LoginView = () => {
         <p className="my-2">
           Don’t have an account?
           <span
-            className="ml-1 cursor-pointer font-semibold text-[#FCCF12] hover:underline"
+            className="ml-1 cursor-pointer font-medium text-[#FCCF12] hover:underline"
             onClick={() => setUIView('SIGN_UP_VIEW')}
           >
             Sign up
@@ -162,6 +235,7 @@ const LoginView = () => {
           alt="Logo"
         />
         <Image
+          onClick={handleGoogleLogIn}
           src="/google.png"
           height={30}
           width={30}

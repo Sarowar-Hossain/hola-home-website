@@ -80,7 +80,6 @@ const FilterModalView = dynamic(
   }
 )
 
-
 const ContactUsModalView = dynamic(
   () => import('@components/ModalComponent/ContactUsModal'),
   {
@@ -90,6 +89,12 @@ const ContactUsModalView = dynamic(
 
 const DeleteModalView = dynamic(
   () => import('@components/ModalComponent/DeleteModal'),
+  {
+    ...dynamicProps,
+  }
+)
+const LoginNavigate = dynamic(
+  () => import('@components/ModalComponent/LoginNavigate/LoginNavigate'),
   {
     ...dynamicProps,
   }
@@ -120,9 +125,10 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'PROPERTY_DETAILS_PAGE_LOG_VIEW' && (
         <PropertyPageLogModalView />
       )}
-      { modalView === 'FILTERS_VIEW' && <FilterModalView /> }
-      { modalView === 'CONTACT_US' && <ContactUsModalView /> }
-           {modalView ==='DELETE_MODAL' && <DeleteModalView/>}
+      {modalView === 'FILTERS_VIEW' && <FilterModalView />}
+      {modalView === 'CONTACT_US' && <ContactUsModalView />}
+      {modalView === 'DELETE_MODAL' && <DeleteModalView />}
+      {modalView === 'NAVIGATE_LOGIN' && < LoginNavigate/>}
     </Modal>
   )
 }

@@ -70,9 +70,9 @@ const Reviews = () => {
 
     return (
         <Container className='relative'>
-            <div className='max-w-3xl mx-auto'>
+            <div className='max-w-3xl mx-auto pt-1'>
                 <div className=''>
-                    <span className='absolute -top-2 left-1 sm:left-10 sm:-top-4 cursor-pointer' onClick={() => router.back()}>
+                    <span className='absolute left-1 sm:left-10 top-0 cursor-pointer' onClick={() => router.back()}>
                         <PageBackButton className="w-10 h-10 sm:w-auto sm:h-auto" />
                     </span>
                     <Text variant="pageHeading" className='mt-10 sm:mt-16 md:mt-24 text-center'>All Reviews</Text>

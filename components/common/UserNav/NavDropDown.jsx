@@ -1,12 +1,13 @@
 import { ChevronDown } from '@components/icons'
 import { useUI } from '@components/ui'
+import { AuthContext } from 'Context/AuthProvider'
 import { GlobalContext } from 'Context/Context'
 import { HelpNavLink, MenuLinks } from 'data/NavLinks'
 import Link from 'next/link'
 import React, { useContext, useState, useEffect, useRef } from 'react'
 
 const NavDropDown = () => {
-  const user = null
+  const {user} = useContext(AuthContext)
   const { isMenuOpen, setIsMenuOpen, setIsLogoutModalShow } =
     useContext(GlobalContext)
   const { openModal, setModalView, closeModal } = useUI()

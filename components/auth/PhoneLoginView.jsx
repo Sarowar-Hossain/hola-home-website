@@ -1,15 +1,25 @@
 import { Cross, GoBack, ModalBack } from '@components/icons'
 import { Button, Text, useUI } from '@components/ui'
+import { AuthContext } from 'Context/AuthProvider'
+import axios from 'axios'
 import Image from 'next/image'
-import { useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 
 const PhoneLoginView = () => {
+  const { OTPUser } = useContext(AuthContext)
+  const [otp, setOtp] = useState(['', '', '', '', '', ''])
+  const [userName, setUserName] = useState('')
+  const [userNumber, setUserNumber] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [otpObj, setOtpObj] = useState()
+  const refs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]
   const [OTPView, setOTPView] = useState(false)
   const { closeModal, setUIView } = useUI()
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
   const {
     handleSubmit,
@@ -19,10 +29,19 @@ const PhoneLoginView = () => {
   } = useForm()
 
   const onSubmit = (data) => {
-    setOTPView(true)
+    setUserName(data?.name)
+    setUserNumber(data?.phone)
+    OTPUser(data.phone)
+      .then((result) => {
+        console.log(result)
+        setOtpObj(result)
+        setOTPView(true)
+      })
+      .catch((error) => {
+        console.log(error)
+        toast.error('Error sending OTP: ' + error.message)
+      })
   }
-  const [otp, setOtp] = useState(['', '', '', ''])
-  const refs = [useRef(), useRef(), useRef(), useRef()]
 
   const handleOtpChange = (index, value) => {
     const sanitizedValue = value.replace(/\D/g, '')
@@ -34,8 +53,8 @@ const PhoneLoginView = () => {
     })
 
     if (sanitizedValue === '' && index > 0) {
-      refs[index - 1].current.focus() 
-    } else if (sanitizedValue !== '' && index < 3) {
+      refs[index - 1].current.focus()
+    } else if (sanitizedValue !== '' && index < 5) {
       refs[index + 1].current.focus()
     }
   }
@@ -48,19 +67,51 @@ const PhoneLoginView = () => {
     })
 
     if (index > 0) {
-      refs[index - 1].current.focus() 
+      refs[index - 1].current.focus()
     }
   }
 
-  const handleOTPSubmit = (e) => {
+  const handleOTPSubmit = async (e) => {
     e.preventDefault()
+    setLoading(true)
     const fullOtp = otp.join('')
-    if (fullOtp.length === 4) {
-      closeModal()
-      setUIView('SIGN_UP_VIEW')
-      toast.success('OTP Submitted Successfully')
+    if (fullOtp.length !== 6) {
+      toast.error('Please enter a valid OTP')
+      setLoading(false)
+      return
     } else {
-      toast.error('Failed to submit an OTP')
+      try {
+        const result = await otpObj.confirm(fullOtp)
+        if (result?.user?.uid) {
+          const phone = result?.user?.phoneNumber
+          const uid = result?.user?.uid
+          const data = {
+            name: userName,
+            phone: phone,
+            uid: uid,
+          }
+          axios
+            .post(
+              baseUrl + '/manageUsersApis/add-user-details-in-phone-login',
+              data
+            )
+            .then((res) => {
+              closeModal()
+              setUIView('SIGN_UP_VIEW')
+              toast.success('OTP Verified Successfully')
+              setLoading(false)
+              setUserName('')
+              setUserNumber('')
+            })
+            .catch((err) => {
+              console.error(err.message)
+            })
+        } else {
+          toast.error('OTP Verification Failed!')
+        }
+      } catch (err) {
+        setLoading(false)
+      }
     }
   }
 
@@ -86,7 +137,12 @@ const PhoneLoginView = () => {
             </span>
             <div>
               <Text className="text-2xl font-bold">Login</Text>
-              <Text className="">OTP shared on 88*****755</Text>
+              <Text className="">
+                OTP shared on{' '}
+                {userNumber.substring(0, 4) +
+                  '*******' +
+                  userNumber.substring(11)}
+              </Text>
             </div>
             <Text className="mt-8 font-medium">OTP</Text>
             <form
@@ -176,6 +232,7 @@ const PhoneLoginView = () => {
                   )}
                 </div>
               </div>
+              <div id="recaptcha-container" />
               <div className="text-center mt-14">
                 <Button>Get OTP & Create account</Button>
               </div>

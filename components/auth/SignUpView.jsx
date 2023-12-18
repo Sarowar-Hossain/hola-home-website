@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import Image from 'next/image'
 import { Oval } from 'react-loader-spinner'
@@ -9,8 +9,17 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { Button, useUI } from '@components/ui'
+import { AuthContext } from 'Context/AuthProvider'
+import axios from 'axios'
 
 const SignUpView = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+  const { providerLogin } = useContext(AuthContext)
+  const [error, setError] = useState('')
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: 'long', day: 'numeric' }
+    return new Date(dateString).toLocaleDateString('en-US', options)
+  }
   const signUpSchema = z
     .object({
       firstName: z
@@ -25,6 +34,15 @@ const SignUpView = () => {
       password: z.string().min(5, { message: 'Min. 5 characters req.' }),
       confirmPassword: z.string().min(5, { message: 'Min. 5 characters req.' }),
       agreement: z.boolean(),
+      dateOfBirth: z
+        .string()
+        .nonempty({ message: 'Date of birth is required' })
+        .refine(
+          (val) => {
+            return new Date(val) <= new Date()
+          },
+          { message: 'Invalid date of birth' }
+        ),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: 'Password do not match',
@@ -36,7 +54,6 @@ const SignUpView = () => {
     })
 
   const { setUIView, closeModal, setModalView } = useUI()
-  const [userStatus, setUSerStatus] = useState('student')
   const [isError, setIserror] = useState()
   const [loading, setLoading] = useState(false)
   const [isChecked, setIsChecked] = useState(true)
@@ -70,9 +87,75 @@ const SignUpView = () => {
 
   const googleProvider = new GoogleAuthProvider()
 
-  const handleGoogleLogIn = () => {}
+  const handleGoogleLogIn = () => {
+    const loginProcess = new Promise((resolve, reject) => {
+      providerLogin(googleProvider)
+        .then((res) => {
+          const body = {
+            name: res?.user?.displayName,
+            email: res?.user?.email,
+            dpUrl: res?.user?.photoURL,
+            uid: res?.user?.uid,
+          }
+          axios
+            .post(
+              baseUrl + '/manageUsersApis/add-user-details-in-google-login',
+              body
+            )
+            .then((res) => {
+              resolve(res?.data)
+              closeModal()
+              setUIView('SIGN_UP_VIEW')
+            })
+            .catch((err) => {
+              console.error(err.message)
+              reject(err.message)
+            })
+        })
+        .catch((err) => {
+          console.error(err.message)
+          reject(err.message)
+        })
+    })
+    toast.promise(loginProcess, {
+      loading: 'Logging in...',
+      success: 'Successfully logged in!',
+      error: (err) => `Login failed: ${err}`,
+    })
+  }
 
-  const onSubmit = (data) => {}
+  const onSubmit = (data) => {
+    setLoading(true)
+    try {
+      const body = {
+        name: data?.firstName + ' ' + data?.lastName,
+        email: data?.email,
+        password: data?.password,
+        dob: formatDate(data?.dateOfBirth),
+      }
+      axios
+        .post(baseUrl + '/manageUsersApis/create-user', body)
+        .then((response) => {
+          if (response.status === 200) {
+            setLoading(false)
+            toast.success('User created successfully')
+            reset()
+            setModalView('NAVIGATE_LOGIN')
+          }
+        })
+        .catch((error) => {
+          console.error(error)
+          if (error.response.status === 500) {
+            setLoading(false)
+            setError(error?.response?.data)
+          }
+        })
+    } catch (error) {
+      setLoading(false)
+      console.log(error)
+      setError('error')
+    }
+  }
 
   const handleTerm = () => {}
 
@@ -133,7 +216,7 @@ const SignUpView = () => {
                   placeholder="Enter your email"
                 />
                 {errors.email && (
-                  <span className="text-red" role="alert">
+                  <span className="text-red text-start" role="alert">
                     {errors.email?.message}
                   </span>
                 )}
@@ -145,7 +228,6 @@ const SignUpView = () => {
                 <input
                   {...register('dateOfBirth')}
                   id="dateOfBirth"
-                  required
                   placeholder="Enter your date of birth"
                   className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
                   type="date"
@@ -285,7 +367,7 @@ const SignUpView = () => {
       <p className="my-2">
         Already have an account?
         <span
-          className="ml-1 cursor-pointer font-semibold text-yellow-500 hover:underline"
+          className="ml-1 cursor-pointer font-medium text-yellow-500 hover:underline"
           onClick={() => setUIView('SIGN_IN_VIEW')}
         >
           Login
@@ -302,6 +384,7 @@ const SignUpView = () => {
           alt="Logo"
         />
         <Image
+          onClick={handleGoogleLogIn}
           src="/google.png"
           height={30}
           width={30}

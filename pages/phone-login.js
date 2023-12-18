@@ -1,17 +1,25 @@
 import { Cross, GoBack, ModalBack } from '@components/icons'
 import { Button, Text, useUI } from '@components/ui'
+import { AuthContext } from 'Context/AuthProvider'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
-import { useRef, useState } from 'react'
+import { useContext, useRef, useState } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import toast from 'react-hot-toast'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 
 const PhoneLoginPage = () => {
+    const { OTPUser } = useContext(AuthContext)
+    const [otp, setOtp] = useState(['', '', '', '', '', ''])
+    const [userName, setUserName] = useState('')
+    const [loading, setLoading] = useState(false)
+    const [otpObj, setOtpObj] = useState()
+    const refs = [useRef(), useRef(), useRef(), useRef(), useRef(), useRef()]
     const [OTPView, setOTPView] = useState(false)
-    const router = useRouter()
     const { closeModal, setUIView } = useUI()
+    const router = useRouter();
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 
     const {
         handleSubmit,
@@ -20,11 +28,20 @@ const PhoneLoginPage = () => {
         formState: { errors },
     } = useForm()
 
+
     const onSubmit = (data) => {
-        setOTPView(true)
+        setUserName(data?.name)
+        OTPUser(data.phone)
+            .then((result) => {
+                console.log(result)
+                setOtpObj(result)
+                setOTPView(true)
+            })
+            .catch((error) => {
+                console.log(error)
+                toast.error('Error sending OTP: ' + error.message)
+            })
     }
-    const [otp, setOtp] = useState(['', '', '', ''])
-    const refs = [useRef(), useRef(), useRef(), useRef()]
 
     const handleOtpChange = (index, value) => {
         const sanitizedValue = value.replace(/\D/g, '')
@@ -53,14 +70,45 @@ const PhoneLoginPage = () => {
         }
     }
 
-    const handleOTPSubmit = (e) => {
+    const handleOTPSubmit = async (e) => {
         e.preventDefault()
+        setLoading(true)
         const fullOtp = otp.join('')
-        if (fullOtp.length === 4) {
-            router.push('/')
-            toast.success('OTP Submitted Successfully')
+        if (fullOtp.length !== 6) {
+            toast.error('Please enter a valid OTP')
+            setLoading(false)
+            return
         } else {
-            toast.error('Failed to submit an OTP')
+            try {
+                const result = await otpObj.confirm(fullOtp)
+                if (result?.user?.uid) {
+                    const phone = result?.user?.phoneNumber
+                    const uid = result?.user?.uid
+                    const data = {
+                        name: userName,
+                        phone: phone,
+                        uid: uid,
+                    }
+                    axios
+                        .post(
+                            baseUrl + '/manageUsersApis/add-user-details-in-phone-login',
+                            data
+                        )
+                        .then((res) => {
+                            router.push('/')
+                            toast.success('OTP Verified Successfully')
+                            setLoading(false)
+                            setUserName('')
+                        })
+                        .catch((err) => {
+                            console.error(err.message)
+                        })
+                } else {
+                    toast.error('OTP Verification Failed!')
+                }
+            } catch (err) {
+                setLoading(false)
+            }
         }
     }
 
@@ -169,6 +217,7 @@ const PhoneLoginPage = () => {
                                     )}
                                 </div>
                             </div>
+                            <div id='recaptcha-container' />
                             <div className="text-center mt-14">
                                 <Button className="w-full" >Get OTP & Create account</Button>
                             </div>
