@@ -41,8 +41,15 @@ const DetailsPage = () => {
     }
   }
 
-  const { bookmarkList, setBookMarkList, setCurrentBookmarkItem } =
-    useContext(GlobalContext)
+  const {
+    bookmarkList,
+    setBookMarkList,
+    setCurrentBookmarkItem,
+    bookingData,
+    setBookingData,
+  } = useContext(GlobalContext)
+
+  console.log(bookingData)
 
   const { setModalView, openModal } = useUI()
 
@@ -70,19 +77,12 @@ const DetailsPage = () => {
   // }
 
   const handleBookNow = () => {
-    const bookingData = {
-      startDate,
-      endDate,
-      selectedAdults,
-      selectedChildren,
-      selectedStayType,
-    }
-
-    for (const key in bookingData) {
-      if (bookingData[key] === undefined || bookingData[key] === null) {
-        return CustomErrorToast(`Please add dates to view availability!`)
-      }
-    }
+    // if (
+    //   bookingData?.checkIN === undefined ||
+    //   bookingData?.checkOut === undefined
+    // ) {
+    //   return CustomErrorToast(`Please add dates to view availability!`)
+    // }
     openModal(), setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW')
     setIsDateAvailableDates(true)
   }
@@ -159,11 +159,12 @@ const DetailsPage = () => {
             <div
               className="font-semibold flex items-center gap-1 cursor-pointer"
 
-            // onClick={handleBookmark}
+              // onClick={handleBookmark}
             >
               <span
-                className={`${bookmarked ? 'text-yellow-500' : 'text-transparent'
-                  }`}
+                className={`${
+                  bookmarked ? 'text-yellow-500' : 'text-transparent'
+                }`}
               >
                 <Save />
               </span>
@@ -178,7 +179,7 @@ const DetailsPage = () => {
             loop={true}
             slidesPerView={1}
             pagination={{ clickable: true }}
-          // autoplay={{ delay: 1000 }}
+            // autoplay={{ delay: 1000 }}
           >
             {DemoPropertyImage?.map((image, index) => (
               <SwiperSlide key={index}>

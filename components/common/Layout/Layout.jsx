@@ -188,7 +188,7 @@ const Layout = ({ children }) => {
     <>
       <div className={cn(s.root)}>
         <Toaster position="top-center" />
-        <div className="mb-[100px]">
+        <div className='mb-[120px]'>
           <Navbar />
         </div>
         <main className="fit min-h-screen">{children}</main>
