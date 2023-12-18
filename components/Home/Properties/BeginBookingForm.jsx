@@ -1,156 +1,143 @@
-import { GlobalContext } from 'Context/Context'
-import React, { useContext, useState } from 'react'
-import { Controller, useForm } from 'react-hook-form'
+import React, { useState } from 'react'
 import PhoneInput from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 
-const BeginBookingForm = ({
-  control,
-  register,
+const BeginBookingInputs = ({
+  formData,
   errors,
-  onSubmit,
-  triggerValidation
+  handleInputChange,
+  setErrors,
 }) => {
-  const { bookingData, setBookingData } = useContext(GlobalContext)
-
-  const [selectedTitle, setSelectedTitle] = useState('')
   const titles = ['Mr', 'Mrs', 'Ms']
   const [isPhoneNoFocused, setIsPhoneNoFocused] = useState(false)
 
+  const validateName = (name) => {
+    return name.trim() !== '' ? null : 'Name is required'
+  }
 
-  console.log(bookingData)
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email) ? null : 'Please enter a valid email'
+  }
+
+  const validateDateOfBirth = (dateOfBirth) => {
+    return dateOfBirth.trim() !== '' ? null : 'Date of Birth is required'
+  }
+
+  const validatePhoneNumber = (phoneNo) => {
+    return phoneNo && phoneNo.length >= 6
+      ? null
+      : 'Please enter a valid phone number'
+  }
 
   return (
-    <form onSubmit={(e) => e.preventDefault()} className="space-y-10">
+    <div className="space-y-10">
       <div className="space-y-6">
         <p className="text-2xl text-[#484C52] font-normal">
           Begin your booking
         </p>
-        <div className="w-full text-base font-medium flex justify-around items-center gap-4">
-          {titles.map((title) => (
-            <button
-              key={title}
-              onClick={() => setSelectedTitle(title)}
-              {...register('title', {
-                required: 'title is required',
-                pattern: {
-                  value: /^[A-Za-z\s]+$/,
-                  message: 'Invalid title format',
-                },
-              })}
-              className={`px-10 md:px-16 border border-[#FCCF12] rounded-full ${
-                selectedTitle === title
-                  ? 'bg-primary text-white'
-                  : 'bg-[#FFF8DB]'
-              }`}
-            >
-              {title}
-            </button>
-          ))}
-          <p>
-            {errors?.fullName && (
-              <p className="text-red ">{errors?.title.message}</p>
-            )}
-          </p>
+        <div className="w-full text-base font-medium">
+          <div className=" flex justify-around items-center gap-4">
+            {titles.map((title) => (
+              <option
+                key={title}
+                onClick={() => handleInputChange('title', title)}
+                className={`px-10 md:px-16 cursor-pointer border border-[#FCCF12] rounded-full ${
+                  formData.title === title
+                    ? 'bg-primary text-white'
+                    : 'bg-[#FFF8DB]'
+                }`}
+              >
+                {title}
+              </option>
+            ))}
+          </div>
+          <p>{errors?.title && <p className="text-red">{errors?.title}</p>}</p>
         </div>
         <div className="space-y-6">
           <div>
             <input
-              defaultValue={bookingData?.fullName}
+              defaultValue={formData?.fullName}
               type="text"
               placeholder="Full Name"
-              className="w-full placeholder:text-[#484C52] placeholder:font-medium font-medium rounded-lg border border-[#C4C4C4] bg-[#F7F8FA] px-3 py-2 focus:bg-white outline-none"
-              {...register('fullName', {
-                required: 'Full Name is required',
-                pattern: {
-                  value: /^[A-Za-z\s]+$/,
-                  message: 'Invalid name format',
-                },
-              })}
+              className={`w-full placeholder:text-[#484C52] placeholder:font-medium font-medium rounded-lg border border-[#C4C4C4] bg-[#F7F8FA] px-3 py-2 focus:bg-white outline-none ${
+                errors?.fullName ? 'border-red' : ''
+              }`}
+              onChange={(e) => {
+                handleInputChange('fullName', e.target.value)
+                setErrors((prevErrors) => ({
+                  ...prevErrors,
+                  fullName: validateName(e.target.value),
+                }))
+              }}
             />
-            <p>
-              {errors?.fullName && (
-                <p className="text-red ">{errors?.fullName.message}</p>
-              )}
-            </p>
+            {errors?.fullName && <p className="text-red">{errors?.fullName}</p>}
           </div>
           <div>
             <input
-              defaultValue={bookingData?.email}
+              defaultValue={formData?.email}
               type="email"
               placeholder="Email"
-              className="w-full placeholder:text-[#484C52] placeholder:font-medium font-medium rounded-lg border border-[#C4C4C4] bg-[#F7F8FA] px-3 py-2 focus:bg-white outline-none"
-              {...register('email', {
-                required: 'Email is required',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                  message: 'Invalid email address',
-                },
-              })}
+              className={`w-full placeholder:text-[#484C52] placeholder:font-medium font-medium rounded-lg border border-[#C4C4C4] bg-[#F7F8FA] px-3 py-2 focus:bg-white outline-none ${
+                errors?.email ? 'border-red' : ''
+              }`}
+              onChange={(e) => {
+                handleInputChange('email', e.target.value)
+                setErrors((prevErrors) => ({
+                  ...prevErrors,
+                  email: validateEmail(e.target.value),
+                }))
+              }}
             />
-            <p>
-              {errors?.email && (
-                <p className="text-red">{errors?.email.message}</p>
-              )}
-            </p>
+            {errors?.email && <p className="text-red">{errors?.email}</p>}
           </div>
-
           <div>
             <input
               required
-              defaultValue={bookingData?.dateOfBirth}
+              defaultValue={formData?.dateOfBirth}
               placeholder="Date of Birth"
-              className="w-full placeholder:text-[#484C52] placeholder:font-medium font-medium rounded-lg border border-[#C4C4C4] bg-[#F7F8FA] px-3 py-2 focus:bg-white outline-none"
+              className={`w-full placeholder:text-[#484C52] placeholder:font-medium font-medium rounded-lg border border-[#C4C4C4] bg-[#F7F8FA] px-3 py-2 focus:bg-white outline-none ${
+                errors?.dateOfBirth ? 'border-red' : ''
+              }`}
               type="date"
-              {...register('dateOfBirth', {
-                required: 'Date of Birth is required',
-              })}
-            />
-            <p>
-              {errors?.dateOfBirth && (
-                <p className="text-red">{errors?.dateOfBirth.message}</p>
-              )}
-            </p>
-          </div>
-
-          <div>
-            <Controller
-              name="phoneNo"
-              control={control}
-              defaultValue={bookingData?.phoneNo}
-              render={({ field }) => (
-                <PhoneInput
-                  placeholder="Enter Your Phone No."
-                  value={field.value}
-                  onFocus={() => setIsPhoneNoFocused(true)}
-                  onBlur={() => setIsPhoneNoFocused(false)}
-                  className={`w-full placeholder:text-[#484C52] px-4 placeholder:font-medium font-medium rounded-lg border border-[#C4C4C4] ${
-                    isPhoneNoFocused ? 'bg-white' : 'bg-[#F7F8FA]'
-                  } focus:bg-white`}
-                  onChange={(value) => field.onChange(value)}
-                  numberInputProps={{
-                    className: `rounded-md px-4 py-2 focus:outline-none bg-[#F7F8FA] focus:bg-white`,
-                  }}
-                />
-              )}
-              rules={{
-                required: 'Phone number is required',
-                pattern: {
-                  value: /^\+(?:[0-9]●?){6,14}[0-9]$/,
-                  message: 'Invalid phone number',
-                },
+              onChange={(e) => {
+                handleInputChange('dateOfBirth', e.target.value)
+                setErrors((prevErrors) => ({
+                  ...prevErrors,
+                  dateOfBirth: validateDateOfBirth(e.target.value),
+                }))
               }}
             />
-            <p>
-              {errors?.phoneNo && (
-                <p className="text-red">{errors?.phoneNo.message}</p>
-              )}
-            </p>
+            {errors?.dateOfBirth && (
+              <p className="text-red">{errors?.dateOfBirth}</p>
+            )}
+          </div>
+          <div>
+            <PhoneInput
+              placeholder="Enter Your Phone No."
+              value={formData?.phoneNo}
+              onFocus={() => setIsPhoneNoFocused(true)}
+              onBlur={() => setIsPhoneNoFocused(false)}
+              className={`w-full placeholder:text-[#484C52] px-4 placeholder:font-medium font-medium rounded-lg border border-[#C4C4C4] ${
+                isPhoneNoFocused ? 'bg-white' : 'bg-[#F7F8FA]'
+              } focus:bg-white ${errors?.phoneNo ? 'border-red' : ''}`}
+              onChange={(value) => {
+                handleInputChange('phoneNo', value)
+                setErrors((prevErrors) => ({
+                  ...prevErrors,
+                  phoneNo: validatePhoneNumber(value),
+                }))
+              }}
+              numberInputProps={{
+                className: `rounded-md px-4 py-2 focus:outline-none bg-[#F7F8FA] focus:bg-white`,
+              }}
+            />
+            {errors?.phoneNo && <p className="text-red">{errors?.phoneNo}</p>}
           </div>
         </div>
       </div>
-    </form>
+    </div>
   )
 }
 
-export default BeginBookingForm
+export default BeginBookingInputs

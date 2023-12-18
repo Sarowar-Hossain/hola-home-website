@@ -77,12 +77,12 @@ const DetailsPage = () => {
   // }
 
   const handleBookNow = () => {
-    if (
-      bookingData?.checkIN === undefined ||
-      bookingData?.checkOut === undefined
-    ) {
-      return CustomErrorToast(`Please add dates to view availability!`)
-    }
+    // if (
+    //   bookingData?.checkIN === undefined ||
+    //   bookingData?.checkOut === undefined
+    // ) {
+    //   return CustomErrorToast(`Please add dates to view availability!`)
+    // }
     openModal(), setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW')
     setIsDateAvailableDates(true)
   }

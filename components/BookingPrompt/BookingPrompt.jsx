@@ -2,6 +2,7 @@ import { DarkStar, DownArrow2 } from '@components/icons'
 import { Button, Text } from '@components/ui'
 import DatePicker from 'react-datepicker'
 import React, { useState } from 'react'
+import { useRouter } from 'next/router'
 
 const stayTypes = ['2 hours', '3 hours', '6 hours', '9 hours', 'Night Stay']
 
@@ -19,6 +20,7 @@ const BookingPrompt = ({
   setSelectedAdults,
   setSelectedChildren,
 }) => {
+  const router = useRouter()
   const [dropdownActive, setDropdownActive] = useState(false)
   const handleStay = (s) => {
     setSelectedStayType(s)
@@ -176,6 +178,7 @@ const BookingPrompt = ({
         className="w-full text-[#484C52]"
         variant=""
         onClick={handleBookNow}
+        
       >
         Book Now
       </Button>
