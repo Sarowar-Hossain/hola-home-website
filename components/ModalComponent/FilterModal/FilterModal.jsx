@@ -214,7 +214,7 @@ const FilterModal = () => {
   }
 
   return (
-    <div className="max-h-[100vh] min-h-[70vh] md:max-h-[80vh] xl:min-w-[900px] xl:min-h-[600px] overflow-y-auto scroll-hidden">
+    <div className="max-h-[95vh] min-h-[70vh] md:max-h-[80vh] xl:min-w-[900px] xl:min-h-[580px] overflow-y-auto scroll-hidden">
       <div className="flex justify-between px-5 py-3">
         <Text className="" variant="pageHeading">
           Filters
@@ -239,8 +239,8 @@ const FilterModal = () => {
           <div className="border-2 border-[#FCCF12] px-3 rounded-lg md:w-full relative">
             <legend className="pt-1 text-[12px]">Minimum</legend>
             <input
-              type="text"
-              className="outline-none pb-[2px] w-full ps-[9px] text-lg bg-transparent"
+              type="number"
+              className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
               defaultValue={0}
             />
             <span className="absolute left-[11px] text-lg">$</span>
@@ -249,8 +249,8 @@ const FilterModal = () => {
           <div className="border-2 border-[#FCCF12] px-3 rounded-lg md:w-full relative">
             <legend className="pt-1 text-[12px]">Maximum</legend>
             <input
-              type="text"
-              className="outline-none pb-[2px] w-full ps-[9px] text-lg bg-transparent"
+              type="number"
+              className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
               defaultValue={500}
             />
             <span className="absolute left-[11px] text-lg">$</span>
@@ -258,7 +258,7 @@ const FilterModal = () => {
         </div>
         <div className="mt-5">
           <Text variant="sectionHeading">Property type</Text>
-          <div className="flex flex-wrap gap-4 mt-4">
+          <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
             {types?.map((t, i) => (
               <div
                 onClick={() => handleTypeClick(t)}
@@ -369,7 +369,7 @@ const FilterModal = () => {
               )}
             </div>
           </div>
-          <div className="flex flex-wrap gap-4 mt-3">
+          <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-3">
             {amenities?.slice(0, limit)?.map((t, i) => (
               <div
                 onClick={() => handleAmenitiesClick(t?.name)}

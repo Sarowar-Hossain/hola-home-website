@@ -4,8 +4,8 @@ const Baths = ({ ...props }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="61"
-      height="60"
+      width="40"
+      height="40"
       viewBox="0 0 76 75"
       fill="none"
       {...props}

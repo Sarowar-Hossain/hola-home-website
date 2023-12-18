@@ -8,7 +8,7 @@ function Index() {
 	const [selectedOption, setSelectedOption] = useState("");
 	const [subError, setSubError] = useState(false);
 
-	
+
 	const [msg, setMsg] = useState("");
 	const [msgError, setMsgError] = useState(false);
 	const toggleDropdown = () => {
@@ -21,13 +21,13 @@ function Index() {
 	};
 
 	const { openModal, setModalView } = useUI();
-	
+
 	const handleNextClick = async () => {
-		
+
 		let subHasError = false;
 		let msgHasError = false;
 
-		
+
 
 		if (selectedOption == "") {
 			setSubError(true);
@@ -43,14 +43,14 @@ function Index() {
 			setMsgError(false);
 		}
 
-		if ( !subHasError && !msgHasError) {
-            openModal(), setModalView("CONTACT_US");
-            setSelectedOption(""),  setMsg("")
+		if (!subHasError && !msgHasError) {
+			openModal(), setModalView("CONTACT_US");
+			setSelectedOption(""), setMsg("")
 		}
 	};
 
 	return (
-		<div className="px-4 my-12 lg:w-[60%] 2xl:w-[45%] container mx-auto ">
+		<div className="px-4 mt-32 mb-12 lg:w-[60%] 2xl:w-[45%] container mx-auto ">
 			{" "}
 			<h1 className="text-3xl text-[#484C52] text-center lg:text-left">
 				Report a bug{" "}
@@ -59,7 +59,7 @@ function Index() {
 				<Image src={"/report-bug.png"} width={300} height={150} />{" "}
 			</div>
 			<div className=" mt-7 ">
-				
+
 				<div className=" lg:w-[55%] ">
 					<label className="block text-black text-lg font-semibold mb-2">
 						Select the page where bug was found: <span className="text-[#E90000]">*</span>
@@ -76,9 +76,8 @@ function Index() {
 							</p>
 						)}
 						<svg
-							className={`w-2.5 h-2.5 ${
-								isDropdownOpen ? "transform rotate-180" : ""
-							} ms-3`}
+							className={`w-2.5 h-2.5 ${isDropdownOpen ? "transform rotate-180" : ""
+								} ms-3`}
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -96,26 +95,23 @@ function Index() {
 
 					<div
 						id="dropdown"
-						className={`z-10 ${
-							isDropdownOpen ? "" : "hidden"
-						} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[31%] 2xl:w-[24%]`}
+						className={`z-10 ${isDropdownOpen ? "" : "hidden"
+							} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[31%] 2xl:w-[24%]`}
 					>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Home"
-									? "text-yellow-500 "
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Home"
+								? "text-yellow-500 "
+								: ""
+								}`}
 							onClick={() => handleOptionClick("Home")}
 						>
-						Home
+							Home
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Bookings"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Bookings"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() =>
 								handleOptionClick("Bookings")
 							}
@@ -123,11 +119,10 @@ function Index() {
 							Bookings
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Bookmarks"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Bookmarks"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() =>
 								handleOptionClick("Bookmarks")
 							}
@@ -135,11 +130,10 @@ function Index() {
 							Bookmarks
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Profile"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Profile"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() => handleOptionClick("Profile")}
 						>
 							Profile

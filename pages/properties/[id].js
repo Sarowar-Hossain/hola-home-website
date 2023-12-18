@@ -19,13 +19,13 @@ import { Autoplay, Pagination, A11y, FreeMode } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import Link from 'next/link'
-import DatePicker from 'react-datepicker'
 import 'react-datepicker/dist/react-datepicker.css'
 import ReviewCard from '@components/common/ReviewCard/ReviewCard'
 import { DemoPropertyImage } from 'data/DemoPropertyImage'
 import { amenities, details, reviews } from 'data/Details'
 import { GlobalContext } from 'Context/Context'
 import CustomErrorToast from '@utils/CustomErrorToast'
+import BookingPrompt from '@components/BookingPrompt/BookingPrompt'
 
 const swipeThreshold = 50
 
@@ -57,7 +57,7 @@ const DetailsPage = () => {
   const [endDate, setEndDate] = useState()
   const [selectedAdults, setSelectedAdults] = useState(2)
   const [selectedChildren, setSelectedChildren] = useState(0)
-  const [selectedStayType, setSelectedStayType] = useState('night Stay')
+  const [selectedStayType, setSelectedStayType] = useState('')
   const [isDateAvailableDates, setIsDateAvailableDates] = useState(false)
   const [bookmarked, setBookMarked] = useState(false)
   const [profileView, setProfileView] = useState(false)
@@ -279,14 +279,14 @@ const DetailsPage = () => {
             </div>
             <div className="mt-8 border-b pb-4">
               <Text variant="sectionHeading">Details</Text>
-              <div className="flex gap-10">
+              <div className="flex gap-5">
                 {details?.map((d, i) => {
                   return (
                     <div
                       key={i}
                       className="flex flex-col justify-center items-center gap-1"
                     >
-                      <span className="bg-slate-100 p-2 rounded">
+                      <span className="bg-slate-100 p-2 rounded w-20 h-20 flex items-center justify-center">
                         {d?.logo}
                       </span>
                       <Text>{d?.type}</Text>
@@ -308,14 +308,14 @@ const DetailsPage = () => {
               <Text variant="sectionHeading" className="mb-5">
                 Amenities
               </Text>
-              <div className="flex flex-wrap gap-10">
+              <div className="grid grid-cols-3 gap-5 max-w-[405px] mx-auto sm:flex sm:flex-wrap sm:gap-5 sm:max-w-full text-center">
                 {amenities?.map((d, i) => {
                   return (
                     <div
                       key={i}
                       className="flex flex-col justify-center items-center gap-1"
                     >
-                      <span className="bg-slate-100 p-2 rounded">
+                      <span className="bg-slate-100 p-2 rounded w-20 h-20 flex items-center justify-center">
                         {d?.logo}
                       </span>
                       <Text>{d?.title}</Text>
@@ -348,135 +348,7 @@ const DetailsPage = () => {
               />
             </div>
           </div>
-          <div className="max-w-[486px] mx-auto rounded-xl px-3 py-10 shadow-md h-[100%] flex flex-col gap-5">
-            <div className="flex justify-between">
-              <Text className="text-xl text-[#484C52] font-semibold">
-                $208 <span className="font-normal text-base">night</span>
-              </Text>
-              <Text className="flex items-center gap-1">
-                <DarkStar /> 4.85 · 20 reviews
-              </Text>
-            </div>
-            <div className="flex border rounded-md py-2">
-              <div className="border-r pl-2">
-                <Text className="font-medium text-accent-6 leading-5 -mb-1">
-                  CHECK IN
-                </Text>
-                <DatePicker
-                  selected={bookingData?.checkIN}
-                  onChange={(date) => {
-                    setBookingData({ ...bookingData, checkIN: date })
-                  }}
-                  selectsStart
-                  startDate={bookingData?.checkIN}
-                  endDate={bookingData?.checkOut}
-                  minDate={new Date()}
-                />
-              </div>
-              <div className="pl-2">
-                <Text className="font-medium text-accent-6 leading-5 -mb-1">
-                  CHECK OUT
-                </Text>
-                <DatePicker
-                  selected={bookingData?.checkOut}
-                  onChange={(date) => {
-                    setBookingData({ ...bookingData, checkOut: date })
-                  }}
-                  selectsEnd
-                  startDate={bookingData?.checkIN}
-                  endDate={bookingData?.checkOut}
-                  minDate={startDate}
-                />
-              </div>
-            </div>
-            <div className="flex border rounded-md py-2">
-              <div className="border-r pl-2 w-full">
-                <Text className="font-medium text-accent-6 leading-5 -mb-[2px]">
-                  ADULTS
-                </Text>
-                <select
-                  className="bg-accent-0 outline-none w-full"
-                  name=""
-                  id=""
-                  value={bookingData?.adults}
-                  onChange={(e) => {
-                    setBookingData({
-                      ...bookingData,
-                      adults: parseInt(e.target.value, 10),
-                    })
-                  }}
-                >
-                  <option defaultChecked value="0">
-                    0
-                  </option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-              </div>
-              <div className="pl-2 w-full">
-                <Text className="font-medium text-accent-6 leading-5 -mb-[2px]">
-                  CHILDREN
-                </Text>
-                <select
-                  className="bg-accent-0 outline-none w-full"
-                  name=""
-                  id=""
-                  value={bookingData?.children}
-                  onChange={(e) => {
-                    setBookingData({
-                      ...bookingData,
-                      children: parseInt(e.target.value, 10),
-                    })
-                  }}
-                >
-                  <option defaultChecked value="0">
-                    0
-                  </option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-              </div>
-            </div>
-            <div className="w-full border rounded-md px-2 py-1">
-              <Text>STAY TYPE</Text>
-              <select
-                className="outline-none bg-accent-0 w-full"
-                name=""
-                id=""
-                value={bookingData?.stayType}
-                onChange={(e) => {
-                  setBookingData({
-                    ...bookingData,
-                    stayType: e.target.value,
-                  })
-                }}
-              >
-                <option value="2 hours">2 hours</option>
-                <option value="3 hours">3 hours</option>
-                <option value="6 hours">6 hours</option>
-                <option value="9 hours">9 hours</option>
-                <option value="night Stay">night Stay</option>
-              </select>
-            </div>
-            <Button
-              className="w-full text-[#484C52]"
-              variant=""
-              onClick={handleBookNow}
-            >
-              Book Now
-            </Button>
-            {isDateAvailableDates && (
-              <p className="text-[#5FC85DE5] text-center">
-                Available for these dates.
-              </p>
-            )}
-          </div>
+          <BookingPrompt startDate={startDate} endDate={endDate} selectedAdults={selectedAdults} selectedChildren={selectedChildren} selectedStayType={selectedStayType} handleBookNow={handleBookNow} isDateAvailableDates={isDateAvailableDates} setStartDate={setStartDate} setEndDate={setEndDate} setSelectedChildren={setSelectedChildren} setSelectedAdults={setSelectedAdults} setSelectedStayType={setSelectedStayType} />
         </div>
       </Container>
       {profileView && (

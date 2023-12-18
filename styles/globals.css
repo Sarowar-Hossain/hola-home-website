@@ -7,7 +7,7 @@
 
 body {
   background-color: white;
-   font-family: 'Poppins', sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 /* this ccs for edit profile */
@@ -143,4 +143,61 @@ input:-webkit-autofill:active {
 .scroll-hidden::-ms-scrollbar {
   /* width: 10px; */
   display: none;
+}
+/*  */
+/* Custom radio button container */
+.custom-radio-label {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* Custom radio button */
+.custom-radio-button {
+  width: 20px;
+  height: 20px;
+  background-color: #fff; /* Default background color */
+  border-radius: 50%;
+  border: 2px solid #d4d4d4; /* Default border color */
+  transition: border-color 0.3s ease-in-out; /* Add transition effect */
+}
+
+/* Custom radio button checked state */
+input[type='radio']:checked + .custom-radio-label .custom-radio-button {
+  border-color: #fccf12; /* Change border color when checked */
+}
+
+/* Custom styling for the dot inside the button */
+input[type='radio']:checked + .custom-radio-label .custom-radio-button::after {
+  content: '';
+  width: 10px;
+  height: 10px;
+  background-color: #fccf12; /* Change color of the dot when checked */
+  border-radius: 50%;
+  display: block;
+  margin: 3px; /* Adjust the margin for positioning */
+}
+
+.booking-prompt .react-datepicker__day--keyboard-selected,
+.react-datepicker__month-text--keyboard-selected,
+.react-datepicker__quarter-text--keyboard-selected,
+.react-datepicker__year-text--keyboard-selected {
+  background-color: #fccf12 !important;
+  color: #484c52 !important;
+}
+
+.booking-prompt .react-datepicker__day--selected,
+.react-datepicker__day--in-selecting-range,
+.react-datepicker__day--in-range,
+.react-datepicker__month-text--selected,
+.react-datepicker__month-text--in-selecting-range,
+.react-datepicker__month-text--in-range,
+.react-datepicker__quarter-text--selected,
+.react-datepicker__quarter-text--in-selecting-range,
+.react-datepicker__quarter-text--in-range,
+.react-datepicker__year-text--selected,
+.react-datepicker__year-text--in-selecting-range,
+.react-datepicker__year-text--in-range {
+  background-color: #fccf12 !important;
+  color: #484c52 !important;
 }
