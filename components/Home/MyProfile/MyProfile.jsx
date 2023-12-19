@@ -1,5 +1,5 @@
 import { Button, Container, Text } from '@components/ui'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import displayPic from 'public/profileDP.png'
 import Image from 'next/image'
 import { Loader, Plus } from 'lucide-react'
@@ -10,30 +10,52 @@ import validator from 'validator'
 import 'react-phone-number-input/style.css'
 import PhoneInput from 'react-phone-number-input'
 import { AuthContext } from 'Context/AuthProvider'
-import { useCheckUser } from '@lib/hooks/useCheckUser'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import CommonLoader from '@components/common/CommonLoader/CommonLoader'
 
 const MyProfile = () => {
   const { user } = useContext(AuthContext)
-  const { isLoading, error, data } = useCheckUser(user?.uid)
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const router = useRouter()
   const [isNameEdit, setIsNameEdit] = useState(false)
   const [isEmailEdit, setIsEmailEdit] = useState(false)
   const [isPhoneNoEdit, setIsPhoneNoEdit] = useState(false)
+  const [imageEdit, setImageEdit] = useState(false)
   const [uploader, setUploader] = useState(false)
+  const [submitting, setSubmitting] = useState(true)
+  const [data, setData] = useState(null)
   const [loading, setLoading] = useState(false)
-  const [editedData, setEditedData] = useState({
-    id: data?.uid,
-    fullName: data?.name || '',
-    phoneNo: data?.phoneNumber || '',
-    email: data?.email || '',
-    dpUrl: data?.dpUrl || '',
-  })
-  const [validations, setValidations] = useState({})
+  const [editedData, setEditedData] = useState()
 
-  console.log(editedData)
+  const [validations, setValidations] = useState({})
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.post(
+          `${baseUrl}/manageUsersApis/check-user`,
+          {
+            id: user?.uid,
+          }
+        )
+        setData(response.data)
+        setEditedData({
+          id: response?.data?.uid,
+          fullName: response.data.name,
+          phoneNo: response.data.phoneNumber,
+          email: response.data.email,
+          dpUrl: response.data.dpUrl,
+        })
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      } finally {
+        setSubmitting(false)
+      }
+    }
+    if (user?.uid) {
+      fetchUserData()
+    }
+  }, [user?.uid, baseUrl])
 
   const handleInputChange = (fieldName, value) => {
     setEditedData((prevData) => ({ ...prevData, [fieldName]: value }))
@@ -54,94 +76,68 @@ const MyProfile = () => {
         setEditedData((prevData) => ({ ...prevData, dpUrl: downloadURL }))
         handleInputChange('dpUrl', downloadURL)
         setUploader(false)
+        setImageEdit(true)
       } catch (error) {
         setUploader(false)
       }
     }
   }
 
-  // const validateEmail = () => {
-  //   const email = editedData?.email
-  //   if (!email) {
-  //     setValidateEmail('Please enter a email!')
-  //   } else if (!validator.isEmail(email)) {
-  //     setValidateEmail('Please enter a valid email address!')
-  //   } else {
-  //     setValidateEmail(false)
-  //     setIsEmailEdit(false)
-  //     // Call uploader function or any other logic here
-  //   }
-  // }
+  console.log(editedData)
 
-  // const validateName = () => {
-  //   const fullName = editedData?.fullName
-  //   if (!fullName) {
-  //     setValidateName('Please enter your name!')
-  //   } else if (typeof fullName !== 'string' || !/^[a-zA-Z]+$/.test(fullName)) {
-  //     setValidateName('Name must be characters!')
-  //   } else if (fullName.length < 3) {
-  //     setValidateName('Name must be at least 3 characters!')
-  //   } else {
-  //     setValidateName(false)
-  //     setIsNameEdit(false)
-  //     // Call uploader function
-  //   }
-  // }
-
-  // const validatePhoneNumber = () => {
-  //   const phoneRegex = /^\+?[0-9]*$/
-  //   const phoneNumber = editedData?.phoneNo
-  //   if (
-  //     !phoneRegex.test(phoneNumber) ||
-  //     phoneNumber.length < 9 ||
-  //     phoneNumber.length > 15
-  //   ) {
-  //     setValidatePhnNo('Please enter a valid phone number!')
-  //   } else {
-  //     setValidatePhnNo(false)
-  //     setIsPhoneNoEdit(false)
-  //     //call uploader function
-  //   }
-  // }
   const validateAndSave = async () => {
-    const newValidations = {}
+    let newValidations = {}
 
-    // Validate Name
-    if (isNameEdit || isPhoneNoEdit || isEmailEdit) {
-      if (!editedData?.fullName || editedData?.fullName?.length < 3) {
+    if (isNameEdit || isPhoneNoEdit || isEmailEdit || imageEdit) {
+      if (
+        isNameEdit &&
+        editedData?.fullName &&
+        editedData.fullName.length < 3
+      ) {
         newValidations.fullName = 'Name must be at least 3 characters!'
       }
-
-      // Validate Email
-      if (!validator.isEmail(editedData.email || '')) {
+      if (
+        isEmailEdit &&
+        editedData?.email &&
+        !validator.isEmail(editedData.email)
+      ) {
         newValidations.email = 'Please enter a valid email address!'
       }
-
-      // Validate Phone Number
       if (
-        !/^\+?[0-9]*$/.test(editedData?.phoneNo) ||
-        editedData?.phoneNo?.length < 9 ||
-        editedData?.phoneNo?.length > 15
+        isPhoneNoEdit &&
+        editedData?.phoneNo &&
+        (!/^\+?[0-9]*$/.test(editedData.phoneNo) ||
+          editedData.phoneNo.length < 9 ||
+          editedData.phoneNo.length > 15)
       ) {
         newValidations.phoneNo = 'Please enter a valid phone number!'
       }
 
       setValidations(newValidations)
 
-      if (Object.keys(newValidations)?.length === 0) {
-        console.log('Updated Data:', editedData)
+      if (Object.keys(newValidations).length === 0) {
+        setLoading(true)
         try {
           const response = await axios.post(
-            baseUrl + '/manageUsersApis/update-user',
-            editedData
+            `${baseUrl}/manageUsersApis/update-user`,
+            {
+              id: user?.uid,
+              name: editedData?.fullName,
+              phoneNumber: editedData?.phoneNo,
+              email: editedData?.email,
+              dpUrl: editedData?.dpUrl,
+            }
           )
           toast.success('User updated successfully!')
-          console.log(response)
+          setIsNameEdit(false)
+          setIsEmailEdit(false)
+          setIsPhoneNoEdit(false)
+          setImageEdit(false)
         } catch (error) {
-          console.error(
-            'Error updating user:',
-            error.response ? error.response.data : error.message
-          )
+          console.error(error)
+          toast.error('Failed to submit your information')
+        } finally {
+          setLoading(false)
         }
       } else {
         toast.error('Please check your submission')
@@ -151,11 +147,15 @@ const MyProfile = () => {
     }
   }
 
+  console.log(data)
+
   return (
     <>
-      {isLoading ? (
+      {user === null || submitting ? (
         <>
-          <div>Loading...</div>
+          <div className="min-h-[80vh] flex items-center justify-center">
+            <CommonLoader />
+          </div>
         </>
       ) : (
         <>
@@ -199,13 +199,13 @@ const MyProfile = () => {
                       placeholder="Enter Your Full Name"
                       type="text"
                       value={editedData?.fullName}
-                      defaultValue={data?.name || editedData?.fullName}
+                      // defaultValue={editedData?.fullName}
                       onChange={(e) => {
                         setEditedData({
                           ...editedData,
-                          fullName: e.target.value.trim(),
+                          fullName: e.target.value,
                         })
-                        handleInputChange('fullName', e.target.value.trim())
+                        handleInputChange('fullName', e.target.value)
                       }}
                     />
                     {isNameEdit && validations?.fullName && (
@@ -243,7 +243,7 @@ const MyProfile = () => {
                     <PhoneInput
                       readOnly={!isPhoneNoEdit}
                       placeholder="Enter Your Phone No."
-                      value={isPhoneNoEdit && editedData?.phoneNo}
+                      value={editedData?.phoneNo}
                       onChange={(value) => {
                         setEditedData({
                           ...editedData,
@@ -288,7 +288,11 @@ const MyProfile = () => {
                         ) : (
                           <button
                             onClick={() => setIsEmailEdit(true)}
-                            className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline"
+                            className={`cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline ${
+                              (data?.authType === 'google' ||
+                                data?.authType === 'email') &&
+                              'hidden'
+                            }`}
                             title="Edit Name"
                           >
                             Edit
@@ -306,7 +310,7 @@ const MyProfile = () => {
                       placeholder="user@gmail.com"
                       type="text"
                       value={editedData?.email}
-                      defaultValue={data?.email || editedData?.email}
+                      // defaultValue={editedData?.email}
                       onChange={(e) => {
                         setEditedData({
                           ...editedData,
@@ -378,13 +382,15 @@ const MyProfile = () => {
               </div>
             </div>
             <div className="text-center">
-              <Button
-                loading={loading}
-                onClick={validateAndSave}
-                className={`${loading ? 'text-accent-0' : 'text-accent-5'}`}
-              >
-                Save
-              </Button>
+              {(isNameEdit || isPhoneNoEdit || isEmailEdit || imageEdit) && (
+                <Button
+                  loading={loading}
+                  onClick={validateAndSave}
+                  className={`${loading ? 'text-accent-0' : 'text-accent-5'}`}
+                >
+                  Save
+                </Button>
+              )}
             </div>
           </div>
         </>
