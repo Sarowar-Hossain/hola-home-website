@@ -162,7 +162,7 @@ const SignUpView = () => {
   const handlePrivacy = () => {}
 
   return (
-    <div className="my-2 text-center">
+    <div className="my-2 text-center custom-checkbox-container">
       <p className="text-3xl font-bold text-black">Create account</p>
       <form onSubmit={handleSubmit(onSubmit)} className="mx-auto mt-10 px-5">
         <>

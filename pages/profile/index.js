@@ -1,12 +1,12 @@
-import MyProfile from '@components/Home/MyProfile/MyProfile'
-import React from 'react'
+import MyProfile from '@components/Home/MyProfile/MyProfile';
+import React from 'react';
 
-const index = () => {
+const Index = () => {
   return (
     <div>
       <MyProfile />
     </div>
-  )
-}
+  );
+};
 
-export default index
+export default Index;
