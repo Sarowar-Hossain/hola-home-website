@@ -28,12 +28,15 @@ export const GlobalProvider = ({ children }) => {
   const [properties, setProperties] = useState(allProperty)
 
   // booking data store
-
   const [bookingData, setBookingData] = useState({
     adults: 2,
     children: 0,
     stayType: 'night Stay',
   })
+
+  // user booking filter dropdown
+
+  const [isFilterShow, setIsFilterShow] = useState(false)
 
   // Profile states
   const [profilePage, setProfilePage] = useState(true)
@@ -91,6 +94,8 @@ export const GlobalProvider = ({ children }) => {
     setBookingData,
     uiLoader,
     setUiLoader,
+    isFilterShow,
+    setIsFilterShow,
   }
 
   return (
