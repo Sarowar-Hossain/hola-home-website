@@ -52,17 +52,17 @@ body {
   }
 }
 
-input[type='checkbox'] {
+.custom-checkbox-container input[type='checkbox'] {
   accent-color: #313c66 !important;
   mix-blend-mode: multiply;
   width: 16px !important;
   height: 16px !important;
 }
 
-input:-webkit-autofill,
-input:-webkit-autofill:hover,
-input:-webkit-autofill:focus,
-input:-webkit-autofill:active {
+.custom-checkbox-container input:-webkit-autofill,
+.custom-checkbox-container input:-webkit-autofill:hover,
+.custom-checkbox-container input:-webkit-autofill:focus,
+.custom-checkbox-container input:-webkit-autofill:active {
   -webkit-background-clip: text;
   -webkit-text-fill-color: #000000;
   transition: background-color 5000s ease-in-out 0s;
