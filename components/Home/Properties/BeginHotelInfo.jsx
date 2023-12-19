@@ -6,7 +6,7 @@ import React from 'react'
 const BeginHotelInfo = ({ onSubmit, components, setComponents }) => {
   const router = useRouter()
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 pb-6">
       <div
         className={`flex items-center justify-center gap-4 ${
           components.bookingForm ? 'inline-block' : 'hidden'
@@ -39,7 +39,7 @@ const BeginHotelInfo = ({ onSubmit, components, setComponents }) => {
       </div>
       <div
         className={`border-[#C4C4C4] border min-w-[400px] min-h-[100px] rounded-xl ${
-          components.bookingForm ? 'inline-block' : 'hidden'
+          components.bookingForm ? '' : 'hidden'
         }`}
       >
         <div className="flex justify-between border-b border-[#C4C4C4] w-full">

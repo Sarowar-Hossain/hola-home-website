@@ -24,7 +24,7 @@ export const NavLinksProfile = {
   pathList: [
     {
       name: 'My Bookings',
-      path: '/profile/my-bookings',
+      path: '/profile/bookings',
     },
     {
       name: 'My Profile',
