@@ -51,6 +51,8 @@ export const GlobalProvider = ({ children }) => {
   const [marked, setMarked] = useState(false)
   const [uiLoader, setUiLoader] = useState(false)
 
+  const [bookmarks, setBookmarks] = useState([])
+
   const info = {
     acceptPolicy,
     setAcceptPolicy,
@@ -96,6 +98,8 @@ export const GlobalProvider = ({ children }) => {
     setUiLoader,
     isFilterShow,
     setIsFilterShow,
+    bookmarks,
+    setBookmarks,
   }
 
   return (

@@ -31,6 +31,7 @@ const AuthProvider = ({ children }) => {
   }
   const logOut = () => {
     setLoading(true)
+    localStorage.removeItem('userId')
     return signOut(auth)
   }
 

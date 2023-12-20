@@ -29,6 +29,7 @@ const LoginPage = () => {
                         email: res?.user?.email,
                         uid: res?.user?.uid,
                     }
+                    localStorage.setItem('userId', res?.user?.uid)
                     axios
                         .post(
                             baseUrl + '/manageUsersApis/add-user-details-in-google-login',
@@ -61,6 +62,7 @@ const LoginPage = () => {
         setLoading(true)
         signIn(credential?.email, credential?.password)
             .then((res) => {
+                localStorage.setItem('userId', res?.user?.uid)
                 toast.success('Successfully logged in')
                 router.push('/')
                 setLoading(false)
