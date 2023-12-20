@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from 'react'
 
 export default function Home() {
   const [loading, setLoading] = useState(false)
-  const { bookmarks, setBookmarks } = useContext(GlobalContext)
+  const { setBookMarkList, bookmarkList, bookmarkLength, setBookmarkLength } = useContext(GlobalContext)
   const { user } = useContext(AuthContext)
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   useEffect(() => {
@@ -17,8 +17,8 @@ export default function Home() {
           const response = await axios.post(baseUrl + '/manageUsersApis/check-bookmarks', {
             id
           });
-          console.log(response)
-          setBookmarks(response?.data?.propertyIds)
+          setBookMarkList(response?.data?.propertyIds)
+          setBookmarkLength(response?.data?.propertyIds?.length)
         } catch (error) {
           console.error('Error fetching data:', error);
         }

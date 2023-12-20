@@ -18,6 +18,7 @@ export const GlobalProvider = ({ children }) => {
   // bookmark data
   const [bookmarkList, setBookMarkList] = useState([])
   const [currentBookMarkItem, setCurrentBookmarkItem] = useState(null)
+  const [bookmarkLength, setBookmarkLength] = useState()
 
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
@@ -100,6 +101,8 @@ export const GlobalProvider = ({ children }) => {
     setIsFilterShow,
     bookmarks,
     setBookmarks,
+    bookmarkLength,
+    setBookmarkLength,
   }
 
   return (
