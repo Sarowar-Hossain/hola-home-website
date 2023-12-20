@@ -27,7 +27,6 @@ const LoginPage = () => {
                     const body = {
                         name: res?.user?.displayName,
                         email: res?.user?.email,
-                        dpUrl: res?.user?.photoURL,
                         uid: res?.user?.uid,
                     }
                     axios
