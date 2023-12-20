@@ -57,8 +57,25 @@ const BeginBooking = () => {
   const onSubmit = (e) => {
     e.preventDefault()
     if (validateForm()) {
-      console.log('Form data submitted:', formData)
       setBookingData({ ...bookingData, ...formData })
+      setComponents({
+        bookingForm: false,
+        ConfirmAndPay: true,
+        PaymentMethod: false,
+      })
+    }
+  }
+  const handleBack = () => {
+    console.log('clicked')
+    if (components.bookingForm) {
+      router.back()
+    } else if (components.ConfirmAndPay) {
+      setComponents({
+        bookingForm: true,
+        ConfirmAndPay: false,
+        PaymentMethod: false,
+      })
+    } else if (components.PaymentMethod) {
       setComponents({
         bookingForm: false,
         ConfirmAndPay: true,
@@ -69,10 +86,22 @@ const BeginBooking = () => {
   return (
     <div className="container mx-auto my-4 md:my-10">
       <form onSubmit={onSubmit}>
-        <div className="w-full flex flex-col lg:flex-row justify-center lg:justify-around px-4 gap-4 lg:gap-10">
-          <div onClick={() => router.back()} className="cursor-pointer">
+        <div
+          className={`w-full flex flex-col lg:flex-row justify-center lg:justify-around px-4 gap-4 lg:gap-10`}
+        >
+          <div onClick={handleBack} className="cursor-pointer">
             <ArrowLeft />
           </div>
+
+          {components.bookingForm && (
+            <BeginBookingInputs
+              formData={formData}
+              setFormData={setFormData}
+              errors={errors}
+              setErrors={setErrors}
+              handleInputChange={handleInputChange}
+            />
+          )}
 
           {components.PaymentMethod && (
             <PaymentMethod
@@ -86,15 +115,7 @@ const BeginBooking = () => {
               setComponents={setComponents}
             />
           )}
-          {components.bookingForm && (
-            <BeginBookingInputs
-              formData={formData}
-              setFormData={setFormData}
-              errors={errors}
-              setErrors={setErrors}
-              handleInputChange={handleInputChange}
-            />
-          )}
+
           <BeginHotelInfo
             onSubmit={onSubmit}
             components={components}

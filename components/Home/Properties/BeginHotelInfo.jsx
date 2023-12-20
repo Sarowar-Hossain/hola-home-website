@@ -6,10 +6,10 @@ import React from 'react'
 const BeginHotelInfo = ({ onSubmit, components, setComponents }) => {
   const router = useRouter()
   return (
-    <div className="space-y-2 pb-6">
+    <div className="space-y-2 pb-6 flex flex-col">
       <div
         className={`flex items-center justify-center gap-4 ${
-          components.bookingForm ? 'inline-block' : 'hidden'
+          components.bookingForm ? 'inline-block' : 'hidden md:flex'
         } `}
       >
         <Image
@@ -27,9 +27,10 @@ const BeginHotelInfo = ({ onSubmit, components, setComponents }) => {
           className="max-w-[190px] md:max-w-[220px]"
         />
       </div>
+
       <div
         className={`space-y-2 pt-3  ${
-          components.bookingForm ? 'inline-block' : 'hidden'
+          components.bookingForm ? 'inline-block' : 'hidden md:inline-block'
         }`}
       >
         <h1 className="text-2xl text-[#101010] font-semibold">
@@ -37,9 +38,10 @@ const BeginHotelInfo = ({ onSubmit, components, setComponents }) => {
         </h1>
         <p className="text-sm font-normal text-[#484C52]">Jaipur, RJ, IN</p>
       </div>
+
       <div
         className={`border-[#C4C4C4] border min-w-[400px] min-h-[100px] rounded-xl ${
-          components.bookingForm ? '' : 'hidden'
+          components.bookingForm ? 'inline-block' : 'hidden md:inline-block'
         }`}
       >
         <div className="flex justify-between border-b border-[#C4C4C4] w-full">
@@ -60,7 +62,7 @@ const BeginHotelInfo = ({ onSubmit, components, setComponents }) => {
 
       <div
         className={`w-full space-y-2 py-4 leading-5 font-medium ${
-          components.bookingForm ? 'inline-block' : 'hidden'
+          components.bookingForm ? 'inline-block' : 'hidden md:inline-block'
         }`}
       >
         <p className="  text-[#484C52]  flex justify-between items-center">
@@ -81,6 +83,7 @@ const BeginHotelInfo = ({ onSubmit, components, setComponents }) => {
           <span className="font-medium text-xl">$26 </span>
         </p>
       </div>
+
       <div>
         {components.bookingForm && (
           <Button
@@ -113,7 +116,14 @@ const BeginHotelInfo = ({ onSubmit, components, setComponents }) => {
             className="w-full text-xl font-medium text-[#000000] bg-primary"
             variant="slim"
             type="submit"
-            onClick={() => router.push('/properties/payment-success')}
+            onClick={() => {
+              setComponents({
+                bookingForm: false,
+                ConfirmAndPay: false,
+                PaymentMethod: false,
+              })
+              router.push('/properties/payment-success')
+            }}
           >
             Confirm & Pay
           </Button>
