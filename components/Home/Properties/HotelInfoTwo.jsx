@@ -3,11 +3,11 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-const BeginHotelInfo = ({ onSubmit }) => {
+const HotelInfoTwo = ({ handleNext }) => {
   const router = useRouter()
   return (
     <div className="space-y-2 pb-6 ">
-      <div className="flex flex-col space-y-2">
+      <div className="hidden md:flex flex-col space-y-2">
         <div className={`flex items-center justify-center gap-4`}>
           <Image
             src={'/bookingPage.png'}
@@ -51,9 +51,7 @@ const BeginHotelInfo = ({ onSubmit }) => {
           </div>
         </div>
 
-        <div
-          className={`w-full space-y-2 py-4 leading-5 font-medium`}
-        >
+        <div className={`w-full space-y-2 py-4 leading-5 font-medium`}>
           <p className="  text-[#484C52]  flex justify-between items-center">
             <span>$12.00 x 1 night</span>
             <span>$12.00 </span>
@@ -79,13 +77,13 @@ const BeginHotelInfo = ({ onSubmit }) => {
           className="w-full text-xl font-medium text-[#000000] bg-primary"
           variant="slim"
           type="submit"
-          onClick={onSubmit}
+          onClick={handleNext}
         >
-          Agree & continue
+          Confirm & Pay
         </Button>
       </div>
     </div>
   )
 }
 
-export default BeginHotelInfo
+export default HotelInfoTwo

@@ -49,7 +49,7 @@ const DetailsPage = () => {
     setBookingData,
   } = useContext(GlobalContext)
 
-  console.log(bookingData)
+
 
   const { setModalView, openModal } = useUI()
 

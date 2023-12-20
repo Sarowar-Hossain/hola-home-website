@@ -5,8 +5,13 @@ import React from 'react'
 
 const PaymentSuccess = () => {
   const router = useRouter()
+  const { id } = router.query
+
+  const handleNext = () => {
+    router.push(`/properties/${id}/booking/success-booking-details`)
+  }
   return (
-    <div className='container mx-auto flex flex-col items-center space-y-4 text-center px-4'>
+    <div className="container mx-auto flex flex-col items-center space-y-4 text-center px-4">
       <Image
         src={'/paymentSuccess.png'}
         alt="success"
@@ -23,7 +28,7 @@ const PaymentSuccess = () => {
         className="text-xl font-medium text-[#484C52] bg-primary"
         variant="slim"
         type="submit"
-          onClick={()=>router.push("/properties/success-booking-details")}
+        onClick={handleNext}
       >
         View booking
       </Button>

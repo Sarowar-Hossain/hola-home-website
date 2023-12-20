@@ -3,10 +3,14 @@ import { useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React, { useContext } from 'react'
 
 const PropertyPageModal = () => {
   const { data: user } = useSession()
+  const router = useRouter()
+  const path = router.asPath
+  
   const { closeModal, setModalView, openModal, setUIView } = useUI()
   const { propertyPageLogModal, setPropertyPageLogModal } =
     useContext(GlobalContext)
@@ -44,7 +48,7 @@ const PropertyPageModal = () => {
         </button>
       </div>
       <Link
-        href={'/properties/begin-booking'}
+        href={`/${path}/booking`}
         onClick={() => closeModal()}
         className="border  border-accent-6 px-8 py-1 hover:bg-primary  rounded-xl font-medium bg-white text-accent-7"
       >

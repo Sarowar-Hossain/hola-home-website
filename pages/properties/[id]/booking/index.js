@@ -11,11 +11,6 @@ const BeginBooking = () => {
   const router = useRouter()
   const { bookingData, setBookingData } = useContext(GlobalContext)
 
-  const [components, setComponents] = useState({
-    bookingForm: true,
-    ConfirmAndPay: false,
-    PaymentMethod: false,
-  })
   const [formData, setFormData] = useState({
     title: '',
     fullName: '',
@@ -58,30 +53,11 @@ const BeginBooking = () => {
     e.preventDefault()
     if (validateForm()) {
       setBookingData({ ...bookingData, ...formData })
-      setComponents({
-        bookingForm: false,
-        ConfirmAndPay: true,
-        PaymentMethod: false,
-      })
+      router.push(`${router.asPath}/confirm-and-pay`)
     }
   }
   const handleBack = () => {
-    console.log('clicked')
-    if (components.bookingForm) {
-      router.back()
-    } else if (components.ConfirmAndPay) {
-      setComponents({
-        bookingForm: true,
-        ConfirmAndPay: false,
-        PaymentMethod: false,
-      })
-    } else if (components.PaymentMethod) {
-      setComponents({
-        bookingForm: false,
-        ConfirmAndPay: true,
-        PaymentMethod: false,
-      })
-    }
+    router.back()
   }
   return (
     <div className="container mx-auto my-4 md:my-10">
@@ -92,35 +68,15 @@ const BeginBooking = () => {
           <div onClick={handleBack} className="cursor-pointer">
             <ArrowLeft />
           </div>
-
-          {components.bookingForm && (
-            <BeginBookingInputs
-              formData={formData}
-              setFormData={setFormData}
-              errors={errors}
-              setErrors={setErrors}
-              handleInputChange={handleInputChange}
-            />
-          )}
-
-          {components.PaymentMethod && (
-            <PaymentMethod
-              components={components}
-              setComponents={setComponents}
-            />
-          )}
-          {components.ConfirmAndPay && (
-            <ConfirmAndPay
-              components={components}
-              setComponents={setComponents}
-            />
-          )}
-
-          <BeginHotelInfo
-            onSubmit={onSubmit}
-            components={components}
-            setComponents={setComponents}
+          <BeginBookingInputs
+            formData={formData}
+            setFormData={setFormData}
+            errors={errors}
+            setErrors={setErrors}
+            handleInputChange={handleInputChange}
           />
+
+          <BeginHotelInfo onSubmit={onSubmit} />
         </div>
       </form>
     </div>

@@ -32,7 +32,7 @@ const Card = ({ property }) => {
   const handleBookMark = (data) => {
     if (bookmarkList.find((item) => item?.id === data?.id)) {
       // const updateData = bookmarkList.filter((pt) => pt.id !== data.id)
-      setCurrentBookmarkItem(data.id)
+      setCurrentBookmarkItem(data?.id)
       openModal(), setModalView('BOOKMARKMODAL_VIEW')
       //   setBookmark(false)
     } else {
