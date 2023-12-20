@@ -13,7 +13,7 @@ const MyBooking = ({ bookingChildrenAsProps, propertyChildrenAsProps }) => {
           onClick={() => {
             setIsMyBookingTrue(false)
           }}
-          variant="slim"
+          // variant="slim"
           className={`${
             !isMyBookingTrue ? 'bg-[#FCCF12]' : 'bg-[#FFF8DB]'
           } rounded-md border-2 border-[#FCCF12]  py-2 text-center text-sm font-medium text-[#484C52] md:text-xl`}
@@ -24,7 +24,7 @@ const MyBooking = ({ bookingChildrenAsProps, propertyChildrenAsProps }) => {
           onClick={() => {
             setIsMyBookingTrue(true)
           }}
-          variant="slim"
+          // variant="slim"
           className={`${
             isMyBookingTrue ? 'bg-[#FCCF12]' : 'bg-[#FFF8DB]'
           } rounded-md border-[#FCCF12] py-2 text-sm font-medium text-[#484C52] md:text-xl`}
@@ -34,7 +34,7 @@ const MyBooking = ({ bookingChildrenAsProps, propertyChildrenAsProps }) => {
       </div>
       {isMyBookingTrue && (
         <div>
-          {bookingChildrenAsProps && bookingChildrenAsProps?.length !== 0 ? (
+          {bookingChildrenAsProps && bookingChildrenAsProps?.length === 0 ? (
             <div className="text-center">
               <Image
                 src={'/404.png'}
@@ -62,13 +62,13 @@ const MyBooking = ({ bookingChildrenAsProps, propertyChildrenAsProps }) => {
               </Button>
             </div>
           ) : (
-            <div className="space-y-4">{bookingChildrenAsProps}</div>
+            <div className="space-y-6">{bookingChildrenAsProps}</div>
           )}
         </div>
       )}
       {!isMyBookingTrue && (
         <div>
-          {propertyChildrenAsProps && propertyChildrenAsProps?.length == 0 ? (
+          {propertyChildrenAsProps && propertyChildrenAsProps?.length === 0 ? (
             <div className="text-center">
               <Image
                 src={'/404.png'}

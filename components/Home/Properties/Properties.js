@@ -21,8 +21,6 @@ const Properties = () => {
   } = useContext(GlobalContext)
   const [searchText, setSearchText] = useState(null)
 
-  console.log(searchText)
-
   const combinedDataLength = searchResult?.length || properties?.length
 
   const handleOpenFilters = () => {

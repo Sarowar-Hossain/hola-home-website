@@ -2,7 +2,7 @@ import image from 'public/booking.png'
 export const UserBookingData = [
   {
     id: '1',
-    name: 'Tree House Bali Tree House Bali',
+    name: 'Tree House Bali',
     address: 'Ubud, Bali',
     price: 886,
     BookingStatus: 'upcoming booking',

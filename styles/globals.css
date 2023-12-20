@@ -70,14 +70,21 @@ body {
 }
 
 .bigcheck input[type='checkbox'] {
-  accent-color: #FCCF12 !important;
+  accent-color: #fccf12 !important;
   mix-blend-mode: multiply;
   width: 16px !important;
   height: 16px !important;
 }
 
-
-
+.bigcheck input:-webkit-autofill,
+.bigcheck input:-webkit-autofill:hover,
+.bigcheck input:-webkit-autofill:focus,
+.bigcheck input:-webkit-autofill:active {
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: white;
+  transition: background-color 5000s ease-in-out 0s;
+  box-shadow: inset 0 0 20px 20px white;
+}
 
 .phone-number-input-container .PhoneInputCountrySelect {
   background-color: white !important;

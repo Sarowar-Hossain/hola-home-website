@@ -47,6 +47,13 @@ const BookmarkView = dynamic(
     ...dynamicProps,
   }
 )
+
+const CancelBooking = dynamic(
+  () => import('@components/ModalComponent/BookingCancleModal'),
+  {
+    ...dynamicProps,
+  }
+)
 const DetailsPageBookmarkView = dynamic(
   () => import('../BookmarkModal/DetailsPageBookmark'),
   {
@@ -129,6 +136,7 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'CONTACT_US' && <ContactUsModalView />}
       {modalView === 'DELETE_MODAL' && <DeleteModalView />}
       {modalView === 'NAVIGATE_LOGIN' && < LoginNavigate/>}
+      {modalView === 'CANCEL_BOOKING' && < CancelBooking/>}
     </Modal>
   )
 }
