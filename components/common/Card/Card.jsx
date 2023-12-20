@@ -15,8 +15,12 @@ import { useRouter } from 'next/router'
 const Card = ({ property }) => {
   const [bookmark, setBookmark] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
-  const { bookmarkList, setBookMarkList, setCurrentBookmarkItem } =
-    useContext(GlobalContext)
+  const {
+    bookmarkList,
+    setBookMarkList,
+    setCurrentBookmarkItem,
+    bookmarkLength,
+  } = useContext(GlobalContext)
   const swiperRef = useRef(null)
   const { openModal, setModalView, closeModal } = useUI()
   const {
@@ -29,14 +33,14 @@ const Card = ({ property }) => {
     totalCost,
   } = property
 
-  const handleBookMark = (data) => {
-    if (bookmarkList.find((item) => item?.id === data?.id)) {
+  const handleBookMark = (id) => {
+    if (bookmarkList.find((item) => item === id)) {
       // const updateData = bookmarkList.filter((pt) => pt.id !== data.id)
-      setCurrentBookmarkItem(data?.id)
+      setCurrentBookmarkItem(id)
       openModal(), setModalView('BOOKMARKMODAL_VIEW')
       //   setBookmark(false)
     } else {
-      setBookMarkList([...bookmarkList, data])
+      setBookMarkList([...bookmarkList, id])
       //   setBookmark(true)
     }
   }
@@ -121,16 +125,16 @@ const Card = ({ property }) => {
         </p>
       </div>
       <div
-        onClick={() => handleBookMark(property)}
+        onClick={() => handleBookMark(property?.id)}
         className={`absolute ${
-          bookmarkList.some((item) => item.id === property.id)
+          bookmarkList.some((item) => item === property.id)
             ? 'bg-white h-[35px] w-[30px] flex justify-center items-center rounded-md'
             : ''
         } right-3 top-3 z-10 cursor-pointer`}
       >
         <Bookmark
           fill={
-            bookmarkList.some((item) => item.id === property.id)
+            bookmarkList.some((item) => item === property.id)
               ? '#FCCF12'
               : '#313131B2'
           }

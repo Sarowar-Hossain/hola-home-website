@@ -80,6 +80,7 @@ const SignUp = () => {
                         email: res?.user?.email,
                         uid: res?.user?.uid,
                     }
+                    localStorage.setItem('userId', res?.user?.uid)
                     axios
                         .post(
                             baseUrl + '/manageUsersApis/add-user-details-in-google-login',

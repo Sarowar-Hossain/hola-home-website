@@ -18,6 +18,7 @@ export const GlobalProvider = ({ children }) => {
   // bookmark data
   const [bookmarkList, setBookMarkList] = useState([])
   const [currentBookMarkItem, setCurrentBookmarkItem] = useState(null)
+  const [bookmarkLength, setBookmarkLength] = useState()
 
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
@@ -50,6 +51,8 @@ export const GlobalProvider = ({ children }) => {
 
   const [marked, setMarked] = useState(false)
   const [uiLoader, setUiLoader] = useState(false)
+
+  const [bookmarks, setBookmarks] = useState([])
 
   const info = {
     acceptPolicy,
@@ -96,6 +99,10 @@ export const GlobalProvider = ({ children }) => {
     setUiLoader,
     isFilterShow,
     setIsFilterShow,
+    bookmarks,
+    setBookmarks,
+    bookmarkLength,
+    setBookmarkLength,
   }
 
   return (

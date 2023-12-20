@@ -13,7 +13,7 @@ import { Cross } from '@components/icons'
 const LoginView = () => {
   const [error, setError] = useState(false)
   const { setUIView, closeModal } = useUI()
-  const { providerLogin, user, signIn } = useContext(AuthContext)
+  const { providerLogin, user, signIn, logOut } = useContext(AuthContext)
   const [loading, setLoading] = useState(false)
   const [show, setShow] = useState('password')
   const router = useRouter()
@@ -34,6 +34,7 @@ const LoginView = () => {
             email: res?.user?.email,
             uid: res?.user?.uid,
           }
+          localStorage.setItem('userId', res?.user?.uid)
           axios
             .post(
               baseUrl + '/manageUsersApis/add-user-details-in-google-login',
@@ -46,6 +47,7 @@ const LoginView = () => {
             })
             .catch((err) => {
               console.error(err.message)
+              logOut()
               reject(err.message)
             })
         })
@@ -67,6 +69,7 @@ const LoginView = () => {
     setLoading(true)
     signIn(credential?.email, credential?.password)
       .then((res) => {
+        localStorage.setItem('userId', res?.user?.uid)
         closeModal()
         toast.success('Successfully logged in')
         setUIView('SIGN_UP_VIEW')

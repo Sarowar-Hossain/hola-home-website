@@ -13,7 +13,7 @@ export const allProperty = [
     propertyDetails: ['2 Sleeps', '1 bedroom', '3 beds'],
     dailyCost: '97',
     totalCost: '100',
-    id: 1,
+    id: 'E7Rt9FgKp3jW2sX',
   },
   {
     images: [
@@ -29,7 +29,7 @@ export const allProperty = [
     propertyDetails: ['3 Sleeps', '2 bedrooms', '4 beds'],
     dailyCost: '120',
     totalCost: '150',
-    id: 2,
+    id: 'L6qPzNvTmY5rA8e',
   },
   {
     images: [
@@ -45,7 +45,7 @@ export const allProperty = [
     propertyDetails: ['4 Sleeps', '2 bedrooms', '3 beds'],
     dailyCost: '110',
     totalCost: '130',
-    id: 3,
+    id: 'B1uHwMxVf2cD4oZ',
   },
   {
     images: [
@@ -61,7 +61,7 @@ export const allProperty = [
     propertyDetails: ['3 Sleeps', '1 bedroom', '2 beds'],
     dailyCost: '90',
     totalCost: '95',
-    id: 4,
+    id: 'K9gJdXpRz3vQ7hW',
   },
   {
     images: [
@@ -77,7 +77,7 @@ export const allProperty = [
     propertyDetails: ['2 Sleeps', '1 bedroom', '1 bed'],
     dailyCost: '80',
     totalCost: '85',
-    id: 5,
+    id: 'U4tE8iNwYsL2cPq',
   },
   {
     images: [
@@ -93,7 +93,7 @@ export const allProperty = [
     propertyDetails: ['4 Sleeps', '2 bedrooms', '3 beds'],
     dailyCost: '120',
     totalCost: '140',
-    id: 6,
+    id: 'G5yT6zHxRvKwN1',
   },
   {
     images: [
@@ -109,7 +109,7 @@ export const allProperty = [
     propertyDetails: ['2 Sleeps', '1 bedroom', '1 bed'],
     dailyCost: '75',
     totalCost: '80',
-    id: 7,
+    id: 'V3oXfA7uL8rE2t',
   },
   {
     images: [
@@ -125,7 +125,7 @@ export const allProperty = [
     propertyDetails: ['3 Sleeps', '2 bedrooms', '2 beds'],
     dailyCost: '100',
     totalCost: '110',
-    id: 8,
+    id: 'S2jW4gKpR5yV9d',
   },
   {
     images: [
@@ -141,7 +141,7 @@ export const allProperty = [
     propertyDetails: ['4 Sleeps', '2 bedrooms', '3 beds'],
     dailyCost: '95',
     totalCost: '105',
-    id: 9,
+    id: 'D8oF7gHxL6rP1u',
   },
   {
     images: [
@@ -157,7 +157,7 @@ export const allProperty = [
     propertyDetails: ['3 Sleeps', '1 bedroom', '2 beds'],
     dailyCost: '85',
     totalCost: '90',
-    id: 10,
+    id: 'Z1vM3sRqNwT9iK',
   },
   {
     images: [
@@ -173,7 +173,7 @@ export const allProperty = [
     propertyDetails: ['5 Sleeps', '3 bedrooms', '4 beds'],
     dailyCost: '130',
     totalCost: '160',
-    id: 11,
+    id: 'H6xG9jWzD4pT7o',
   },
   {
     images: [
@@ -189,7 +189,7 @@ export const allProperty = [
     propertyDetails: ['4 Sleeps', '2 bedrooms', '5 beds'],
     dailyCost: '150',
     totalCost: '180',
-    id: 12,
+    id: 'I2sL5cNvY8rP3w',
   },
   {
     images: [
@@ -205,7 +205,7 @@ export const allProperty = [
     propertyDetails: ['3 Sleeps', '1 bedroom', '2 beds'],
     dailyCost: '95',
     totalCost: '110',
-    id: 13,
+    id: 'A7uE9vMxH4wT1g',
   },
   {
     images: [
@@ -221,7 +221,7 @@ export const allProperty = [
     propertyDetails: ['2 Sleeps', '1 bedroom', '1 bed'],
     dailyCost: '80',
     totalCost: '90',
-    id: 14,
+    id: 'C3qX6zRtV8yN5j',
   },
   {
     images: [
@@ -237,6 +237,6 @@ export const allProperty = [
     propertyDetails: ['4 Sleeps', '2 bedrooms', '3 beds'],
     dailyCost: '120',
     totalCost: '140',
-    id: 15,
+    id: 'O1pF7sGwT9xK2u',
   },
 ]

@@ -14,7 +14,7 @@ const BookmarkModal = () => {
   const handleRemoveBookmark = () => {
     if (currentBookMarkItem !== null) {
       const updatedBookmarks = bookmarkList.filter(
-        (item) => item?.id !== currentBookMarkItem
+        (item) => item !== currentBookMarkItem
       )
       setBookMarkList(updatedBookmarks)
       setCurrentBookmarkItem(null)
