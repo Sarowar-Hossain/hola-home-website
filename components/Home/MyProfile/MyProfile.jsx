@@ -326,9 +326,9 @@ const MyProfile = () => {
                 </div>
 
                 <hr />
-                <div className="flex justify-center lg:justify-start pb-6">
+                <div className="flex flex-col md:flex-row justify-between pb-6 gap-3 max-w-md md:max-w-full mx-auto">
                   <Button
-                    className=" text-xl font-medium text-accent-8"
+                    className="text-xl font-medium text-accent-8 bg-red hover:bg-white text-white hover:text-red"
                     variant="slim"
                     onClick={() => {
                       router.push('/delete-account')
@@ -336,6 +336,20 @@ const MyProfile = () => {
                   >
                     Delete Account
                   </Button>
+                  {(isNameEdit ||
+                    isPhoneNoEdit ||
+                    isEmailEdit ||
+                    imageEdit) && (
+                    <Button
+                      loading={loading}
+                      onClick={validateAndSave}
+                      className={`${
+                        loading ? 'text-accent-0' : 'text-accent-5'
+                      }`}
+                    >
+                      Save
+                    </Button>
+                  )}
                 </div>
               </div>
               {/* Dp */}
@@ -380,17 +394,6 @@ const MyProfile = () => {
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="text-center">
-              {(isNameEdit || isPhoneNoEdit || isEmailEdit || imageEdit) && (
-                <Button
-                  loading={loading}
-                  onClick={validateAndSave}
-                  className={`${loading ? 'text-accent-0' : 'text-accent-5'}`}
-                >
-                  Save
-                </Button>
-              )}
             </div>
           </div>
         </>

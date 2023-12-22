@@ -80,15 +80,28 @@ const SignUp = () => {
                         email: res?.user?.email,
                         uid: res?.user?.uid,
                     }
-                    localStorage.setItem('userId', res?.user?.uid)
+                    const userId = res?.user?.uid
+                    localStorage.setItem('userId', userId)
                     axios
                         .post(
                             baseUrl + '/manageUsersApis/add-user-details-in-google-login',
                             body
                         )
                         .then((res) => {
-                            resolve(res?.data)
-                            router.push('/')
+                            if (userId) {
+                                try {
+                                    const response = axios.post(
+                                        baseUrl + '/manageUsersApis/remove-deletion-request',
+                                        {
+                                            id: userId,
+                                        }
+                                    )
+                                    resolve(res?.data)
+                                    router.push('/')
+                                } catch (error) {
+                                    console.log(error)
+                                }
+                            }
                         })
                         .catch((err) => {
                             console.error(err.message)

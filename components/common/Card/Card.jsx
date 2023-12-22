@@ -13,6 +13,7 @@ import { useUI } from '@components/ui'
 import { useRouter } from 'next/router'
 import toast from 'react-hot-toast'
 import axios from 'axios'
+import { AuthContext } from 'Context/AuthProvider'
 
 const Card = ({ property, refetch }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
@@ -24,6 +25,7 @@ const Card = ({ property, refetch }) => {
     setCurrentBookmarkItem,
     bookmarkLength,
   } = useContext(GlobalContext)
+  const { user } = useContext(AuthContext)
   const swiperRef = useRef(null)
   const { openModal, setModalView, closeModal } = useUI()
   const {
@@ -37,6 +39,10 @@ const Card = ({ property, refetch }) => {
   } = property
 
   const handleBookmarkMain = async (id) => {
+    if (!user) {
+      toast.error('Please login or create an account!')
+      return
+    }
     handleBookMark(id)
     const bookmarkIds = JSON.parse(localStorage.getItem('bookmarkIds'))
     if (!bookmarkIds.includes(id)) {

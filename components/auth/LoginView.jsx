@@ -29,21 +29,34 @@ const LoginView = () => {
     const loginProcess = new Promise((resolve, reject) => {
       providerLogin(googleProvider)
         .then((res) => {
+          const userId = res?.user?.uid
           const body = {
             name: res?.user?.displayName,
             email: res?.user?.email,
-            uid: res?.user?.uid,
+            uid: userId,
           }
-          localStorage.setItem('userId', res?.user?.uid)
+          localStorage.setItem('userId', userId)
           axios
             .post(
               baseUrl + '/manageUsersApis/add-user-details-in-google-login',
               body
             )
             .then((res) => {
-              resolve(res?.data)
-              closeModal()
-              setUIView('SIGN_UP_VIEW')
+              if (userId) {
+                try {
+                  const response = axios.post(
+                    baseUrl + '/manageUsersApis/remove-deletion-request',
+                    {
+                      id: userId,
+                    }
+                  )
+                  closeModal()
+                  setUIView('SIGN_UP_VIEW')
+                  resolve(res?.data)
+                } catch (error) {
+                  console.log(error)
+                }
+              }
             })
             .catch((err) => {
               console.error(err.message)
@@ -69,11 +82,24 @@ const LoginView = () => {
     setLoading(true)
     signIn(credential?.email, credential?.password)
       .then((res) => {
-        localStorage.setItem('userId', res?.user?.uid)
-        closeModal()
-        toast.success('Successfully logged in')
-        setUIView('SIGN_UP_VIEW')
-        setLoading(false)
+        const userId = res?.user?.uid
+        localStorage.setItem('userId', userId)
+        if (userId) {
+          try {
+            const response = axios.post(
+              baseUrl + '/manageUsersApis/remove-deletion-request',
+              {
+                id: userId,
+              }
+            )
+            closeModal()
+            toast.success('Successfully logged in')
+            setUIView('SIGN_UP_VIEW')
+            setLoading(false)
+          } catch (error) {
+            console.log(error)
+          }
+        }
       })
       .catch((err) => {
         if (err?.message === 'Firebase: Error (auth/wrong-password).') {
@@ -214,7 +240,7 @@ const LoginView = () => {
               />
             </>
           ) : (
-            'Sign-In'
+            'Sign In'
           )}
         </Button>
         <p className="my-2">
