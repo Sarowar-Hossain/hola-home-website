@@ -1,8 +1,11 @@
 import { useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
+import axios from 'axios'
 import React, { useContext } from 'react'
+import toast from 'react-hot-toast'
 
 const BookmarkModal = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const { closeModal } = useUI()
   const {
     bookmarkList,
@@ -11,12 +14,32 @@ const BookmarkModal = () => {
     setCurrentBookmarkItem,
   } = useContext(GlobalContext)
 
-  const handleRemoveBookmark = () => {
+  const handleRemoveBookmark = async () => {
     if (currentBookMarkItem !== null) {
+      console.log(currentBookMarkItem)
       const updatedBookmarks = bookmarkList.filter(
         (item) => item !== currentBookMarkItem
       )
       setBookMarkList(updatedBookmarks)
+      const bookmarkIds = JSON.parse(localStorage.getItem('bookmarkIds'))
+      const updatedBookmarkIds = bookmarkIds.filter(
+        (item) => item !== currentBookMarkItem
+      )
+      const userId = localStorage.getItem('userId')
+      if (updatedBookmarkIds) {
+        try {
+          const response = await axios.post(
+            baseUrl + '/manageUsersApis/update-bookmarks',
+            {
+              id: userId,
+              newPropertyIds: updatedBookmarkIds,
+            }
+          )
+          toast.success('Bookmark removed successfully')
+        } catch (error) {
+          console.log(error)
+        }
+      }
       setCurrentBookmarkItem(null)
       closeModal()
     }

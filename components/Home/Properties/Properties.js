@@ -7,7 +7,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useContext, useState } from 'react'
 
-const Properties = () => {
+const Properties = ({ refetch }) => {
   const router = useRouter()
   const { setModalView, openModal } = useUI()
   const {
@@ -113,7 +113,7 @@ const Properties = () => {
           : properties
             .slice(0, 12)
             .map((property, index) => (
-              <Card property={property} key={index + 1} />
+              <Card property={property} key={index + 1} refetch={refetch} />
             ))}
       </div>
 

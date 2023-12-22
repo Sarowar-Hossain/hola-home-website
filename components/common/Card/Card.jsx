@@ -11,8 +11,11 @@ import Bookmark from '@components/icons/Bookmark'
 import { GlobalContext } from 'Context/Context'
 import { useUI } from '@components/ui'
 import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
+import axios from 'axios'
 
-const Card = ({ property }) => {
+const Card = ({ property, refetch }) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const [bookmark, setBookmark] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const {
@@ -33,6 +36,27 @@ const Card = ({ property }) => {
     totalCost,
   } = property
 
+  const handleBookmarkMain = async (id) => {
+    handleBookMark(id)
+    const bookmarkIds = JSON.parse(localStorage.getItem('bookmarkIds'))
+    if (!bookmarkIds.includes(id)) {
+      const newBookmarkIds = [...bookmarkIds, id]
+      const userId = localStorage.getItem('userId')
+      try {
+        const response = await axios.post(
+          baseUrl + '/manageUsersApis/update-bookmarks',
+          {
+            id: userId,
+            newPropertyIds: newBookmarkIds,
+          }
+        )
+        refetch()
+        toast.success('Bookmark successfully added')
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
   const handleBookMark = (id) => {
     if (bookmarkList.find((item) => item === id)) {
       // const updateData = bookmarkList.filter((pt) => pt.id !== data.id)
@@ -125,7 +149,7 @@ const Card = ({ property }) => {
         </p>
       </div>
       <div
-        onClick={() => handleBookMark(property?.id)}
+        onClick={() => handleBookmarkMain(property?.id)}
         className={`absolute ${
           bookmarkList.some((item) => item === property.id)
             ? 'bg-white h-[35px] w-[30px] flex justify-center items-center rounded-md'

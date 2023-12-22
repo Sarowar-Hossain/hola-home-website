@@ -19,7 +19,8 @@ export const GlobalProvider = ({ children }) => {
   const [bookmarkList, setBookMarkList] = useState([])
   const [currentBookMarkItem, setCurrentBookmarkItem] = useState(null)
   const [bookmarkLength, setBookmarkLength] = useState()
-
+  console.log(bookmarkLength)
+  console.log(bookmarkList?.length)
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
   const [searchSuggestion, setSearchSuggestion] = useState([])
