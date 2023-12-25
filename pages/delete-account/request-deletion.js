@@ -1,13 +1,30 @@
 import { Button, useUI } from "@components/ui";
+import axios from "axios";
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
 
 function Index() {
-	const handleNextClick = () => {
-		openModal(), setModalView("DELETE_MODAL");
+	const [loading, setLoading] = useState(false)
+	const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+	const handleNextClick = async () => {
+		setLoading(true)
+		const userId = localStorage.getItem('userId')
+		try {
+			const response = await axios.post(baseUrl + '/manageUsersApis/make-deletion-request', {
+				id: userId
+			})
+			console.log(response)
+			toast.success('Deletion request successfully added')
+			setLoading(false)
+			openModal(), setModalView("DELETE_MODAL");
+		} catch (error) {
+			setLoading(false)
+			console.log(error)
+		}
 	};
-    const { openModal, setModalView } = useUI();
-    const router = useRouter()
+	const { openModal, setModalView } = useUI();
+	const router = useRouter()
 	return (
 		<div className=" ">
 			<div className="lg:w-[70%] 2xl:w-[40%] container mx-auto lg:flex  lg:flex-row flex flex-col items-start py-8 lg:px-0 px-6">
@@ -67,6 +84,7 @@ function Index() {
 					</ul>
 
 					<Button
+						loading={loading}
 						className="text-base my-12"
 						onClick={() => handleNextClick()}
 					>

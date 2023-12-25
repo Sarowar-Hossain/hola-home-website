@@ -10,7 +10,7 @@ import { useRouter } from 'next/router'
 import React, { useContext, useState } from 'react'
 import useSWR from 'swr'
 
-const Properties = () => {
+const Properties = ({ refetch }) => {
   const router = useRouter()
   const skeletonData = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
   const { setModalView, openModal } = useUI()
@@ -90,11 +90,10 @@ const Properties = () => {
                   </div>
                 </div>
                 <div
-                  className={`${
-                    searchSuggestion?.length > 0 && searchSuggestionShow
+                  className={`${searchSuggestion?.length > 0 && searchSuggestionShow
                       ? 'inline-block'
                       : 'hidden'
-                  } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-40  py-6 `}
+                    } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-40  py-6 `}
                 >
                   {searchLoader ? (
                     <p>loading...</p>
@@ -133,9 +132,8 @@ const Properties = () => {
                   )}
 
                   <div
-                    className={`flex justify-center items-center shadow-xl ${
-                      searchSuggestion?.length > 8 ? 'inline-block' : 'hidden'
-                    }`}
+                    className={`flex justify-center items-center shadow-xl ${searchSuggestion?.length > 8 ? 'inline-block' : 'hidden'
+                      }`}
                   >
                     <button
                       className={`underline font-medium hover:text-accent-5 `}
@@ -154,13 +152,13 @@ const Properties = () => {
               <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
                 {searchResult?.length > 0
                   ? searchResult
-                      ?.slice(0, 12)
-                      .map((property, index) => (
-                        <Card property={property} key={index + 1} />
-                      ))
-                  : data?.Data.slice(0, 12).map((property, index) => (
+                    ?.slice(0, 12)
+                    .map((property, index) => (
                       <Card property={property} key={index + 1} />
-                    ))}
+                    ))
+                  : data?.Data.slice(0, 12).map((property, index) => (
+                    <Card property={property} key={index + 1} />
+                  ))}
               </div>
               {combinedDataLength > 11 && (
                 <button className="hover:bg-primary px-6 py-2 rounded-full font-bold hover:text-accent-7 bg-white border-2 border-primary text-[#FCCF12]">

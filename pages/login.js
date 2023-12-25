@@ -29,15 +29,28 @@ const LoginPage = () => {
                         email: res?.user?.email,
                         uid: res?.user?.uid,
                     }
-                    localStorage.setItem('userId', res?.user?.uid)
+                    const userId = re?.user?.uid
+                    localStorage.setItem('userId', userId)
                     axios
                         .post(
                             baseUrl + '/manageUsersApis/add-user-details-in-google-login',
                             body
                         )
                         .then((res) => {
-                            resolve(res?.data)
-                            router.push('/')
+                            if (userId) {
+                                try {
+                                    const response = axios.post(
+                                        baseUrl + '/manageUsersApis/remove-deletion-request',
+                                        {
+                                            id: userId,
+                                        }
+                                    )
+                                    resolve(res?.data)
+                                    router.push('/')
+                                } catch (error) {
+                                    console.log(error)
+                                }
+                            }
                         })
                         .catch((err) => {
                             console.error(err.message)
@@ -62,10 +75,23 @@ const LoginPage = () => {
         setLoading(true)
         signIn(credential?.email, credential?.password)
             .then((res) => {
-                localStorage.setItem('userId', res?.user?.uid)
-                toast.success('Successfully logged in')
-                router.push('/')
-                setLoading(false)
+                const userId = res?.user?.uid
+                localStorage.setItem('userId', userId)
+                if (userId) {
+                    try {
+                        const response = axios.post(
+                            baseUrl + '/manageUsersApis/remove-deletion-request',
+                            {
+                                id: userId,
+                            }
+                        )
+                        toast.success('Successfully logged in')
+                        router.push('/')
+                        setLoading(false)
+                    } catch (error) {
+                        console.log(error)
+                    }
+                }
             })
             .catch((err) => {
                 if (err?.message === 'Firebase: Error (auth/wrong-password).') {

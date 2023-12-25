@@ -91,21 +91,34 @@ const SignUpView = () => {
     const loginProcess = new Promise((resolve, reject) => {
       providerLogin(googleProvider)
         .then((res) => {
+          const userId = res?.user?.uid
           const body = {
             name: res?.user?.displayName,
             email: res?.user?.email,
-            uid: res?.user?.uid,
+            uid: userId,
           }
-          localStorage.setItem('userId', res?.user?.uid)
+          localStorage.setItem('userId', userId)
           axios
             .post(
               baseUrl + '/manageUsersApis/add-user-details-in-google-login',
               body
             )
             .then((res) => {
-              resolve(res?.data)
-              closeModal()
-              setUIView('SIGN_UP_VIEW')
+              if (userId) {
+                try {
+                  const response = axios.post(
+                    baseUrl + '/manageUsersApis/remove-deletion-request',
+                    {
+                      id: userId,
+                    }
+                  )
+                  closeModal()
+                  setUIView('SIGN_UP_VIEW')
+                  resolve(res?.data)
+                } catch (error) {
+                  console.log(error)
+                }
+              }
             })
             .catch((err) => {
               console.error(err.message)

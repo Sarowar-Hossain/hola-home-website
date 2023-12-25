@@ -11,8 +11,12 @@ import Bookmark from '@components/icons/Bookmark'
 import { GlobalContext } from 'Context/Context'
 import { useUI } from '@components/ui'
 import { useRouter } from 'next/router'
+import toast from 'react-hot-toast'
+import axios from 'axios'
+import { AuthContext } from 'Context/AuthProvider'
 
 const Card = ({ property }) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const [bookmark, setBookmark] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
   const {
@@ -21,6 +25,7 @@ const Card = ({ property }) => {
     setCurrentBookmarkItem,
     bookmarkLength,
   } = useContext(GlobalContext)
+  const { user } = useContext(AuthContext)
   const swiperRef = useRef(null)
   const { openModal, setModalView, closeModal } = useUI()
   const {
@@ -35,9 +40,33 @@ const Card = ({ property }) => {
     onOfBedrooms,
     onOfBeds,
     onOfGuests,
-    id
+    id,
   } = property
 
+  const handleBookmarkMain = async (id) => {
+    if (!user) {
+      toast.error('Please login or create an account!')
+      return
+    }
+    handleBookMark(id)
+    const bookmarkIds = JSON.parse(localStorage.getItem('bookmarkIds'))
+    if (!bookmarkIds.includes(id)) {
+      const newBookmarkIds = [...bookmarkIds, id]
+      const userId = localStorage.getItem('userId')
+      try {
+        const response = await axios.post(
+          baseUrl + '/manageUsersApis/update-bookmarks',
+          {
+            id: userId,
+            newPropertyIds: newBookmarkIds,
+          }
+        )
+        toast.success('Bookmark successfully added')
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
   const handleBookMark = (id) => {
     if (bookmarkList.find((item) => item === id)) {
       // const updateData = bookmarkList.filter((pt) => pt.id !== data.id)
@@ -91,7 +120,7 @@ const Card = ({ property }) => {
                   height={280}
                   width={415}
                   alt="Carousel Image"
-                  className='object-cover  min-h-[280px] max-h-min rounded-md'
+                  className="object-cover  min-h-[280px] max-h-min rounded-md"
                 />
               </Link>
             </div>
@@ -119,7 +148,9 @@ const Card = ({ property }) => {
             {onOfBedrooms} bedroom
             <Dot className={`w-[3px] h-[3px]`} />
           </li>
-          <li className="flex items-center justify-center gap-2">{onOfBeds} beds</li>
+          <li className="flex items-center justify-center gap-2">
+            {onOfBeds} beds
+          </li>
         </ul>
         <p className="my-2 font-semibold">${priceOf1Day} per night</p>
         <p className="text-[#878787]">
@@ -130,7 +161,7 @@ const Card = ({ property }) => {
         </p>
       </div>
       <div
-        onClick={() => handleBookMark(property?.id)}
+        onClick={() => handleBookmarkMain(property?.id)}
         className={`absolute ${
           bookmarkList.some((item) => item === property.id)
             ? 'bg-white h-[35px] w-[30px] flex justify-center items-center rounded-md'

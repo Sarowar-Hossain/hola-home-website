@@ -1,4 +1,7 @@
 import { Layout } from '@components/common'
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+
 import {
   Cross2,
   DarkStar,
@@ -26,12 +29,16 @@ import { amenities, details, reviews } from 'data/Details'
 import { GlobalContext } from 'Context/Context'
 import CustomErrorToast from '@utils/CustomErrorToast'
 import BookingPrompt from '@components/BookingPrompt/BookingPrompt'
+import toast from 'react-hot-toast'
+import axios from 'axios'
+import { AuthContext } from 'Context/AuthProvider'
+import { Timestamp } from 'firebase/firestore';
 
 const swipeThreshold = 50
 
 const DetailsPage = () => {
   const router = useRouter()
-
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const handleDragEnd = (event, info) => {
     const offset = info.offset.x
     if (offset > swipeThreshold) {
@@ -48,6 +55,7 @@ const DetailsPage = () => {
     bookingData,
     setBookingData,
   } = useContext(GlobalContext)
+  const { user } = useContext(AuthContext)
 
 
 
@@ -63,29 +71,73 @@ const DetailsPage = () => {
   const [profileView, setProfileView] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [responseData, setResponseData] = useState()
 
   //this function will used for handle the bookmark
   //onClick={() => handleBookMark(data)}
 
-  // const handleBookMark = (data) => {
-  //   if (bookmarkList.find((item) => item?.id === router?.query?.id)) {
-  //     setCurrentBookmarkItem(router?.query?.id)
-  //     openModal(), setModalView('BOOKMARKMODAL_VIEW')
-  //   } else {
-  //     setBookMarkList([...bookmarkList, data])
-  //   }
-  // }
-
-  const handleBookNow = () => {
-    // if (
-    //   bookingData?.checkIN === undefined ||
-    //   bookingData?.checkOut === undefined
-    // ) {
-    //   return CustomErrorToast(`Please add dates to view availability!`)
-    // }
-    openModal(), setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW')
-    setIsDateAvailableDates(true)
+  const handleBookMark = async (id) => {
+    if (!user) {
+      toast.error('Please login or create an account!')
+      return
+    }
+    if (bookmarkList.find((item) => item === id)) {
+      setCurrentBookmarkItem(id)
+      openModal(), setModalView('BOOKMARKMODAL_VIEW')
+    } else {
+      setBookMarkList([...bookmarkList, id])
+    }
+    const bookmarkIds = JSON.parse(localStorage.getItem('bookmarkIds'))
+    if (!bookmarkIds.includes(id)) {
+      const newBookmarkIds = [...bookmarkIds, id]
+      const userId = localStorage.getItem('userId')
+      try {
+        const response = await axios.post(
+          baseUrl + '/manageUsersApis/update-bookmarks',
+          {
+            id: userId,
+            newPropertyIds: newBookmarkIds,
+          }
+        )
+        toast.success('Bookmark successfully added')
+      } catch (error) {
+        console.log(error)
+      }
+    }
   }
+
+  const handleBookNow = async () => {
+    setResponseData({})
+    if (!user) {
+      openModal();
+      setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW');
+      setIsDateAvailableDates(true);
+    } else {
+      if (!startDate || !endDate) {
+        toast.error('Please select your targeted date');
+      } else {
+        setLoading(true);
+        try {
+          const startTimestamp = Timestamp.fromDate(new Date(startDate));
+          const endTimestamp = Timestamp.fromDate(new Date(endDate));
+
+          const res = await axios.post(baseUrl + '/BookingApis/check-booking', {
+            propertyId: router.query.id,
+            checkInDate: startTimestamp,
+            checkOutDate: endTimestamp
+          });
+
+          setResponseData(res);
+          setLoading(false);
+        } catch (err) {
+          console.error(err);
+          setLoading(false);
+        }
+      }
+    }
+  };
+
 
   const openImageModal = (index) => {
     setCurrentImageIndex(index)
@@ -159,12 +211,11 @@ const DetailsPage = () => {
             <div
               className="font-semibold flex items-center gap-1 cursor-pointer"
 
-              // onClick={handleBookmark}
+              onClick={() => handleBookMark(router?.query?.id)}
             >
               <span
-                className={`${
-                  bookmarked ? 'text-yellow-500' : 'text-transparent'
-                }`}
+                className={`${bookmarkList.includes(router?.query?.id) ? 'text-yellow-500' : 'text-transparent'
+                  }`}
               >
                 <Save />
               </span>
@@ -179,7 +230,7 @@ const DetailsPage = () => {
             loop={true}
             slidesPerView={1}
             pagination={{ clickable: true }}
-            // autoplay={{ delay: 1000 }}
+          // autoplay={{ delay: 1000 }}
           >
             {DemoPropertyImage?.map((image, index) => (
               <SwiperSlide key={index}>
@@ -348,7 +399,7 @@ const DetailsPage = () => {
               />
             </div>
           </div>
-          <BookingPrompt startDate={startDate} endDate={endDate} selectedAdults={selectedAdults} selectedChildren={selectedChildren} selectedStayType={selectedStayType} handleBookNow={handleBookNow} isDateAvailableDates={isDateAvailableDates} setStartDate={setStartDate} setEndDate={setEndDate} setSelectedChildren={setSelectedChildren} setSelectedAdults={setSelectedAdults} setSelectedStayType={setSelectedStayType} />
+          <BookingPrompt startDate={startDate} endDate={endDate} selectedAdults={selectedAdults} selectedChildren={selectedChildren} selectedStayType={selectedStayType} handleBookNow={handleBookNow} isDateAvailableDates={isDateAvailableDates} setStartDate={setStartDate} setEndDate={setEndDate} setSelectedChildren={setSelectedChildren} setSelectedAdults={setSelectedAdults} setSelectedStayType={setSelectedStayType} loading={loading} bookingStatus={responseData} />
         </div>
       </Container>
       {profileView && (
