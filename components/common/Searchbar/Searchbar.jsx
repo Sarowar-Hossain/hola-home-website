@@ -1,8 +1,9 @@
-import { memo, useContext, useEffect } from 'react'
+import { memo, useContext, useEffect, useState } from 'react'
 import cn from 'clsx'
 import s from './Searchbar.module.css'
 import { useRouter } from 'next/router'
 import { GlobalContext } from 'Context/Context'
+import useSWR from 'swr'
 
 const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
   const router = useRouter()
@@ -10,33 +11,46 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
   const {
     properties,
     setSearchSuggestion,
-    searchResult,
     setSearchResult,
-    searchSuggestionShow,
     setSearchSuggestionShow,
+    setSearchLoader,
   } = useContext(GlobalContext)
 
-  const handleSearchSuggestion = (searchData) => {
+  const fetcher = (url) => fetch(url).then((res) => res.json())
+  const apiUrl = `https://us-central1-hola-home.cloudfunctions.net/propertiesApis?searchTerms=${searchText}`
+  const { data: apiSearchResult, error: apiError } = useSWR(apiUrl, fetcher)
+
+  useEffect(() => {
+    if (apiSearchResult) {
+      if (!apiSearchResult) {
+        setSearchLoader(true)
+      }
+      if (apiSearchResult?.Data?.length > 0) {
+        setSearchLoader(false)
+      }
+      console.log(apiSearchResult?.Data)
+    }
+  }, [apiSearchResult])
+
+  const handleSearchSuggestion = async (searchData) => {
     if (searchData.length) {
       setSearchText(searchData)
       setSearchSuggestionShow(true)
-      const searchResult = properties.filter((property) => {
-        const matchesHotelName = property.hotelName
-          .toLowerCase()
-          .includes(searchData.toLowerCase())
-        const matchesLocation = property.location
-          .toLowerCase()
-          .includes(searchData.toLowerCase())
-        return matchesHotelName || matchesLocation
-      })
-
-      const refinedSearchResult = searchResult.map(
-        ({ hotelName, id, location }) => ({
+      const refinedSearchResult = apiSearchResult?.Data?.map(
+        ({ title, id, country, city }) => ({
           id,
-          hotelName,
-          location,
+          title,
+          country,
+          city,
         })
       )
+      // const refinedSearchResult = searchResult.map(
+      //   ({ hotelName, id, location }) => ({
+      //     id,
+      //     hotelName,
+      //     location,
+      //   })
+      // )
       setSearchSuggestion(refinedSearchResult)
     } else {
       setSearchSuggestionShow(false)

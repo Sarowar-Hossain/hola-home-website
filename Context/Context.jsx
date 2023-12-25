@@ -22,6 +22,7 @@ export const GlobalProvider = ({ children }) => {
 
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
+  const [searchLoader, setSearchLoader] = useState(false)
   const [searchSuggestion, setSearchSuggestion] = useState([])
   const [searchSuggestionShow, setSearchSuggestionShow] = useState(false)
   const [searchResult, setSearchResult] = useState([])
@@ -103,6 +104,8 @@ export const GlobalProvider = ({ children }) => {
     setBookmarks,
     bookmarkLength,
     setBookmarkLength,
+    searchLoader,
+    setSearchLoader,
   }
 
   return (

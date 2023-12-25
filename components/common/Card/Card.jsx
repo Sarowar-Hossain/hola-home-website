@@ -24,13 +24,18 @@ const Card = ({ property }) => {
   const swiperRef = useRef(null)
   const { openModal, setModalView, closeModal } = useUI()
   const {
-    images,
-    reviews,
-    hostType,
-    hotelName,
+    imageUrlList,
+    totalRating,
+    averageRating,
+    type,
+    title,
     propertyDetails,
-    dailyCost,
-    totalCost,
+    priceOf1Day,
+    onOfBathrooms,
+    onOfBedrooms,
+    onOfBeds,
+    onOfGuests,
+    id
   } = property
 
   const handleBookMark = (id) => {
@@ -77,15 +82,16 @@ const Card = ({ property }) => {
         autoplay={{ delay: 1000 }}
         onSwiper={(swiper) => (swiperRef.current = swiper)}
       >
-        {images?.map((image, i) => (
+        {imageUrlList?.map((image, i) => (
           <SwiperSlide key={i}>
             <div>
               <Link href={`/properties/${property?.id}`}>
                 <Image
                   src={image}
-                  height={415}
+                  height={280}
                   width={415}
                   alt="Carousel Image"
+                  className='object-cover  min-h-[280px] max-h-min rounded-md'
                 />
               </Link>
             </div>
@@ -95,31 +101,30 @@ const Card = ({ property }) => {
       <div className="p-2">
         <div className="flex items-center gap-1">
           <CardStar />
-          <p className="text-xl font-semibold">5.0</p>
-          <p className="text-[#878787] font-normal">({reviews} reviews)</p>
-          <p className="italic text-[#878787] font-normal">{hostType}</p>
+          <p className="text-xl font-semibold">{averageRating}</p>
+          <p className="text-[#878787] font-normal">({totalRating} reviews)</p>
+          <p className="italic text-[#878787] font-normal">{type}</p>
         </div>
         <Link href={`/properties/${property?.id}`}>
           <p className="mt-1 text-2xl font-bold hover:text-accent-5 hover:underline">
-            {hotelName}
+            {title}
           </p>
         </Link>
-        <ul className={`mt-2 flex gap-2`}>
-          {propertyDetails?.map((detail, i) => (
-            <li key={i} className="flex items-center justify-center gap-2">
-              {detail}{' '}
-              <Dot
-                className={`w-[3px] h-[3px] ${
-                  propertyDetails?.length - 1 === i ? 'hidden' : 'inline-block'
-                }`}
-              />
-            </li>
-          ))}
+        <ul className={`mt-2 flex items-center gap-2`}>
+          <li className="flex items-center justify-center gap-2">
+            {onOfGuests} Sleeps
+            <Dot className={`w-[3px] h-[3px]`} />
+          </li>
+          <li className="flex items-center justify-center gap-2">
+            {onOfBedrooms} bedroom
+            <Dot className={`w-[3px] h-[3px]`} />
+          </li>
+          <li className="flex items-center justify-center gap-2">{onOfBeds} beds</li>
         </ul>
-        <p className="my-2 font-semibold">${dailyCost} per night</p>
+        <p className="my-2 font-semibold">${priceOf1Day} per night</p>
         <p className="text-[#878787]">
           <span className="text-2xl font-bold text-[#484C52]">
-            ${totalCost}
+            ${priceOf1Day}
           </span>{' '}
           total
         </p>
