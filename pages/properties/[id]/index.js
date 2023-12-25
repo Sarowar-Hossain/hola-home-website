@@ -1,4 +1,7 @@
 import { Layout } from '@components/common'
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+
 import {
   Cross2,
   DarkStar,
@@ -29,6 +32,7 @@ import BookingPrompt from '@components/BookingPrompt/BookingPrompt'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import { AuthContext } from 'Context/AuthProvider'
+import { Timestamp } from 'firebase/firestore';
 
 const swipeThreshold = 50
 
@@ -58,7 +62,7 @@ const DetailsPage = () => {
   const { setModalView, openModal } = useUI()
 
   const [startDate, setStartDate] = useState()
-  const [endDate, setEndDate] = useState()
+  const [endDate, setEndDate] = useState(new Date())
   const [selectedAdults, setSelectedAdults] = useState(2)
   const [selectedChildren, setSelectedChildren] = useState(0)
   const [selectedStayType, setSelectedStayType] = useState('')
@@ -101,16 +105,33 @@ const DetailsPage = () => {
     }
   }
 
+  const formatDate = (date) => {
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: 'numeric',
+      timeZoneName: 'short'
+    };
+
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
+  };
+
   const handleBookNow = () => {
-    // if (
-    //   bookingData?.checkIN === undefined ||
-    //   bookingData?.checkOut === undefined
-    // ) {
-    //   return CustomErrorToast(`Please add dates to view availability!`)
-    // }
-    openModal(), setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW')
-    setIsDateAvailableDates(true)
+    if (!user) {
+      openModal(), setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW');
+      setIsDateAvailableDates(true);
+    } else {
+      if (!startDate || !endDate) {
+        toast.error('Please provide your check in and check out date')
+      } else {
+        console.log(formatDate(startDate));
+      }
+    }
   }
+
 
   const openImageModal = (index) => {
     setCurrentImageIndex(index)

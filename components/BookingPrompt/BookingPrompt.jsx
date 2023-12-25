@@ -20,6 +20,9 @@ const BookingPrompt = ({
   setSelectedAdults,
   setSelectedChildren,
 }) => {
+
+  console.log(startDate)
+  console.log(endDate)
   const router = useRouter()
   const [dropdownActive, setDropdownActive] = useState(false)
   const handleStay = (s) => {
