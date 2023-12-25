@@ -255,9 +255,7 @@ const MyProfile = () => {
                         ) : (
                           <button
                             onClick={() => setIsDobEdit(true)}
-                            className={`cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline ${
-                              data?.authType === 'email' && 'hidden'
-                            }`}
+                            className={`cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline`}
                             title="Edit Name"
                           >
                             Edit
