@@ -19,6 +19,7 @@ const MyProfile = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const router = useRouter()
   const [isNameEdit, setIsNameEdit] = useState(false)
+  const [isDobEdit, setIsDobEdit] = useState(false)
   const [isEmailEdit, setIsEmailEdit] = useState(false)
   const [isPhoneNoEdit, setIsPhoneNoEdit] = useState(false)
   const [imageEdit, setImageEdit] = useState(false)
@@ -41,10 +42,11 @@ const MyProfile = () => {
         setData(response.data)
         setEditedData({
           id: response?.data?.uid,
-          fullName: response.data.name,
-          phoneNo: response.data.phoneNumber,
-          email: response.data.email,
-          dpUrl: response.data.dpUrl,
+          fullName: response?.data?.name,
+          phoneNo: response?.data?.phoneNumber,
+          email: response?.data?.email,
+          dpUrl: response?.data?.dpUrl,
+          dob: response?.data?.dob,
         })
       } catch (error) {
         console.error('Error fetching user data:', error)
@@ -83,18 +85,37 @@ const MyProfile = () => {
     }
   }
 
-  console.log(editedData)
-
   const validateAndSave = async () => {
     let newValidations = {}
 
-    if (isNameEdit || isPhoneNoEdit || isEmailEdit || imageEdit) {
+    const isValidDob = (dob) => {
+      const today = new Date()
+      const birthDate = new Date(dob)
+      const oldestValidDate = new Date()
+      oldestValidDate.setFullYear(oldestValidDate.getFullYear() - 120)
+      if (isNaN(birthDate.getTime())) {
+        return false
+      }
+      if (birthDate >= today || birthDate < oldestValidDate) {
+        return false
+      }
+      return true
+    }
+
+    if (isNameEdit || isPhoneNoEdit || isEmailEdit || imageEdit || isDobEdit) {
       if (
         isNameEdit &&
         editedData?.fullName &&
         editedData.fullName.length < 3
       ) {
         newValidations.fullName = 'Name must be at least 3 characters!'
+      }
+      if (
+        isDobEdit &&
+        editedData?.dob &&
+        !isValidDob(editedData.dob) // Assuming isValidDob is a function you've defined
+      ) {
+        newValidations.dob = 'Please enter a valid date of birth!'
       }
       if (
         isEmailEdit &&
@@ -112,9 +133,7 @@ const MyProfile = () => {
       ) {
         newValidations.phoneNo = 'Please enter a valid phone number!'
       }
-
       setValidations(newValidations)
-
       if (Object.keys(newValidations).length === 0) {
         setLoading(true)
         try {
@@ -126,10 +145,12 @@ const MyProfile = () => {
               phoneNumber: editedData?.phoneNo,
               email: editedData?.email,
               dpUrl: editedData?.dpUrl,
+              dob: editedData?.dob,
             }
           )
           toast.success('User updated successfully!')
           setIsNameEdit(false)
+          setIsDobEdit(false)
           setIsEmailEdit(false)
           setIsPhoneNoEdit(false)
           setImageEdit(false)
@@ -212,6 +233,58 @@ const MyProfile = () => {
                       <p className="text-red text-sm">
                         {validations?.fullName}
                       </p>
+                    )}
+                  </div>
+                </div>
+
+                <hr />
+
+                <div className="flex justify-between ">
+                  <div className="text-base md:text-2xl w-full">
+                    <div className="flex items-center justify-between ">
+                      <h1 className="text-2xl">Date of birth</h1>
+                      <p>
+                        {isDobEdit ? (
+                          <button
+                            onClick={() => setIsDobEdit(false)}
+                            className="cursor-pointer text-base font-semibold px-3 h-6 rounded-lg bg-primary"
+                            title="Save Name"
+                          >
+                            Cancel
+                          </button>
+                        ) : (
+                          <button
+                            onClick={() => setIsDobEdit(true)}
+                            className={`cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline ${
+                              data?.authType === 'email' && 'hidden'
+                            }`}
+                            title="Edit Name"
+                          >
+                            Edit
+                          </button>
+                        )}
+                      </p>
+                    </div>
+                    <input
+                      readOnly={`${isDobEdit ? '' : 'readOnly'}`}
+                      className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full ${
+                        isDobEdit
+                          ? 'focus:outline-none  bg-accent-2  rounded-lg ps-4'
+                          : 'bg-white'
+                      }`}
+                      placeholder="Provide your date of birth"
+                      type="date"
+                      value={editedData?.dob}
+                      onChange={(e) => {
+                        setEditedData({
+                          ...editedData,
+                          dob: e.target.value.trim(),
+                        })
+                        handleInputChange('dob', e.target.value.trim())
+                      }}
+                    />
+                    {isDobEdit && validations.dob && (
+                      <p className="text-red text-sm">{validations.dob}</p>
                     )}
                   </div>
                 </div>
@@ -339,7 +412,8 @@ const MyProfile = () => {
                   {(isNameEdit ||
                     isPhoneNoEdit ||
                     isEmailEdit ||
-                    imageEdit) && (
+                    imageEdit ||
+                    isDobEdit) && (
                     <Button
                       loading={loading}
                       onClick={validateAndSave}

@@ -7,7 +7,7 @@ import Link from 'next/link'
 import React, { useContext, useState, useEffect, useRef } from 'react'
 
 const NavDropDown = () => {
-  const {user} = useContext(AuthContext)
+  const { user } = useContext(AuthContext)
   const { isMenuOpen, setIsMenuOpen, setIsLogoutModalShow } =
     useContext(GlobalContext)
   const { openModal, setModalView, closeModal } = useUI()
@@ -51,31 +51,67 @@ const NavDropDown = () => {
       ref={dropdownRef}
       className="w-[150px] bg-white rounded-lg z-50 shadow-xl"
     >
-      {MenuLinks.map((item, index) => {
-        return (
-          <div
-            key={index}
-            className="border-b h-12 w-full flex items-center font-medium text-[#848484] hover:text-primary"
-            onClick={() => {
-              isMenuOpen && item.href !== '/help' ? handleDropMenu() : toggle()
-            }}
-          >
-            <Link
-              href={item.href === '/help' ? '' : item.href}
-              className="px-3 flex items-center justify-between w-full"
-            >
-              {item.name}
-              {item.href === '/help' && (
-                <ChevronDown
-                  className={`duration-200 ${
-                    isHelpOpen ? 'rotate-180 ' : 'rotate-0'
-                  }`}
-                />
-              )}
-            </Link>
-          </div>
-        )
-      })}
+      {user ? (
+        <>
+          {MenuLinks.map((item, index) => {
+            return (
+              <div
+                key={index}
+                className="border-b h-12 w-full flex items-center font-medium text-[#848484] hover:text-primary"
+                onClick={() => {
+                  isMenuOpen && item.href !== '/help'
+                    ? handleDropMenu()
+                    : toggle()
+                }}
+              >
+                <Link
+                  href={item.href === '/help' ? '' : item.href}
+                  className="px-3 flex items-center justify-between w-full"
+                >
+                  {item.name}
+                  {item.href === '/help' && (
+                    <ChevronDown
+                      className={`duration-200 ${
+                        isHelpOpen ? 'rotate-180 ' : 'rotate-0'
+                      }`}
+                    />
+                  )}
+                </Link>
+              </div>
+            )
+          })}
+        </>
+      ) : (
+        <>
+          {MenuLinks.slice(4).map((item, index) => {
+            return (
+              <div
+                key={index}
+                className="border-b h-12 w-full flex items-center font-medium text-[#848484] hover:text-primary"
+                onClick={() => {
+                  isMenuOpen && item.href !== '/help'
+                    ? handleDropMenu()
+                    : toggle()
+                }}
+              >
+                <Link
+                  href={item.href === '/help' ? '' : item.href}
+                  className="px-3 flex items-center justify-between w-full"
+                >
+                  {item.name}
+                  {item.href === '/help' && (
+                    <ChevronDown
+                      className={`duration-200 ${
+                        isHelpOpen ? 'rotate-180 ' : 'rotate-0'
+                      }`}
+                    />
+                  )}
+                </Link>
+              </div>
+            )
+          })}
+        </>
+      )}
       {isHelpOpen && (
         <div className="">
           {HelpNavLink.map((item, index) => {

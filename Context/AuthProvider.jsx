@@ -10,6 +10,7 @@ import {
   signOut,
 } from 'firebase/auth'
 import app from '@config/firebase.config'
+import { useRouter } from 'next/router'
 
 export const AuthContext = createContext()
 const auth = getAuth(app)
@@ -17,6 +18,7 @@ const auth = getAuth(app)
 const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
+  const router = useRouter()
   const providerLogin = (provider) => {
     setLoading(true)
     return signInWithPopup(auth, provider)
@@ -31,6 +33,7 @@ const AuthProvider = ({ children }) => {
   const logOut = () => {
     setLoading(true)
     localStorage.removeItem('userId')
+    router.push('/')
     return signOut(auth)
   }
 
