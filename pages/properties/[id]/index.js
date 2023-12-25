@@ -62,7 +62,7 @@ const DetailsPage = () => {
   const { setModalView, openModal } = useUI()
 
   const [startDate, setStartDate] = useState()
-  const [endDate, setEndDate] = useState(new Date())
+  const [endDate, setEndDate] = useState()
   const [selectedAdults, setSelectedAdults] = useState(2)
   const [selectedChildren, setSelectedChildren] = useState(0)
   const [selectedStayType, setSelectedStayType] = useState('')
@@ -71,6 +71,8 @@ const DetailsPage = () => {
   const [profileView, setProfileView] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const [responseData, setResponseData] = useState()
 
   //this function will used for handle the bookmark
   //onClick={() => handleBookMark(data)}
@@ -105,32 +107,36 @@ const DetailsPage = () => {
     }
   }
 
-  const formatDate = (date) => {
-    const options = {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      second: 'numeric',
-      timeZoneName: 'short'
-    };
-
-    return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
-  };
-
-  const handleBookNow = () => {
+  const handleBookNow = async () => {
+    setResponseData({})
     if (!user) {
-      openModal(), setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW');
+      openModal();
+      setModalView('PROPERTY_DETAILS_PAGE_LOG_VIEW');
       setIsDateAvailableDates(true);
     } else {
       if (!startDate || !endDate) {
-        toast.error('Please provide your check in and check out date')
+        toast.error('Please select your targeted date');
       } else {
-        console.log(formatDate(startDate));
+        setLoading(true);
+        try {
+          const startTimestamp = Timestamp.fromDate(new Date(startDate));
+          const endTimestamp = Timestamp.fromDate(new Date(endDate));
+
+          const res = await axios.post(baseUrl + '/BookingApis/check-booking', {
+            propertyId: router.query.id,
+            checkInDate: startTimestamp,
+            checkOutDate: endTimestamp
+          });
+
+          setResponseData(res);
+          setLoading(false);
+        } catch (err) {
+          console.error(err);
+          setLoading(false);
+        }
       }
     }
-  }
+  };
 
 
   const openImageModal = (index) => {
@@ -393,7 +399,7 @@ const DetailsPage = () => {
               />
             </div>
           </div>
-          <BookingPrompt startDate={startDate} endDate={endDate} selectedAdults={selectedAdults} selectedChildren={selectedChildren} selectedStayType={selectedStayType} handleBookNow={handleBookNow} isDateAvailableDates={isDateAvailableDates} setStartDate={setStartDate} setEndDate={setEndDate} setSelectedChildren={setSelectedChildren} setSelectedAdults={setSelectedAdults} setSelectedStayType={setSelectedStayType} />
+          <BookingPrompt startDate={startDate} endDate={endDate} selectedAdults={selectedAdults} selectedChildren={selectedChildren} selectedStayType={selectedStayType} handleBookNow={handleBookNow} isDateAvailableDates={isDateAvailableDates} setStartDate={setStartDate} setEndDate={setEndDate} setSelectedChildren={setSelectedChildren} setSelectedAdults={setSelectedAdults} setSelectedStayType={setSelectedStayType} loading={loading} bookingStatus={responseData} />
         </div>
       </Container>
       {profileView && (

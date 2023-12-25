@@ -15,7 +15,7 @@ import toast from 'react-hot-toast'
 import axios from 'axios'
 import { AuthContext } from 'Context/AuthProvider'
 
-const Card = ({ property, refetch }) => {
+const Card = ({ property }) => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const [bookmark, setBookmark] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
@@ -40,7 +40,7 @@ const Card = ({ property, refetch }) => {
     onOfBedrooms,
     onOfBeds,
     onOfGuests,
-    id
+    id,
   } = property
 
   const handleBookmarkMain = async (id) => {
@@ -61,7 +61,6 @@ const Card = ({ property, refetch }) => {
             newPropertyIds: newBookmarkIds,
           }
         )
-        refetch()
         toast.success('Bookmark successfully added')
       } catch (error) {
         console.log(error)
@@ -121,7 +120,7 @@ const Card = ({ property, refetch }) => {
                   height={280}
                   width={415}
                   alt="Carousel Image"
-                  className='object-cover  min-h-[280px] max-h-min rounded-md'
+                  className="object-cover  min-h-[280px] max-h-min rounded-md"
                 />
               </Link>
             </div>
@@ -149,7 +148,9 @@ const Card = ({ property, refetch }) => {
             {onOfBedrooms} bedroom
             <Dot className={`w-[3px] h-[3px]`} />
           </li>
-          <li className="flex items-center justify-center gap-2">{onOfBeds} beds</li>
+          <li className="flex items-center justify-center gap-2">
+            {onOfBeds} beds
+          </li>
         </ul>
         <p className="my-2 font-semibold">${priceOf1Day} per night</p>
         <p className="text-[#878787]">

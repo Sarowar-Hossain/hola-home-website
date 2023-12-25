@@ -19,10 +19,9 @@ const BookingPrompt = ({
   setEndDate,
   setSelectedAdults,
   setSelectedChildren,
+  loading,
+  bookingStatus,
 }) => {
-
-  console.log(startDate)
-  console.log(endDate)
   const router = useRouter()
   const [dropdownActive, setDropdownActive] = useState(false)
   const handleStay = (s) => {
@@ -178,18 +177,24 @@ const BookingPrompt = ({
         </div>
       )}
       <Button
+        loading={loading}
         className="w-full text-[#484C52]"
         variant=""
         onClick={handleBookNow}
-        
       >
         Book Now
       </Button>
-      {isDateAvailableDates && (
-        <p className="text-[#5FC85DE5] text-center">
-          Available for these dates.
-        </p>
-      )}
+      <div className="text-center">
+        {bookingStatus?.data && (
+          <Text
+            className={`${
+              bookingStatus.status === 400 ? 'text-red' : 'text-green'
+            }`}
+          >
+            {bookingStatus?.data}
+          </Text>
+        )}
+      </div>
     </div>
   )
 }
