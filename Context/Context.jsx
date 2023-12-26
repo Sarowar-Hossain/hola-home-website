@@ -19,8 +19,8 @@ export const GlobalProvider = ({ children }) => {
   const [bookmarkList, setBookMarkList] = useState([])
   const [currentBookMarkItem, setCurrentBookmarkItem] = useState(null)
   const [bookmarkLength, setBookmarkLength] = useState()
-  console.log(bookmarkLength)
-  console.log(bookmarkList?.length)
+  // console.log(bookmarkLength)
+  // console.log(bookmarkList?.length)
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
   const [searchLoader, setSearchLoader] = useState(false)
@@ -28,7 +28,7 @@ export const GlobalProvider = ({ children }) => {
   const [searchSuggestionShow, setSearchSuggestionShow] = useState(false)
   const [searchResult, setSearchResult] = useState([])
   // all property data
-  const [properties, setProperties] = useState(allProperty)
+  const [properties, setProperties] = useState([])
 
   // booking data store
   const [bookingData, setBookingData] = useState({

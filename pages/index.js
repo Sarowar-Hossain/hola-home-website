@@ -8,6 +8,7 @@ import { AuthContext } from 'Context/AuthProvider';
 export default function Home() {
   const { user } = useContext(AuthContext);
   const { setBookMarkList, setBookmarkLength } = useContext(GlobalContext);
+  
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const fetchBookmarks = async () => {
