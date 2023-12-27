@@ -18,8 +18,11 @@ import Sidebar from '../Sidebar/Sidebar'
 import { MenuIcon } from 'lucide-react'
 import NavDropDown from './NavDropDown'
 import { GlobalContext } from 'Context/Context'
+import { useRouter } from 'next/router'
+import { AuthContext } from 'Context/AuthProvider'
 
 const UserNav = ({ className }) => {
+  const router = useRouter()
   const {
     openModal,
     setSidebarView,
@@ -31,7 +34,7 @@ const UserNav = ({ className }) => {
   } = useUI()
   const { isMenuOpen, setIsMenuOpen } = useContext(GlobalContext)
 
-  const { data: user } = useSession()
+  const { user } = useContext(AuthContext)
   const DropdownTrigger = user ? DropdownTriggerInst : React.Fragment
 
   const handleDropDown = () => {
@@ -75,7 +78,7 @@ const UserNav = ({ className }) => {
               aria-label="Menu"
               className={`${s.avatarButton} cursor-pointer `}
               onClick={() => {
-                user ? null : openModal()
+                user ? router.push('/profile') : openModal()
                 setModalView('LOGIN_VIEW')
               }}
             >
