@@ -1,20 +1,68 @@
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Properties from '@components/Home/Properties/Properties';
 import { GlobalContext } from 'Context/Context';
 import { AuthContext } from 'Context/AuthProvider';
 import useGeolocation from '@lib/hooks/useGeolocation';
+import fetchGeolocation from '@lib/functions/fetchGeolocation';
+import { useUI } from '@components/ui';
 
 export default function Home() {
   const { user } = useContext(AuthContext);
+  const { setModalView, openModal } = useUI()
   const { setBookMarkList, setBookmarkLength } = useContext(GlobalContext);
-  const { location, error, isLocationAllowed } = useGeolocation()
-  console.log(location)
-  console.log(error)
-  console.log(isLocationAllowed)
+  const [fetchLocation, setFetchLocation] = useState(false)
+  const [fetchLocationManual, setFetchLocationManual] = useState(false)
+  const [locationData, setLocationData] = useState({ location: null, error: null });
 
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+
+  useEffect(() => {
+    const getLocationData = async () => {
+      try {
+        const result = await fetchGeolocation(fetchLocation, fetchLocationManual, openModal, setModalView);
+        if (result.error) {
+          setLocationData({ location: null, error: result.error });
+        } else {
+          setLocationData({ location: result, error: null });
+        }
+      } catch (error) {
+        setLocationData({ location: null, error: error.message });
+      }
+    };
+
+    if (fetchLocation) {
+      getLocationData();
+    }
+  }, [fetchLocation, openModal, setModalView]);
+
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.post(
+          `${baseUrl}/manageUsersApis/check-user`,
+          {
+            id: user?.uid,
+          }
+        )
+        if (Object.keys(response?.data?.fetchedLocation).length === 0) {
+          setFetchLocation(true)
+        }
+        if ((Object.keys(response?.data?.geoPoint) === 0) || (response?.data?.locationEnteredByUser === "")) {
+          setFetchLocationManual(true)
+        }
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      } finally {
+
+      }
+    }
+    if (user?.uid) {
+      fetchUserData()
+    }
+  }, [user?.uid, baseUrl])
 
   const fetchBookmarks = async () => {
     const id = localStorage.getItem('userId');

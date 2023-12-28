@@ -2,15 +2,19 @@ import React, { useState, useEffect, useRef } from 'react'
 import axios from 'axios'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
-import { Button } from '@components/ui'
+import { Button, useUI } from '@components/ui'
+import toast from 'react-hot-toast'
 
 const LocationProviderModal = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+  const [loading, setLoading] = useState(false)
   const [location, setLocation] = useState('')
   const [suggestions, setSuggestions] = useState([])
   const [coords, setCoords] = useState({ lat: null, lon: null }) // State for coordinates
   const [mapInstance, setMapInstance] = useState(null)
   const mapRef = useRef(null)
   const markerRef = useRef(null)
+  const { setModalView, closeModal } = useUI()
 
   useEffect(() => {
     if (typeof window !== 'undefined' && !mapInstance) {
@@ -79,20 +83,32 @@ const LocationProviderModal = () => {
     }
   }
 
-  // Function to format coordinates
-  const formatCoords = (lat, lon) => {
-    const latDirection = lat >= 0 ? 'N' : 'S'
-    const lonDirection = lon >= 0 ? 'E' : 'W'
-    return `[${Math.abs(lat).toFixed(6)}° ${latDirection}, ${Math.abs(
-      lon
-    ).toFixed(6)}° ${lonDirection}]`
-  }
-
-  const handleSubmit = () => {
-    const formattedCoords = formatCoords(coords.lat, coords.lon)
-    console.log('Location:', location)
-    console.log('Coordinates:', formattedCoords)
-    // Submit these details as needed
+  const handleSubmit = async () => {
+    if (location === '') {
+      toast.error('Please provide your location')
+    } else {
+      try {
+        setLoading(true)
+        const userId = localStorage.getItem('userId')
+        const response = await axios.post(
+          baseUrl + '/manageUsersApis/update-provided-location',
+          {
+            id: userId,
+            location,
+            coords,
+          }
+        )
+        toast.success('Thanks, Your location added successfully!')
+        setLoading(false)
+        closeModal()
+      } catch (error) {
+        setLoading(false)
+        console.error(error)
+        toast.error('Failed to submit your location')
+      } finally {
+        setLoading(false)
+      }
+    }
   }
 
   return (
@@ -122,7 +138,7 @@ const LocationProviderModal = () => {
         <div ref={mapRef} className="w-full h-96" />
       </div>
       <div className="text-center">
-        <Button onClick={handleSubmit} className="mt-5">
+        <Button loading={loading} onClick={handleSubmit} className="mt-5">
           Submit
         </Button>
       </div>
