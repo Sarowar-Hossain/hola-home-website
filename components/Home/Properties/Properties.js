@@ -26,18 +26,25 @@ const Properties = ({ refetch }) => {
     setSearchSuggestionShow,
     searchLoader,
     setSearchLoader,
+    filterQuery,
+    isThereIsAnyFilterQuery,
+    queryURL,
   } = useContext(GlobalContext)
   const [searchText, setSearchText] = useState(null)
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   // const baseUrl = 'http://localhost:5001/hola-home/us-central1'
-  const apiUrl = `${baseUrl}/propertiesApis?limit=${limit}`
+  const urlWithoutQuery = `${baseUrl}/propertiesApis?limit=${limit}`
 
   const fetcher = (url) => fetch(url).then((res) => res.json())
 
-  const { data, error, isLoading } = useSWR(apiUrl, fetcher)
+  const { data, error, isLoading } = useSWR(
+    () =>
+      isThereIsAnyFilterQuery ? urlWithoutQuery + queryURL : urlWithoutQuery,
+    fetcher
+  )
 
   const combinedDataLength =
-    // searchResult?.length || properties?.length || 
+    // searchResult?.length || properties?.length ||
     data?.Data?.length
 
   const handleOpenFilters = () => {

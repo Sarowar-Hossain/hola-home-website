@@ -14,7 +14,7 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
     setSearchSuggestion,
     setSearchResult,
     setSearchSuggestionShow,
-    setSearchLoader,
+    setSearchLoader
   } = useContext(GlobalContext)
 
   // const baseUrl = 'http://localhost:5001/hola-home/us-central1'
