@@ -1,7 +1,9 @@
 import Image from 'next/image';
 import { Button } from "@components/ui";
+import { useRouter } from 'next/router';
 
 const index = () => {
+    const router = useRouter()
     return (
         <div className="container mx-auto mt-20 lg:w-[60%] 2xl:w-[45%] ">
             {" "}
@@ -24,7 +26,7 @@ const index = () => {
             <div className="flex items-center justify-center mt-7 ">
                 {" "}
                 <Button
-                    className=" px-6 py-2 rounded-md text-lg font-medium bg-primary "
+                    className=" px-6 py-2 rounded-md text-lg font-medium bg-primary " onClick={() => router.push("/profile")}
                 >
                     Back to home
                 </Button>
