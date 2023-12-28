@@ -13,6 +13,7 @@ export default function Home() {
   console.log(location)
   console.log(error)
   console.log(isLocationAllowed)
+
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const fetchBookmarks = async () => {
