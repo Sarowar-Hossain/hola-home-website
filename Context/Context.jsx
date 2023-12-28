@@ -19,16 +19,31 @@ export const GlobalProvider = ({ children }) => {
   const [bookmarkList, setBookMarkList] = useState([])
   const [currentBookMarkItem, setCurrentBookmarkItem] = useState(null)
   const [bookmarkLength, setBookmarkLength] = useState()
-  console.log(bookmarkLength)
-  console.log(bookmarkList?.length)
+
   //   Search state
   const [showSearch, setShowSearch] = useState(false)
   const [searchLoader, setSearchLoader] = useState(false)
   const [searchSuggestion, setSearchSuggestion] = useState([])
   const [searchSuggestionShow, setSearchSuggestionShow] = useState(false)
   const [searchResult, setSearchResult] = useState([])
+
+  //filter sate
+  const [filterQuery, setFilterQuery] = useState(null)
+  const [isThereIsAnyFilterQuery, setIsThereIsAnyFilterQuery] = useState(false)
+  const [queryURL, setQueryURL] = useState()
+
+  const [selectedPropertyType, setSelectedPropertyType] = useState(null)
+  const [amenitiesSelected, setAmenitiesSelected] = useState([])
+  const [selectedBedRooms, setSelectedBedRooms] = useState(0)
+  const [selectedBathRooms, setSelectedBathRooms] = useState(0)
+  const [price, setPrice] = useState({
+    minPrice: 0,
+    maxPrice: 500,
+  })
+  const [stayType, setStayType] = useState(null)
+
   // all property data
-  const [properties, setProperties] = useState(allProperty)
+  const [properties, setProperties] = useState([])
 
   // booking data store
   const [bookingData, setBookingData] = useState({
@@ -107,6 +122,24 @@ export const GlobalProvider = ({ children }) => {
     setBookmarkLength,
     searchLoader,
     setSearchLoader,
+    isThereIsAnyFilterQuery,
+    setIsThereIsAnyFilterQuery,
+    filterQuery,
+    setFilterQuery,
+    queryURL,
+    setQueryURL,
+    selectedPropertyType,
+    setSelectedPropertyType,
+    amenitiesSelected,
+    setAmenitiesSelected,
+    selectedBedRooms,
+    setSelectedBedRooms,
+    selectedBathRooms,
+    setSelectedBathRooms,
+    price,
+    setPrice,
+    stayType,
+    setStayType,
   }
 
   return (

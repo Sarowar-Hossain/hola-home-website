@@ -7,7 +7,7 @@ const CardSkeleton = ({ data }) => {
         return (
           <div
             key={index}
-            className="w-[380px] p-4 border border-gray-300 rounded shadow animate-pulse md:p-6"
+            className="w-[340px] border border-gray-300 rounded-xl shadow animate-pulse"
           >
             <div className="flex items-center justify-center h-48 mb-4 bg-gray-300 rounded">
               <svg

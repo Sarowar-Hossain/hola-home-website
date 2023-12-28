@@ -10,47 +10,46 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
 
   const {
     properties,
+    setProperties,
     setSearchSuggestion,
     setSearchResult,
     setSearchSuggestionShow,
-    setSearchLoader,
+    setSearchLoader
   } = useContext(GlobalContext)
 
+  // const baseUrl = 'http://localhost:5001/hola-home/us-central1'
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+  const apiUrl = `${baseUrl}/propertiesApis?searchTerms=${searchText}`
   const fetcher = (url) => fetch(url).then((res) => res.json())
-  const apiUrl = `https://us-central1-hola-home.cloudfunctions.net/propertiesApis?searchTerms=${searchText}`
-  const { data: apiSearchResult, error: apiError } = useSWR(apiUrl, fetcher)
+  const { data: apiSearchResult, error: apiError, isLoading } = useSWR(apiUrl, fetcher)
 
   useEffect(() => {
     if (apiSearchResult) {
-      if (!apiSearchResult) {
+      if (isLoading) {
         setSearchLoader(true)
       }
-      if (apiSearchResult?.Data?.length > 0) {
+      if (apiSearchResult?.Data?.length) {
+        setProperties(apiSearchResult.Data)
         setSearchLoader(false)
       }
-      console.log(apiSearchResult?.Data)
     }
-  }, [apiSearchResult])
+  }, [
+    // apiSearchResult, 
+    searchText])
 
   const handleSearchSuggestion = async (searchData) => {
     if (searchData.length) {
       setSearchText(searchData)
       setSearchSuggestionShow(true)
       const refinedSearchResult = apiSearchResult?.Data?.map(
-        ({ title, id, country, city }) => ({
+        ({ title, id, country, city, area }) => ({
           id,
           title,
           country,
           city,
+          area,
         })
       )
-      // const refinedSearchResult = searchResult.map(
-      //   ({ hotelName, id, location }) => ({
-      //     id,
-      //     hotelName,
-      //     location,
-      //   })
-      // )
       setSearchSuggestion(refinedSearchResult)
     } else {
       setSearchSuggestionShow(false)
@@ -62,19 +61,11 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
   const handleSearchResult = () => {
     if (searchText?.length) {
       setSearchSuggestionShow(false)
-      const searchResult = properties.filter((property) => {
-        const matchesHotelName = property.hotelName
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
-        const matchesLocation = property.location
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
-        return matchesHotelName || matchesLocation
-      })
-      // setSearchSuggestion([])
-      setSearchResult(searchResult)
-    } else {
+      setSearchResult(apiSearchResult?.Data)
+    } 
+    else {
       setSearchResult([])
+      console.log("please enter text for searching")
     }
   }
 

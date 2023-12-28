@@ -106,6 +106,16 @@ const LoginNavigate = dynamic(
     ...dynamicProps,
   }
 )
+const LocationProviderModal = dynamic(
+  () =>
+    import(
+      '@components/ModalComponent/LocationProviderModal/LocationProviderModal'
+    ),
+  {
+    ...dynamicProps,
+    ssr: false,
+  }
+)
 const FeatureBar = dynamic(() => import('@components/common/FeatureBar'), {
   ...dynamicProps,
 })
@@ -135,8 +145,9 @@ const ModalView = ({ modalView, closeModal }) => {
       {modalView === 'FILTERS_VIEW' && <FilterModalView />}
       {modalView === 'CONTACT_US' && <ContactUsModalView />}
       {modalView === 'DELETE_MODAL' && <DeleteModalView />}
-      {modalView === 'NAVIGATE_LOGIN' && < LoginNavigate/>}
-      {modalView === 'CANCEL_BOOKING' && < CancelBooking/>}
+      {modalView === 'NAVIGATE_LOGIN' && <LoginNavigate />}
+      {modalView === 'CANCEL_BOOKING' && <CancelBooking />}
+      {modalView === 'LOCATION_PROVIDER_VIEW' && <LocationProviderModal />}
     </Modal>
   )
 }
@@ -196,7 +207,7 @@ const Layout = ({ children }) => {
     <>
       <div className={cn(s.root)}>
         <Toaster position="top-center" />
-        <div className='mb-[120px]'>
+        <div className="mb-[120px]">
           <Navbar />
         </div>
         <main className="fit min-h-screen">{children}</main>

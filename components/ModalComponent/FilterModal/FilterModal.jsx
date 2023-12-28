@@ -1,172 +1,34 @@
-import {
-  ActivityArea,
-  AirConditioner,
-  BeachAccess,
-  Cabin,
-  CamperVan,
-  CarbonMonoxideAlarm,
-  Cross3,
-  DedicatedWorkplace,
-  FireExtinguisher,
-  FirePit,
-  FirstAidKit,
-  Flat,
-  GuestHouse,
-  Gym,
-  HotTub,
-  Hotel,
-  House,
-  HouseBoat,
-  IndoorFireplace,
-  Kitchen,
-  Parking,
-  Patio,
-  Pool,
-  PoolTable,
-  SmokeDetector,
-  TV,
-  Villa,
-  WashingMachine,
-  Wifi,
-} from '@components/icons'
+import { Cross3 } from '@components/icons'
 import { Button, Text, useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
-import Image from 'next/image'
+import axios from 'axios'
+import { amenities, types } from 'data/FilterData'
 import React, { useContext, useState } from 'react'
 import toast from 'react-hot-toast'
-
-const types = [
-  {
-    logo: <House />,
-    name: 'House',
-  },
-  {
-    logo: <Flat />,
-    name: 'Flat',
-  },
-  {
-    logo: <Villa />,
-    name: 'Villa',
-  },
-  {
-    logo: <GuestHouse />,
-    name: 'Guest House',
-  },
-  {
-    logo: <CamperVan />,
-    name: 'Campervan',
-  },
-  {
-    logo: <Hotel />,
-    name: 'Hotel',
-  },
-  {
-    logo: <Cabin />,
-    name: 'Cabin',
-  },
-  {
-    logo: <HouseBoat />,
-    name: 'House Boat',
-  },
-]
-const amenities = [
-  {
-    logo: <Wifi />,
-    name: 'WIFI',
-  },
-  {
-    logo: <TV />,
-    name: 'TV',
-  },
-  {
-    logo: <Kitchen />,
-    name: 'Kitchen',
-  },
-  {
-    logo: <WashingMachine />,
-    name: 'Washing Machine',
-  },
-  {
-    logo: <Parking />,
-    name: 'Parking',
-  },
-  {
-    logo: <AirConditioner />,
-    name: 'Air Conditioner',
-  },
-  {
-    logo: <DedicatedWorkplace />,
-    name: 'Dedicated Workplace',
-  },
-  {
-    logo: <Pool />,
-    name: 'Pool',
-  },
-  {
-    logo: <HotTub />,
-    name: 'Hot Tub',
-  },
-  {
-    logo: <Patio />,
-    name: '',
-  },
-  {
-    logo: <Patio />,
-    name: 'Patio',
-  },
-  {
-    logo: <FirePit />,
-    name: 'Fire Pit',
-  },
-  {
-    logo: <PoolTable />,
-    name: 'Pool Table',
-  },
-  {
-    logo: <IndoorFireplace />,
-    name: 'Indoor Fireplace',
-  },
-  {
-    logo: <Gym />,
-    name: 'Gym',
-  },
-  {
-    logo: <BeachAccess />,
-    name: 'Beach access',
-  },
-  {
-    logo: <ActivityArea />,
-    name: 'Activity Area',
-  },
-  {
-    logo: <FirstAidKit />,
-    name: 'First Aid Kit',
-  },
-  {
-    logo: <FireExtinguisher />,
-    name: 'Fire Extinguisher',
-  },
-  {
-    logo: <CarbonMonoxideAlarm />,
-    name: 'Carbon monoxide alarm',
-  },
-  {
-    logo: <SmokeDetector />,
-    name: 'Smoke Detector',
-  },
-]
+import useSWR from 'swr'
 
 const FilterModal = () => {
   const { closeModal } = useUI()
-  const [selectedType, setSelectedType] = useState('')
+  const [selectedPropertyType, setSelectedPropertyType] = useState(null)
   const [amenitiesSelected, setAmenitiesSelected] = useState([])
-  const [selectedMin, setSelectedMin] = useState(0)
-  const [selectedMax, setSelectedMax] = useState(0)
+  const [selectedBedRooms, setSelectedBedRooms] = useState(0)
+  const [selectedBathRooms, setSelectedBathRooms] = useState(0)
+  const [price, setPrice] = useState({
+    minPrice: 0,
+    maxPrice: 500,
+  })
+  const [stayType, setStayType] = useState(null)
   const [limit, setLimit] = useState(8)
-  const { setUiLoader } = useContext(GlobalContext)
+  const {
+    setUiLoader,
+    setFilterQuery,
+    setIsThereIsAnyFilterQuery,
+    queryURL,
+    setQueryURL,
+  } = useContext(GlobalContext)
 
   const handleTypeClick = (t) => {
-    setSelectedType(t?.name)
+    setSelectedPropertyType(t?.name)
   }
 
   const handleAmenitiesClick = (name) => {
@@ -178,11 +40,15 @@ const FilterModal = () => {
     }
   }
 
+  const handleStayType = (value) => {
+    setStayType(value)
+  }
+
   const handleClearAll = () => {
-    setSelectedType('')
+    setSelectedPropertyType('')
     setAmenitiesSelected([])
-    setSelectedMin(0)
-    setSelectedMax(0)
+    setSelectedBedRooms(0)
+    setSelectedBathRooms(0)
     const inputFields = document.querySelectorAll('input[type="text"]')
     inputFields.forEach((input) => {
       input.value = ''
@@ -191,22 +57,59 @@ const FilterModal = () => {
     checkboxes.forEach((checkbox) => {
       checkbox.checked = false
     })
+    setQueryURL()
+    closeModal()
   }
 
-  const handleShowProperties = () => {
+  const handleShowProperties = async () => {
     if (
-      selectedType ||
+      selectedPropertyType ||
       amenitiesSelected.length > 0 ||
-      selectedMin > 0 ||
-      selectedMax > 0
+      selectedBedRooms > 0 ||
+      selectedBathRooms > 0 ||
+      price?.maxPrice > 0 ||
+      stayType
     ) {
-      setUiLoader(true)
+      setFilterQuery({
+        minPrice: price.minPrice,
+        maxPrice: price.maxPrice,
+        propertyType: selectedPropertyType,
+        minBedrooms: selectedBedRooms,
+        minBathRooms: selectedBathRooms,
+        stayHourly: stayType,
+      })
 
-      // Set uiLoader to false after 3 seconds
-      setTimeout(() => {
-        setUiLoader(false)
-        closeModal()
-      }, 3000)
+      const queryParams = []
+      if (selectedPropertyType) {
+        queryParams.push(
+          `propertyType=${encodeURIComponent(selectedPropertyType)}`
+        )
+      }
+      if (amenitiesSelected.length > 0) {
+        const amenitiesQueryParam = amenitiesSelected.map(
+          (amenity) => `amenities=${encodeURIComponent(amenity)}`
+        )
+        queryParams.push(...amenitiesQueryParam)
+      }
+      if (selectedBedRooms > 0) {
+        queryParams.push(`minBedrooms=${selectedBedRooms}`)
+      }
+      if (selectedBathRooms > 0) {
+        queryParams.push(`minBathRooms=${selectedBathRooms}`)
+      }
+      if (price.minPrice !== 0 || price.maxPrice !== 500) {
+        queryParams.push(
+          `minPrice=${price.minPrice}&maxPrice=${price.maxPrice}`
+        )
+      }
+      if (stayType) {
+        queryParams.push(`stayHourly=${stayType}`)
+      }
+      const queryURL = queryParams.length > 0 ? `&${queryParams.join('&')}` : '';
+      setQueryURL(queryURL)
+      setIsThereIsAnyFilterQuery(true)
+      setUiLoader(false)
+      closeModal()
     } else {
       toast.error('Please select at least one value')
       setUiLoader(false)
@@ -240,8 +143,11 @@ const FilterModal = () => {
             <legend className="pt-1 text-[12px]">Minimum</legend>
             <input
               type="number"
+              onInput={(e) =>
+                setPrice({ ...price, minPrice: parseInt(e.target.value) })
+              }
               className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
-              defaultValue={0}
+              defaultValue={price?.minPrice}
             />
             <span className="absolute left-[11px] text-lg">$</span>
           </div>
@@ -250,8 +156,11 @@ const FilterModal = () => {
             <legend className="pt-1 text-[12px]">Maximum</legend>
             <input
               type="number"
+              onInput={(e) =>
+                setPrice({ ...price, maxPrice: parseInt(e.target.value) })
+              }
               className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
-              defaultValue={500}
+              defaultValue={price?.maxPrice}
             />
             <span className="absolute left-[11px] text-lg">$</span>
           </div>
@@ -264,7 +173,7 @@ const FilterModal = () => {
                 onClick={() => handleTypeClick(t)}
                 key={i}
                 className={`w-[110px] h-[100px] hover:bg-[#FFF8DB] flex flex-col justify-center items-center border-2 hover:border-[#FCCF12] rounded-md transition-all duration-150 cursor-pointer ${
-                  selectedType === t?.name
+                  selectedPropertyType === t?.name
                     ? 'bg-[#FFF8DB] border-[#FCCF12]'
                     : 'bg-[#F7F8FA] border-accent-2'
                 }`}
@@ -282,10 +191,10 @@ const FilterModal = () => {
               {Array.from({ length: 7 }).map((_, i) => {
                 return (
                   <div
-                    onClick={() => setSelectedMin(i)}
+                    onClick={() => setSelectedBedRooms(i)}
                     key={i}
                     className={`w-7 h-7 sm:w-8 sm:h-8 border-2 flex items-center justify-center rounded-lg cursor-pointer hover:border-[#FCCF12] hover:bg-[#FFF8DB] transition-all duration-150 ${
-                      selectedMin === i
+                      selectedBedRooms === i
                         ? 'bg-[#FFF8DB] border-[#FCCF12]'
                         : 'border-[#484C52]'
                     }`}
@@ -302,10 +211,10 @@ const FilterModal = () => {
               {Array.from({ length: 7 }).map((_, i) => {
                 return (
                   <div
-                    onClick={() => setSelectedMax(i)}
+                    onClick={() => setSelectedBathRooms(i)}
                     key={i}
                     className={`w-7 h-7 sm:w-8 sm:h-8 border-2 flex items-center justify-center rounded-lg cursor-pointer hover:border-[#FCCF12] hover:bg-[#FFF8DB] transition-all duration-150 ${
-                      selectedMax === i
+                      selectedBathRooms === i
                         ? 'bg-[#FFF8DB] border-[#FCCF12]'
                         : 'border-[#484C52]'
                     }`}
@@ -334,7 +243,7 @@ const FilterModal = () => {
           <div className="flex items-center justify-between">
             <Text>Hourly (Day Use)</Text>
             <label className="checkbox-container">
-              <input type="checkbox" />
+              <input type="checkbox" onClick={() => handleStayType(true)} />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
