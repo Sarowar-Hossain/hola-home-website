@@ -14,14 +14,21 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
     setSearchSuggestion,
     setSearchResult,
     setSearchSuggestionShow,
-    setSearchLoader
+    setSearchLoader,
+    queryURL,
+    setQueryURL,
+    setIsThereIsAnyFilterQuery,
   } = useContext(GlobalContext)
 
   // const baseUrl = 'http://localhost:5001/hola-home/us-central1'
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const apiUrl = `${baseUrl}/propertiesApis?searchTerms=${searchText}`
   const fetcher = (url) => fetch(url).then((res) => res.json())
-  const { data: apiSearchResult, error: apiError, isLoading } = useSWR(apiUrl, fetcher)
+  const {
+    data: apiSearchResult,
+    error: apiError,
+    isLoading,
+  } = useSWR(apiUrl, fetcher)
 
   useEffect(() => {
     if (apiSearchResult) {
@@ -34,8 +41,9 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
       }
     }
   }, [
-    // apiSearchResult, 
-    searchText])
+    // apiSearchResult,
+    searchText,
+  ])
 
   const handleSearchSuggestion = async (searchData) => {
     if (searchData.length) {
@@ -61,11 +69,16 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
   const handleSearchResult = () => {
     if (searchText?.length) {
       setSearchSuggestionShow(false)
-      setSearchResult(apiSearchResult?.Data)
-    } 
-    else {
+      // setSearchResult(apiSearchResult?.Data)
+      setQueryURL(`&searchTerms=${searchText}`)
+      if (queryURL) {
+        setIsThereIsAnyFilterQuery(true)
+      }
+    } else {
       setSearchResult([])
-      console.log("please enter text for searching")
+      setSearchText(null)
+      setIsThereIsAnyFilterQuery(false)
+      console.log('please enter text for searching')
     }
   }
 
@@ -88,7 +101,7 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
           id={id}
           className={s.input}
           placeholder="Start your search"
-          defaultValue={router.query.q}
+          defaultValue={searchText}
           onKeyUp={handleKeyUp}
         />
       </div>

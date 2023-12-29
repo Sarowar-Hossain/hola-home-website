@@ -18,12 +18,12 @@ const FilterModal = () => {
     maxPrice: 500,
   })
   const [stayType, setStayType] = useState(null)
+  const [minRating, setMinRating] = useState(null)
   const [limit, setLimit] = useState(8)
   const {
     setUiLoader,
     setFilterQuery,
     setIsThereIsAnyFilterQuery,
-    queryURL,
     setQueryURL,
   } = useContext(GlobalContext)
 
@@ -68,7 +68,8 @@ const FilterModal = () => {
       selectedBedRooms > 0 ||
       selectedBathRooms > 0 ||
       price?.maxPrice > 0 ||
-      stayType
+      stayType ||
+      minRating > 0
     ) {
       setFilterQuery({
         minPrice: price.minPrice,
@@ -77,6 +78,7 @@ const FilterModal = () => {
         minBedrooms: selectedBedRooms,
         minBathRooms: selectedBathRooms,
         stayHourly: stayType,
+        minRating: minRating,
       })
 
       const queryParams = []
@@ -86,10 +88,10 @@ const FilterModal = () => {
         )
       }
       if (amenitiesSelected.length > 0) {
-        const amenitiesQueryParam = amenitiesSelected.map(
-          (amenity) => `amenities=${encodeURIComponent(amenity)}`
-        )
-        queryParams.push(...amenitiesQueryParam)
+        const amenitiesQueryParam = `amenities=${encodeURIComponent(
+          amenitiesSelected.join(',')
+        )}`
+        queryParams.push(amenitiesQueryParam)
       }
       if (selectedBedRooms > 0) {
         queryParams.push(`minBedrooms=${selectedBedRooms}`)
@@ -105,9 +107,15 @@ const FilterModal = () => {
       if (stayType) {
         queryParams.push(`stayHourly=${stayType}`)
       }
-      const queryURL = queryParams.length > 0 ? `&${queryParams.join('&')}` : '';
-      setQueryURL(queryURL)
-      setIsThereIsAnyFilterQuery(true)
+      if (minRating > 0) {
+        queryParams.push(`minRating=${minRating}`)
+      }
+
+      const queryURL = queryParams.length > 0 ? `&${queryParams.join('&')}` : ''
+      setQueryURL((old) => old + queryURL)
+      if (queryURL) {
+        setIsThereIsAnyFilterQuery(true)
+      }
       setUiLoader(false)
       closeModal()
     } else {
@@ -302,7 +310,11 @@ const FilterModal = () => {
           <div className="flex items-center justify-between">
             <Text>4+ stars</Text>
             <label className="checkbox-container">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                value={4}
+                onClick={(e) => setMinRating(e.target.value)}
+              />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />

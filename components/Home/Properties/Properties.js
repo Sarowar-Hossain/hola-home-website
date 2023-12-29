@@ -10,6 +10,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React, { useContext, useEffect, useState } from 'react'
 import useSWR from 'swr'
+import NotFound from './NotFound'
 
 const Properties = ({ refetch }) => {
   const router = useRouter()
@@ -43,6 +44,8 @@ const Properties = ({ refetch }) => {
     fetcher
   )
 
+  console.log(urlWithoutQuery + queryURL, isThereIsAnyFilterQuery)
+
   const combinedDataLength =
     // searchResult?.length || properties?.length ||
     data?.Data?.length
@@ -67,9 +70,9 @@ const Properties = ({ refetch }) => {
             <div className="flex flex-col items-center justify-center mb-6">
               {' '}
               <div className="relative w-full flex flex-col items-center justify-center">
-                <div className="hidden lg:inline-block w-full lg:w-1/2">
+                <div className="hidden lg:inline-block w-full lg:w-1/2 ">
                   {showSearch && (
-                    <div>
+                    <div className="flex justify-between items-center w-full">
                       <Searchbar
                         setSearchText={setSearchText}
                         searchText={searchText}
@@ -160,16 +163,45 @@ const Properties = ({ refetch }) => {
                   </div>
                 )}
               </div>
-              <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
-                {searchResult?.length > 0
-                  ? searchResult
-                      ?.slice(0, limit)
-                      .map((property, index) => (
-                        <Card property={property} key={index + 1} />
-                      ))
-                  : data?.Data.slice(0, limit).map((property, index) => (
+              <div
+                className={`mt-10  px-2 pb-10 ${
+                  data?.Data?.length > 0
+                    ? 'grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12'
+                    : ''
+                }`}
+              >
+                {data?.Data?.length > 0 ? (
+                  <>
+                    {data?.Data.slice(0, limit).map((property, index) => (
                       <Card property={property} key={index + 1} />
                     ))}
+                  </>
+                ) : (
+                  <div className="">
+                    <NotFound handleOpenFilters={handleOpenFilters} />
+                  </div>
+                )}
+                {/* {searchResult?.length > 0 ? (
+                  searchResult
+                    ?.slice(0, limit)
+                    .map((property, index) => (
+                      <Card property={property} key={index + 1} />
+                    ))
+                ) : (
+                  <>
+                    {data?.Data?.length > 0 ? (
+                      <>
+                        {data?.Data.slice(0, limit).map((property, index) => (
+                          <Card property={property} key={index + 1} />
+                        ))}
+                      </>
+                    ) : (
+                      <div className="">
+                        <NotFound handleOpenFilters={handleOpenFilters} />
+                      </div>
+                    )}
+                  </>
+                )} */}
               </div>
               {combinedDataLength > 9 && (
                 <button

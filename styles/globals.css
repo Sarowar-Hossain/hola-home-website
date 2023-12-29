@@ -52,6 +52,15 @@ body {
   }
 }
 
+.not-found-css{
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center !important;
+  justify-items: center !important;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .custom-checkbox-container input[type='checkbox'] {
   accent-color: #313c66 !important;
   mix-blend-mode: multiply;
