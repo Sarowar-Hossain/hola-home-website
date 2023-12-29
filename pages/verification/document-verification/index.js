@@ -37,7 +37,7 @@ const Index = () => {
                 To become a landlord you have to verify your identity and provide a valid ID proof. Don’t worry we won’t share the data with anyone.
             </h1>
             <div className="flex items-center justify-center mt-7">
-                <label className="px-6 py-2 rounded-md text-lg font-medium bg-primary gap-6 flex items-center">
+                <label className="cursor-pointer px-6 py-2 rounded-md text-lg font-medium bg-primary gap-6 flex items-center">
                     <input
                         type="file"
                         onChange={handleFileChange}
