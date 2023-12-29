@@ -63,7 +63,7 @@ const DetailsPage = () => {
 
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
-  const [selectedAdults, setSelectedAdults] = useState(2)
+  const [selectedAdults, setSelectedAdults] = useState(0)
   const [selectedChildren, setSelectedChildren] = useState(0)
   const [selectedStayType, setSelectedStayType] = useState('')
   const [isDateAvailableDates, setIsDateAvailableDates] = useState(false)
@@ -115,7 +115,7 @@ const DetailsPage = () => {
       setIsDateAvailableDates(true);
     } else {
       if (!startDate || !endDate) {
-        toast.error('Please select your targeted date');
+        CustomErrorToast('Please add dates to view availability');
       } else {
         setLoading(true);
         try {
