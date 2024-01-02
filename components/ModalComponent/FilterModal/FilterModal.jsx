@@ -9,22 +9,28 @@ import useSWR from 'swr'
 
 const FilterModal = () => {
   const { closeModal } = useUI()
-  const [selectedPropertyType, setSelectedPropertyType] = useState(null)
-  const [amenitiesSelected, setAmenitiesSelected] = useState([])
-  const [selectedBedRooms, setSelectedBedRooms] = useState(0)
-  const [selectedBathRooms, setSelectedBathRooms] = useState(0)
-  const [price, setPrice] = useState({
-    minPrice: 0,
-    maxPrice: 500,
-  })
-  const [stayType, setStayType] = useState(null)
-  const [minRating, setMinRating] = useState(null)
   const [limit, setLimit] = useState(8)
   const {
     setUiLoader,
     setFilterQuery,
     setIsThereIsAnyFilterQuery,
     setQueryURL,
+    maxPrice,
+    setMaxPrice,
+    minPrice,
+    setMinPrice,
+    selectedPropertyType,
+    setSelectedPropertyType,
+    selectedBedRooms,
+    setSelectedBedRooms,
+    selectedBathRooms,
+    setSelectedBathRooms,
+    stayType,
+    setStayType,
+    amenitiesSelected,
+    setAmenitiesSelected,
+    isFiltering,
+    setIsFiltering,
   } = useContext(GlobalContext)
 
   const handleTypeClick = (t) => {
@@ -45,10 +51,15 @@ const FilterModal = () => {
   }
 
   const handleClearAll = () => {
+    setAmenitiesSelected([])
+    setStayType(null)
+    setMinPrice(0)
+    setMaxPrice(500)
     setSelectedPropertyType('')
     setAmenitiesSelected([])
     setSelectedBedRooms(0)
     setSelectedBathRooms(0)
+    setIsFiltering(false)
     const inputFields = document.querySelectorAll('input[type="text"]')
     inputFields.forEach((input) => {
       input.value = ''
@@ -64,58 +75,72 @@ const FilterModal = () => {
   const handleShowProperties = async () => {
     if (
       selectedPropertyType ||
-      amenitiesSelected.length > 0 ||
+      amenitiesSelected?.length > 0 ||
       selectedBedRooms > 0 ||
       selectedBathRooms > 0 ||
-      price?.maxPrice > 0 ||
-      stayType ||
-      minRating > 0
+      maxPrice > 0 ||
+      stayType
     ) {
       setFilterQuery({
-        minPrice: price.minPrice,
-        maxPrice: price.maxPrice,
+        minPrice: minPrice,
+        maxPrice: maxPrice,
         propertyType: selectedPropertyType,
         minBedrooms: selectedBedRooms,
         minBathRooms: selectedBathRooms,
         stayHourly: stayType,
         minRating: minRating,
       })
-
+      setIsFiltering(true)
       const queryParams = []
       if (selectedPropertyType) {
         queryParams.push(
           `propertyType=${encodeURIComponent(selectedPropertyType)}`
         )
+
+        const regex = /&propertyType=[^&]*/g
+        setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex, ''))
       }
+
       if (amenitiesSelected.length > 0) {
         const amenitiesQueryParam = `amenities=${encodeURIComponent(
           amenitiesSelected.join(',')
         )}`
         queryParams.push(amenitiesQueryParam)
+
+        const regex = /&amenities=[^&]*/g
+        setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex, ''))
       }
+
       if (selectedBedRooms > 0) {
         queryParams.push(`minBedrooms=${selectedBedRooms}`)
+        const regex = /&minBedrooms=[^&]*/g
+        setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex, ''))
       }
       if (selectedBathRooms > 0) {
         queryParams.push(`minBathRooms=${selectedBathRooms}`)
+        const regex = /&minBathRooms=[^&]*/g
+        setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex, ''))
       }
-      if (price.minPrice !== 0 || price.maxPrice !== 500) {
-        queryParams.push(
-          `minPrice=${price.minPrice}&maxPrice=${price.maxPrice}`
-        )
-      }
-      if (stayType) {
-        queryParams.push(`stayHourly=${stayType}`)
-      }
-      if (minRating > 0) {
-        queryParams.push(`minRating=${minRating}`)
+      if (minPrice !== 0 || maxPrice !== 500) {
+        queryParams.push(`minPrice=${minPrice}&maxPrice=${maxPrice}`)
+
+        const regex = /&minPrice=[^&]*/g
+        setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex, ''))
+
+        const regex2 = /&maxPrice=[^&]*/g
+        setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex2, ''))
       }
 
-      const queryURL = queryParams.length > 0 ? `&${queryParams.join('&')}` : ''
-      setQueryURL((old) => old + queryURL)
-      if (queryURL) {
-        setIsThereIsAnyFilterQuery(true)
+      if (stayType) {
+        queryParams.push(`stayHourly=${stayType}`)
+        const regex = /&stayHourly=[^&]*/g
+        setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex, ''))
       }
+
+      const newQuery = queryParams.length > 0 ? `&${queryParams.join('&')}` : ''
+      setQueryURL((prevQueryURL) => prevQueryURL + newQuery)
+
+      setIsThereIsAnyFilterQuery(true)
       setUiLoader(false)
       closeModal()
     } else {
@@ -148,29 +173,26 @@ const FilterModal = () => {
         <Text variant="sectionHeading">Price range</Text>
         <div className="flex items-center max-w-xl gap-3 md:gap-5 xl:gap-8">
           <div className="border-2 border-[#FCCF12] px-3 rounded-lg md:w-full relative">
-            <legend className="pt-1 text-[12px]">Minimum</legend>
+            <p className="pt-1 text-[12px]">Minimum</p>
             <input
               type="number"
-              onInput={(e) =>
-                setPrice({ ...price, minPrice: parseInt(e.target.value) })
-              }
+              // defaultValue={0}
+              onChange={(e) => setMinPrice(parseInt(e.target.value))}
               className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
-              defaultValue={price?.minPrice}
+              defaultValue={minPrice}
             />
-            <span className="absolute left-[11px] text-lg">$</span>
+            {/* <span className="absolute left-[11px] text-lg">$</span> */}
           </div>
           <div className="h-[2px] bg-black w-10 sm:w-20" />
           <div className="border-2 border-[#FCCF12] px-3 rounded-lg md:w-full relative">
-            <legend className="pt-1 text-[12px]">Maximum</legend>
+            <p className="pt-1 text-[12px]">Maximum</p>
             <input
               type="number"
-              onInput={(e) =>
-                setPrice({ ...price, maxPrice: parseInt(e.target.value) })
-              }
+              onChange={(e) => setMaxPrice(parseInt(e.target.value))}
               className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
-              defaultValue={price?.maxPrice}
+              defaultValue={maxPrice}
             />
-            <span className="absolute left-[11px] text-lg">$</span>
+            {/* <span className="absolute left-[11px] text-lg">$</span> */}
           </div>
         </div>
         <div className="mt-5">
@@ -199,10 +221,11 @@ const FilterModal = () => {
               {Array.from({ length: 7 }).map((_, i) => {
                 return (
                   <div
-                    onClick={() => setSelectedBedRooms(i)}
+                    onClick={() => setSelectedBedRooms(i + 1)}
+                    defaultValue={selectedBedRooms}
                     key={i}
                     className={`w-7 h-7 sm:w-8 sm:h-8 border-2 flex items-center justify-center rounded-lg cursor-pointer hover:border-[#FCCF12] hover:bg-[#FFF8DB] transition-all duration-150 ${
-                      selectedBedRooms === i
+                      selectedBedRooms === i + 1
                         ? 'bg-[#FFF8DB] border-[#FCCF12]'
                         : 'border-[#484C52]'
                     }`}
@@ -219,10 +242,11 @@ const FilterModal = () => {
               {Array.from({ length: 7 }).map((_, i) => {
                 return (
                   <div
-                    onClick={() => setSelectedBathRooms(i)}
+                    onClick={() => setSelectedBathRooms(i + 1)}
+                    defaultValue={selectedBathRooms}
                     key={i}
                     className={`w-7 h-7 sm:w-8 sm:h-8 border-2 flex items-center justify-center rounded-lg cursor-pointer hover:border-[#FCCF12] hover:bg-[#FFF8DB] transition-all duration-150 ${
-                      selectedBathRooms === i
+                      selectedBathRooms === i + 1
                         ? 'bg-[#FFF8DB] border-[#FCCF12]'
                         : 'border-[#484C52]'
                     }`}
@@ -239,7 +263,7 @@ const FilterModal = () => {
           <div className="flex items-center justify-between">
             <Text>Overnight</Text>
             <label className="checkbox-container">
-              <input type="checkbox" />
+              <input type="checkbox" checked={stayType === null} />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
@@ -251,7 +275,11 @@ const FilterModal = () => {
           <div className="flex items-center justify-between">
             <Text>Hourly (Day Use)</Text>
             <label className="checkbox-container">
-              <input type="checkbox" onClick={() => handleStayType(true)} />
+              <input
+                type="checkbox"
+                onClick={() => handleStayType(true)}
+                checked={stayType !== null}
+              />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />

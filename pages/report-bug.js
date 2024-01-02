@@ -1,16 +1,16 @@
 import { Button, useUI } from "@components/ui";
-
 import Image from "next/image";
 import React, { useState } from "react";
+import axios from "axios";
 
 function Index() {
 	const [isDropdownOpen, setDropdownOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("");
 	const [subError, setSubError] = useState(false);
 
-
 	const [msg, setMsg] = useState("");
 	const [msgError, setMsgError] = useState(false);
+
 	const toggleDropdown = () => {
 		setDropdownOpen(!isDropdownOpen);
 	};
@@ -21,22 +21,52 @@ function Index() {
 	};
 
 	const { openModal, setModalView } = useUI();
+	const [isLoading, setLoading] = useState(false);
+
+	const sendBugReport = async () => {
+		try {
+			setLoading(true);
+			const response = await axios.post(
+				"https://us-central1-hola-home.cloudfunctions.net/bugReportApi/bug-report",
+				{
+					bugLocation: selectedOption,
+					message: msg,
+					uid: "",
+				},
+			);
+
+			if (response.status === 200) {
+				console.log("Bug report sent successfully:", response.data);
+				setMsg("");
+				setSelectedOption("");
+				openModal();
+				setModalView("CONTACT_US");
+			} else {
+				console.error(
+					"Error sending bug report:",
+					response.status,
+					response.data,
+				);
+			}
+		} catch (error) {
+			console.error("Error sending bug report:", error.message);
+		} finally {
+			setLoading(false);
+		}
+	};
 
 	const handleNextClick = async () => {
-
 		let subHasError = false;
 		let msgHasError = false;
 
-
-
-		if (selectedOption == "") {
+		if (selectedOption === "") {
 			setSubError(true);
 			subHasError = true;
 		} else {
 			setSubError(false);
 		}
 
-		if (msg == "") {
+		if (msg === "") {
 			setMsgError(true);
 			msgHasError = true;
 		} else {
@@ -44,28 +74,26 @@ function Index() {
 		}
 
 		if (!subHasError && !msgHasError) {
-			openModal(), setModalView("CONTACT_US");
-			setSelectedOption(""), setMsg("")
+			await sendBugReport();
 		}
 	};
 
 	return (
 		<div className="px-4 mt-32 mb-12 lg:w-[60%] 2xl:w-[45%] container mx-auto ">
-			{" "}
 			<h1 className="text-3xl text-[#484C52] text-center lg:text-left">
-				Report a bug{" "}
-			</h1>{" "}
+				Report a bug
+			</h1>
 			<div className="flex items-center justify-center">
-				<Image src={"/report-bug.png"} width={300} height={150} />{" "}
+				<Image src={"/report-bug.png"} width={300} height={150} />
 			</div>
-			<div className=" mt-7 ">
-
-				<div className=" lg:w-[55%] ">
+			<div className="mt-7 ">
+				<div className="lg:w-[55%]">
 					<label className="block text-black text-lg font-semibold mb-2">
-						Select the page where bug was found: <span className="text-[#E90000]">*</span>
+						Select the page where the bug was found:{" "}
+						<span className="text-[#E90000]">*</span>
 					</label>
 					<button
-						className="flex  items-center justify-between w-full px-3 py-3 border border-gray-400  bg-gray-50 rounded-lg shadow-sm focus:ring focus:ring-yellow-200 focus:outline-none focus:border-none focus:ring-opacity-50"
+						className="flex items-center justify-between w-full px-3 py-3 border border-gray-400 bg-gray-50 rounded-lg shadow-sm focus:ring focus:ring-yellow-200 focus:outline-none focus:border-none focus:ring-opacity-50"
 						type="button"
 						onClick={toggleDropdown}
 					>
@@ -76,8 +104,9 @@ function Index() {
 							</p>
 						)}
 						<svg
-							className={`w-2.5 h-2.5 ${isDropdownOpen ? "transform rotate-180" : ""
-								} ms-3`}
+							className={`w-2.5 h-2.5 ${
+								isDropdownOpen ? "transform rotate-180" : ""
+							} ms-3`}
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -95,45 +124,46 @@ function Index() {
 
 					<div
 						id="dropdown"
-						className={`z-10 ${isDropdownOpen ? "" : "hidden"
-							} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[31%] 2xl:w-[24%]`}
+						className={`z-10 ${
+							isDropdownOpen ? "" : "hidden"
+						} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[31%] 2xl:w-[24%]`}
 					>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Home"
-								? "text-yellow-500 "
-								: ""
-								}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
+								selectedOption === "Home"
+									? "text-yellow-500 "
+									: ""
+							}`}
 							onClick={() => handleOptionClick("Home")}
 						>
 							Home
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Bookings"
-								? "text-yellow-500"
-								: ""
-								}`}
-							onClick={() =>
-								handleOptionClick("Bookings")
-							}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
+								selectedOption === "Bookings"
+									? "text-yellow-500"
+									: ""
+							}`}
+							onClick={() => handleOptionClick("Bookings")}
 						>
 							Bookings
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Bookmarks"
-								? "text-yellow-500"
-								: ""
-								}`}
-							onClick={() =>
-								handleOptionClick("Bookmarks")
-							}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
+								selectedOption === "Bookmarks"
+									? "text-yellow-500"
+									: ""
+							}`}
+							onClick={() => handleOptionClick("Bookmarks")}
 						>
 							Bookmarks
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Profile"
-								? "text-yellow-500"
-								: ""
-								}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
+								selectedOption === "Profile"
+									? "text-yellow-500"
+									: ""
+							}`}
 							onClick={() => handleOptionClick("Profile")}
 						>
 							Profile
@@ -141,35 +171,43 @@ function Index() {
 					</div>
 
 					{subError && (
-						<p className="text-[#E90000]">Please, select the page</p>
+						<p className="text-[#E90000]">
+							Please, select the page
+						</p>
 					)}
 				</div>
 			</div>
-			<div className=" lg:mt-5 mt-7">
+			<div className="lg:mt-5 mt-7">
 				<label className="block text-black text-lg font-semibold mb-2">
 					Message <span className="text-[#E90000]">*</span>
 				</label>
 
 				<textarea
 					rows="4"
-					className="w-full px-3 py-3 border border-gray-400  bg-gray-50 rounded-lg shadow-sm focus:ring focus:ring-yellow-200 focus:outline-none focus:border-none focus:ring-opacity-50"
-					placeholder={"Describe the issue you encountered in as much detail as possible."}
+					className="w-full px-3 py-3 border border-gray-400 bg-gray-50 rounded-lg shadow-sm focus:ring focus:ring-yellow-200 focus:outline-none focus:border-none focus:ring-opacity-50"
+					placeholder={
+						"Describe the issue you encountered in as much detail as possible."
+					}
 					value={msg}
 					onChange={(e) => {
 						setMsg(e.target.value);
 					}}
 				/>
 				{msgError && (
-					<p className="text-[#E90000] ">Please provide issue description</p>
+					<p className="text-[#E90000] ">
+						Please provide issue description
+					</p>
 				)}
 			</div>
 			<div className="flex items-center justify-center mt-7 ">
-				{" "}
 				<Button
 					onClick={() => handleNextClick()}
-					className=" px-6 py-2 rounded-md text-lg font-medium bg-primary "
+					className={`px-6 py-2 rounded-md text-lg font-medium ${
+						isLoading ? "bg-gray-400" : "bg-primary"
+					} `}
+					disabled={isLoading}
 				>
-					Submit
+					{isLoading ? "Submitting..." : "Submit"}
 				</Button>
 			</div>
 		</div>

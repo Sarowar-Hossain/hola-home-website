@@ -36,7 +36,7 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
         setSearchLoader(true)
       }
       if (apiSearchResult?.Data?.length) {
-        setProperties(apiSearchResult.Data)
+        setProperties(apiSearchResult?.Data)
         setSearchLoader(false)
       }
     }
@@ -46,7 +46,7 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
   ])
 
   const handleSearchSuggestion = async (searchData) => {
-    if (searchData.length) {
+    if (searchData?.length) {
       setSearchText(searchData)
       setSearchSuggestionShow(true)
       const refinedSearchResult = apiSearchResult?.Data?.map(
@@ -68,9 +68,13 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
 
   const handleSearchResult = () => {
     if (searchText?.length) {
+      const regex = /&searchTerms=[^&]*/g
+      setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex, ''))
+
       setSearchSuggestionShow(false)
       // setSearchResult(apiSearchResult?.Data)
-      setQueryURL(`&searchTerms=${searchText}`)
+
+      setQueryURL((prevQueryURL) => prevQueryURL+`&searchTerms=${searchText}`)
       if (queryURL) {
         setIsThereIsAnyFilterQuery(true)
       }

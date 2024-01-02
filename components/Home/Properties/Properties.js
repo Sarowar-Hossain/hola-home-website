@@ -30,6 +30,7 @@ const Properties = ({ refetch }) => {
     filterQuery,
     isThereIsAnyFilterQuery,
     queryURL,
+    isFiltering,
   } = useContext(GlobalContext)
   const [searchText, setSearchText] = useState(null)
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
@@ -44,7 +45,7 @@ const Properties = ({ refetch }) => {
     fetcher
   )
 
-  console.log(urlWithoutQuery + queryURL, isThereIsAnyFilterQuery)
+  console.log(queryURL)
 
   const combinedDataLength =
     // searchResult?.length || properties?.length ||
@@ -79,11 +80,16 @@ const Properties = ({ refetch }) => {
                       />
                       <div
                         onClick={handleOpenFilters}
-                        className="absolute right-3 top-2 flex items-center gap-1 font-semibold border-2 border-[#DDD] hover:border-[#b8b8b8] active:border-[#DDD] px-4 py-1 rounded-lg cursor-pointer"
+                        className="absolute right-3 top-2"
                       >
-                        <Filter />
-                        <Text>Filters</Text>
-                        <DownArrow />
+                        <div className="flex items-center gap-1 font-semibold border-2 border-[#DDD] hover:border-[#b8b8b8] active:border-[#DDD] px-4 py-1 rounded-lg cursor-pointer relative">
+                          <Filter />
+                          <Text>Filters</Text>
+                          <DownArrow />
+                          {isFiltering && (
+                            <div className="absolute top-[-5px] right-[-2px] bg-red rounded-full p-1.5" />
+                          )}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -95,11 +101,14 @@ const Properties = ({ refetch }) => {
                   />
                   <div
                     onClick={handleOpenFilters}
-                    className="flex items-center gap-1 font-semibold border-2 border-[#DDD] hover:border-[#b8b8b8] active:border-[#DDD] px-4 py-1 rounded-lg cursor-pointer mr-8"
+                    className="flex items-center gap-1 font-semibold border-2 border-[#DDD] hover:border-[#b8b8b8] active:border-[#DDD] px-4 py-1 rounded-lg cursor-pointer mr-8 relative"
                   >
                     <Filter />
                     <Text>Filters</Text>
                     <DownArrow />
+                    {isFiltering && (
+                      <div className="absolute top-[-5px] right-[-2px] bg-red rounded-full p-1.5" />
+                    )}
                   </div>
                 </div>
                 <div
@@ -163,16 +172,10 @@ const Properties = ({ refetch }) => {
                   </div>
                 )}
               </div>
-              <div
-                className={`mt-10  px-2 pb-10 ${
-                  data?.Data?.length > 0
-                    ? 'grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12'
-                    : ''
-                }`}
-              >
+              <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
                 {data?.Data?.length > 0 ? (
                   <>
-                    {data?.Data.slice(0, limit).map((property, index) => (
+                    {data?.Data?.slice(0, limit).map((property, index) => (
                       <Card property={property} key={index + 1} />
                     ))}
                   </>
@@ -181,27 +184,6 @@ const Properties = ({ refetch }) => {
                     <NotFound handleOpenFilters={handleOpenFilters} />
                   </div>
                 )}
-                {/* {searchResult?.length > 0 ? (
-                  searchResult
-                    ?.slice(0, limit)
-                    .map((property, index) => (
-                      <Card property={property} key={index + 1} />
-                    ))
-                ) : (
-                  <>
-                    {data?.Data?.length > 0 ? (
-                      <>
-                        {data?.Data.slice(0, limit).map((property, index) => (
-                          <Card property={property} key={index + 1} />
-                        ))}
-                      </>
-                    ) : (
-                      <div className="">
-                        <NotFound handleOpenFilters={handleOpenFilters} />
-                      </div>
-                    )}
-                  </>
-                )} */}
               </div>
               {combinedDataLength > 9 && (
                 <button
