@@ -5,14 +5,14 @@ import { useEffect } from 'react';
 
 const index = () => {
     const router = useRouter()
-    // useEffect(() => {
-    //     const redirectionTimeout = setTimeout(() => {
-    //         router.push("/verification/verified-document");
-    //     }, 2000);
+    useEffect(() => {
+        const redirectionTimeout = setTimeout(() => {
+            router.push("/verification/verified-document");
+        }, 2000);
 
-    //     // Clear the timeout when the component is unmounted
-    //     return () => clearTimeout(redirectionTimeout);
-    // }, [router]);
+        // Clear the timeout when the component is unmounted
+        return () => clearTimeout(redirectionTimeout);
+    }, [router]);
     return (
         <div className="container mx-auto mt-20 lg:w-[60%] 2xl:w-[45%] ">
             {" "}

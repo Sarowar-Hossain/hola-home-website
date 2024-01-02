@@ -6,7 +6,7 @@ export const NavLinks = [
   },
   {
     name: 'List your property',
-    path: '/profile/list-your-property',
+    path: '/list-your-property',
   },
   {
     name: 'My trips',

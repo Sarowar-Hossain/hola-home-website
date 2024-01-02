@@ -74,3 +74,8 @@ export { default as AirConditioner } from './AirConditioner'
 export { default as Patio } from './Patio'
 export { default as LargeLoader } from './LargeLoader'
 export { default as DownArrow2 } from './DownArrow2'
+export {default as HouseIcon} from "./HouseIcon"
+export {default as Door} from "./Door"
+export {default as EmptyHouse} from "./EmptyHouse"
+export {default as People} from "./People"
+
