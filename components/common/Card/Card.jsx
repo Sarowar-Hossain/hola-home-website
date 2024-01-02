@@ -141,15 +141,15 @@ const Card = ({ property }) => {
         </Link>
         <ul className={`mt-2 flex items-center gap-2`}>
           <li className="flex items-center justify-center gap-2">
-            {onOfGuests} Sleeps
+            {onOfGuests} Guests
             <Dot className={`w-[3px] h-[3px]`} />
           </li>
           <li className="flex items-center justify-center gap-2">
-            {onOfBedrooms} bedroom
+            {onOfBedrooms} Bedroom
             <Dot className={`w-[3px] h-[3px]`} />
           </li>
           <li className="flex items-center justify-center gap-2">
-            {onOfBeds} beds
+            {onOfBathrooms} Bathroom
           </li>
         </ul>
         <p className="my-2 font-semibold">${priceOf1Day} per night</p>
