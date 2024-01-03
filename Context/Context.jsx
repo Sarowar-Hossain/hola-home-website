@@ -40,6 +40,7 @@ export const GlobalProvider = ({ children }) => {
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(500)
   const [stayType, setStayType] = useState(null)
+  const [minRating, setMinRating] = useState(4)
 
   // all property data
   const [properties, setProperties] = useState([])
@@ -143,6 +144,8 @@ export const GlobalProvider = ({ children }) => {
     setStayType,
     isFiltering,
     setIsFiltering,
+    minRating,
+    setMinRating,
   }
 
   return (

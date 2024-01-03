@@ -31,6 +31,8 @@ const FilterModal = () => {
     setAmenitiesSelected,
     isFiltering,
     setIsFiltering,
+    minRating,
+    setMinRating,
   } = useContext(GlobalContext)
 
   const handleTypeClick = (t) => {
