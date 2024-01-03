@@ -28,18 +28,17 @@ export const GlobalProvider = ({ children }) => {
   const [searchResult, setSearchResult] = useState([])
 
   //filter sate
+  const [isFiltering, setIsFiltering] = useState(false)
   const [filterQuery, setFilterQuery] = useState(null)
   const [isThereIsAnyFilterQuery, setIsThereIsAnyFilterQuery] = useState(false)
   const [queryURL, setQueryURL] = useState()
 
   const [selectedPropertyType, setSelectedPropertyType] = useState(null)
   const [amenitiesSelected, setAmenitiesSelected] = useState([])
-  const [selectedBedRooms, setSelectedBedRooms] = useState(0)
-  const [selectedBathRooms, setSelectedBathRooms] = useState(0)
-  const [price, setPrice] = useState({
-    minPrice: 0,
-    maxPrice: 500,
-  })
+  const [selectedBedRooms, setSelectedBedRooms] = useState(1)
+  const [selectedBathRooms, setSelectedBathRooms] = useState(1)
+  const [minPrice, setMinPrice] = useState(0)
+  const [maxPrice, setMaxPrice] = useState(500)
   const [stayType, setStayType] = useState(null)
 
   // all property data
@@ -136,10 +135,14 @@ export const GlobalProvider = ({ children }) => {
     setSelectedBedRooms,
     selectedBathRooms,
     setSelectedBathRooms,
-    price,
-    setPrice,
+    maxPrice,
+    setMaxPrice,
+    minPrice,
+    setMinPrice,
     stayType,
     setStayType,
+    isFiltering,
+    setIsFiltering,
   }
 
   return (
