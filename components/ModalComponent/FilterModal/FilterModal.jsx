@@ -16,23 +16,17 @@ const FilterModal = () => {
     setIsThereIsAnyFilterQuery,
     queryURL,
     setQueryURL,
-    maxPrice,
-    setMaxPrice,
-    minPrice,
-    setMinPrice,
-    selectedPropertyType,
-    setSelectedPropertyType,
-    selectedBedRooms,
-    setSelectedBedRooms,
-    selectedBathRooms,
-    setSelectedBathRooms,
-    stayType,
-    setStayType,
-    amenitiesSelected,
-    setAmenitiesSelected,
     isFiltering,
     setIsFiltering,
   } = useContext(GlobalContext)
+
+  const [selectedPropertyType, setSelectedPropertyType] = useState(null)
+  const [amenitiesSelected, setAmenitiesSelected] = useState([])
+  const [selectedBedRooms, setSelectedBedRooms] = useState(1)
+  const [selectedBathRooms, setSelectedBathRooms] = useState(1)
+  const [minPrice, setMinPrice] = useState(0)
+  const [maxPrice, setMaxPrice] = useState(500)
+  const [stayType, setStayType] = useState('overnight')
 
   const handleTypeClick = (t) => {
     setSelectedPropertyType(t?.name)
@@ -70,7 +64,7 @@ const FilterModal = () => {
       checkbox.checked = false
     })
     setQueryURL()
-    closeModal()
+    // closeModal()
   }
 
   const handleShowProperties = async () => {
@@ -140,6 +134,8 @@ const FilterModal = () => {
       const newQuery = queryParams.length > 0 ? `&${queryParams.join('&')}` : ''
       setQueryURL((prevQueryURL) => prevQueryURL + newQuery)
 
+      console.log(queryURL)
+
       setIsThereIsAnyFilterQuery(true)
       setUiLoader(false)
       closeModal()
@@ -176,12 +172,11 @@ const FilterModal = () => {
             <p className="pt-1 text-[12px]">Minimum</p>
             <input
               type="number"
-              // defaultValue={0}
               onChange={(e) => setMinPrice(parseInt(e.target.value))}
               className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
-              defaultValue={minPrice}
+              value={minPrice}
             />
-            {/* <span className="absolute left-[11px] text-lg">$</span> */}
+            <span className="absolute left-[11px] text-lg">$</span>
           </div>
           <div className="h-[2px] bg-black w-10 sm:w-20" />
           <div className="border-2 border-[#FCCF12] px-3 rounded-lg md:w-full relative">
@@ -190,9 +185,9 @@ const FilterModal = () => {
               type="number"
               onChange={(e) => setMaxPrice(parseInt(e.target.value))}
               className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
-              defaultValue={maxPrice}
+              value={maxPrice}
             />
-            {/* <span className="absolute left-[11px] text-lg">$</span> */}
+            <span className="absolute left-[11px] text-lg">$</span>
           </div>
         </div>
         <div className="mt-5">
@@ -263,7 +258,11 @@ const FilterModal = () => {
           <div className="flex items-center justify-between">
             <Text>Overnight</Text>
             <label className="checkbox-container">
-              <input type="checkbox" checked={stayType === null} />
+              <input
+                onClick={() => setStayType('overnight')}
+                type="checkbox"
+                checked={stayType === 'overnight'}
+              />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
@@ -277,8 +276,8 @@ const FilterModal = () => {
             <label className="checkbox-container">
               <input
                 type="checkbox"
-                onClick={() => handleStayType(true)}
-                checked={stayType !== null}
+                onClick={() => handleStayType('daytime')}
+                checked={stayType === 'daytime'}
               />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">

@@ -39,7 +39,7 @@ export const GlobalProvider = ({ children }) => {
   const [selectedBathRooms, setSelectedBathRooms] = useState(1)
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(500)
-  const [stayType, setStayType] = useState(null)
+  const [stayType, setStayType] = useState('overnight')
 
   // all property data
   const [properties, setProperties] = useState([])
