@@ -163,7 +163,7 @@ const Card = ({ property }) => {
       <div
         onClick={() => handleBookmarkMain(property?.id)}
         className={`absolute ${
-          bookmarkList.some((item) => item === property.id)
+          bookmarkList.some((item) => item === property?.id)
             ? 'bg-white h-[35px] w-[30px] flex justify-center items-center rounded-md'
             : ''
         } right-3 top-3 z-10 cursor-pointer`}

@@ -1,10 +1,29 @@
 import BookmarkEmpty from '@components/common/Bookmark/BookmarkEmpty'
 import Card from '@components/common/Card/Card'
-import { GlobalContext } from 'Context/Context'
-import React, { useContext } from 'react'
+import CommonLoader from '@components/common/CommonLoader/CommonLoader'
+import { useQuery } from '@tanstack/react-query'
+import axios from 'axios'
+import React from 'react'
+
+
+const fetchBookmarks = async () => {
+  const userId = localStorage.getItem('userId')
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+  const { data } = await axios.post(baseUrl + '/manageUsersApis/get-all-bookmarks', { id: userId });
+  return data;
+};
 
 const index = () => {
-  const { bookmarkList } = useContext(GlobalContext)
+  const { data: bookmarkList, isLoading, isError, error, refetch } = useQuery({
+    queryKey: ['bookmarks'],
+    queryFn: fetchBookmarks,
+  });
+
+  if (isLoading) {
+    return (
+      <CommonLoader />
+    )
+  }
 
   return (
     <div className="container mx-auto">
@@ -12,7 +31,7 @@ const index = () => {
         <BookmarkEmpty />
       ) : (
         <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
-          {bookmarkList.slice(0, 12).map((item, index) => {
+          {bookmarkList?.slice(0, 12)?.map((item, index) => {
             return <Card property={item} key={index + 1} />
           })}
         </div>

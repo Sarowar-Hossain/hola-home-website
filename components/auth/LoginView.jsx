@@ -102,59 +102,17 @@ const LoginView = () => {
         }
       })
       .catch((err) => {
+        console.log(err?.message)
         if (err?.message === 'Firebase: Error (auth/wrong-password).') {
-          setError('Wrong password! please check again')
+          setError('invalid password! please check again')
+          toast.error('invalid password! please check again')
+        }
+        if (err?.message === 'Firebase: Error (auth/user-not-found).') {
+          setError('invalid email! please check again')
+          toast.error('invalid email! please check again')
         }
         setLoading(false)
       })
-    // e.preventDefault();
-    // setError(false);
-    // setLoading(true);
-    //   .then((res) => {
-    //     try {
-    //       axios
-    //         .post(
-    //           "https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user",
-    //           {
-    //             id: res?.user?.uid,
-    //           },
-    //         )
-    //         .then((response) => {
-    //           setLoading(false);
-    //           setUserData(response?.data);
-    //           if (response?.data?.type !== userStatus) {
-    //             toast.error("Wrong user type. Please check!");
-    //             logOut();
-    //             localStorage.removeItem("userData");
-    //             return;
-    //           } else {
-    //             toast.success("Successfully signed in");
-    //             setCredential({
-    //               email: "",
-    //               password: "",
-    //             });
-    //             setLoading(false);
-    //             closeModal();
-    //             if (response?.data?.isRAISEC) {
-    //               router.push("/dashboard");
-    //             } else {
-    //               router.push("/raisec-test");
-    //             }
-    //           }
-    //         })
-    //         .catch((error) => {
-    //           setLoading(false);
-    //           console.error("Error:", error);
-    //         });
-    //     } catch (error) {
-    //       setLoading(false);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     setError(true);
-    //     console.error(error.status);
-    //     setLoading(false);
-    //   });
   }
 
   const handleForgotPassword = () => {
@@ -170,19 +128,6 @@ const LoginView = () => {
         className="mx-auto mt-12 sm:px-5 w-full max-w-md"
       >
         <div className="flex flex-col gap-3">
-          {error && (
-            <div className="flex items-center gap-1 border border-red-700 bg-red-200 px-1 text-start text-red">
-              <p className="">
-                {error && 'Incorrect Username or Password, Please try again!'}
-              </p>
-              <span
-                onClick={() => setError(false)}
-                className="cursor-pointer text-sm text-black"
-              >
-                <Cross className="h-5 w-5" />
-              </span>
-            </div>
-          )}
           <input
             onChange={(e) =>
               setCredential({ ...credential, email: e.target.value })
@@ -190,7 +135,9 @@ const LoginView = () => {
             value={credential?.email}
             type="Email"
             placeholder="Email"
-            className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
+            className={`w-full rounded border-2 ${
+              error ? 'border-red' : 'border-[#E6E6E6]'
+            } bg-white px-1 py-2 focus:bg-white outline-none`}
           />
           <div className="relative w-full">
             <input
@@ -200,7 +147,9 @@ const LoginView = () => {
               value={credential?.password}
               type={show}
               placeholder="Password"
-              className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
+              className={`w-full rounded border-2 ${
+                error ? 'border-red' : 'border-[#E6E6E6]'
+              } bg-white px-1 py-2 focus:bg-white outline-none`}
             />
             <span className="absolute right-2 top-2 cursor-pointer text-[#BBBFC4]">
               {show === 'password' ? (
@@ -214,6 +163,11 @@ const LoginView = () => {
               )}
             </span>
           </div>
+          {error && (
+            <div className="flex items-center gap-1 bg-red-200 px-1 text-start text-red ">
+              <p className="">{error}</p>
+            </div>
+          )}
         </div>
         <div className="text-right">
           <p

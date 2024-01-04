@@ -4,7 +4,6 @@ import { useContext, useEffect, useState } from 'react';
 import Properties from '@components/Home/Properties/Properties';
 import { GlobalContext } from 'Context/Context';
 import { AuthContext } from 'Context/AuthProvider';
-import useGeolocation from '@lib/hooks/useGeolocation';
 import fetchGeolocation from '@lib/functions/fetchGeolocation';
 import { useUI } from '@components/ui';
 

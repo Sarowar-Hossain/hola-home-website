@@ -1,6 +1,7 @@
 import { Cross3 } from '@components/icons'
 import { Button, Text, useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
+import { FilterContext } from 'Context/FilterProvider'
 import axios from 'axios'
 import { amenities, types } from 'data/FilterData'
 import React, { useContext, useState } from 'react'
@@ -14,25 +15,30 @@ const FilterModal = () => {
     setUiLoader,
     setFilterQuery,
     setIsThereIsAnyFilterQuery,
-    queryURL,
     setQueryURL,
-    maxPrice,
-    setMaxPrice,
-    minPrice,
-    setMinPrice,
+    queryURL,
+    isFiltering,
+    setIsFiltering,
+  } = useContext(GlobalContext)
+
+  const {
     selectedPropertyType,
     setSelectedPropertyType,
+    amenitiesSelected,
+    setAmenitiesSelected,
     selectedBedRooms,
     setSelectedBedRooms,
     selectedBathRooms,
     setSelectedBathRooms,
+    maxPrice,
+    setMaxPrice,
+    minPrice,
+    setMinPrice,
     stayType,
     setStayType,
-    amenitiesSelected,
-    setAmenitiesSelected,
-    isFiltering,
-    setIsFiltering,
-  } = useContext(GlobalContext)
+    minRating,
+    setMinRating,
+  } = useContext(FilterContext)
 
   const handleTypeClick = (t) => {
     setSelectedPropertyType(t?.name)
@@ -50,7 +56,7 @@ const FilterModal = () => {
   const handleStayType = (value) => {
     setStayType(value)
   }
-
+  let queryParams = []
   const handleClearAll = () => {
     setAmenitiesSelected([])
     setStayType(null)
@@ -89,9 +95,10 @@ const FilterModal = () => {
         minBedrooms: selectedBedRooms,
         minBathRooms: selectedBathRooms,
         stayHourly: stayType,
+        minRating: minRating,
       })
       setIsFiltering(true)
-      const queryParams = []
+
       if (selectedPropertyType) {
         queryParams.push(
           `propertyType=${encodeURIComponent(selectedPropertyType)}`
@@ -140,6 +147,8 @@ const FilterModal = () => {
       const newQuery = queryParams.length > 0 ? `&${queryParams.join('&')}` : ''
       setQueryURL((prevQueryURL) => prevQueryURL + newQuery)
 
+      console.log(queryURL)
+
       setIsThereIsAnyFilterQuery(true)
       setUiLoader(false)
       closeModal()
@@ -176,12 +185,11 @@ const FilterModal = () => {
             <p className="pt-1 text-[12px]">Minimum</p>
             <input
               type="number"
-              // defaultValue={0}
               onChange={(e) => setMinPrice(parseInt(e.target.value))}
               className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
-              defaultValue={minPrice}
+              value={minPrice}
             />
-            {/* <span className="absolute left-[11px] text-lg">$</span> */}
+            <span className="absolute left-[11px] text-lg">$</span>
           </div>
           <div className="h-[2px] bg-black w-10 sm:w-20" />
           <div className="border-2 border-[#FCCF12] px-3 rounded-lg md:w-full relative">
@@ -190,9 +198,9 @@ const FilterModal = () => {
               type="number"
               onChange={(e) => setMaxPrice(parseInt(e.target.value))}
               className="outline-none pb-[2px] w-full ps-[10px] text-lg bg-transparent"
-              defaultValue={maxPrice}
+              value={maxPrice}
             />
-            {/* <span className="absolute left-[11px] text-lg">$</span> */}
+            <span className="absolute left-[11px] text-lg">$</span>
           </div>
         </div>
         <div className="mt-5">
@@ -263,7 +271,11 @@ const FilterModal = () => {
           <div className="flex items-center justify-between">
             <Text>Overnight</Text>
             <label className="checkbox-container">
-              <input type="checkbox" checked={stayType === null} />
+              <input
+                onClick={() => setStayType('overnight')}
+                type="checkbox"
+                checked={stayType === 'overnight'}
+              />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
@@ -277,8 +289,8 @@ const FilterModal = () => {
             <label className="checkbox-container">
               <input
                 type="checkbox"
-                onClick={() => handleStayType(true)}
-                checked={stayType !== null}
+                onClick={() => handleStayType('daytime')}
+                checked={stayType === 'daytime'}
               />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -338,7 +350,11 @@ const FilterModal = () => {
           <div className="flex items-center justify-between">
             <Text>4+ stars</Text>
             <label className="checkbox-container">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                value={4}
+                onClick={(e) => setMinRating(e.target.value)}
+              />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
