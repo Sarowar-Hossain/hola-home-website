@@ -78,10 +78,16 @@ const DetailsPage = () => {
   const { id } = router?.query
 
   const getPropertyURL = baseUrl + `/propertiesApis/property_details/${id}`
+  const getReviewsURL = baseUrl + `/propertiesApis/property_reviews/${id}`
 
   const fetcher = (url) => fetch(url).then((res) => res.json())
 
   const { data, error, isLoading } = useSWR(() => getPropertyURL, fetcher)
+  const {
+    data: reviewData,
+    error: reviewError,
+    isLoading: reviewsLoading,
+  } = useSWR(() => getReviewsURL, fetcher)
 
   const handleBookMark = async (id) => {
     if (!user) {
@@ -170,6 +176,8 @@ const DetailsPage = () => {
     setModalView('SHARE_VIEW')
   }
 
+  console.log(data)
+
   return (
     <div>
       {isLoading ? (
@@ -196,16 +204,20 @@ const DetailsPage = () => {
                       onClick={() => setProfileView(true)}
                     >
                       <Image
-                        src="/host.png"
+                        src={
+                          data?.data?.hostInfo?.dpUrl
+                            ? data?.data?.hostInfo?.dpUrl
+                            : '/host.png'
+                        }
                         fill
                         alt=""
-                        className="object-cover"
+                        className="object-cover rounded-full"
                       />
                     </div>
                     <div>
-                      <Text className="text-accent-4">Private Host</Text>
+                      <Text className="text-accent-4">{data?.data?.type}</Text>
                       <Text className="text-accent-9 text-lg font-medium text-right">
-                        Charles
+                        {data?.data?.hostInfo?.name}
                       </Text>
                     </div>
                   </div>
@@ -410,11 +422,33 @@ const DetailsPage = () => {
                           See All
                         </Link>
                       </div>
-                      <div className="flex flex-col gap-5 mt-2">
-                        {data?.data?.reviewData?.map((review, i) => {
-                          return <ReviewCard review={review} i={i} key={i} />
-                        })}
-                      </div>
+                      {reviewsLoading ? (
+                        <CommonLoader />
+                      ) : (
+                        <>
+                          {reviewError ? (
+                            <p>somethings went wrong...</p>
+                          ) : (
+                            <>
+                              {reviewData?.data?.length === 0 ? (
+                                <p>No Reviews Available.</p>
+                              ) : (
+                                <div className="flex flex-col gap-5 mt-2">
+                                  {reviewData?.data?.map((review, i) => {
+                                    return (
+                                      <ReviewCard
+                                        review={review}
+                                        i={i}
+                                        key={i}
+                                      />
+                                    )
+                                  })}
+                                </div>
+                              )}
+                            </>
+                          )}
+                        </>
+                      )}
                     </div>
                     <div className="mt-8 border-b pb-4">
                       <Text variant="sectionHeading">Location</Text>
@@ -453,23 +487,29 @@ const DetailsPage = () => {
                   <div className="flex items-center gap-3 relative bg-white max-w-[627px] sm:min-w-[500px] rounded-xl p-3 sm:p-5 top-16 md:-left-36">
                     <div className="relative w-20 h-20 sm:w-36 sm:h-36">
                       <Image
-                        src="/host.png"
+                        src={
+                          data?.data?.hostInfo?.dpUrl
+                            ? data?.data?.hostInfo?.dpUrl
+                            : '/host.png'
+                        }
                         fill
                         alt=""
-                        className="object-cover"
+                        className="object-cover rounded-full"
                       />
                     </div>
                     <div className="flex flex-col">
                       <Text className="text-accent-9 leading-5 sm:leading-7">
-                        <span className="font-semibold">Name:</span> Charles
+                        <span className="font-semibold">Name:</span>{' '}
+                        {data?.data?.hostInfo?.name}
                       </Text>
                       <Text className="text-accent-9 leading-5 sm:leading-7">
                         <span className="font-semibold">Mobile Number :</span>{' '}
-                        +91 123 456 7894
+                        {data?.data?.hostInfo?.countryCode}{' '}
+                        {data?.data?.hostInfo?.phoneNumber}
                       </Text>
                       <Text className="text-accent-9 leading-5 sm:leading-7">
                         <span className="font-semibold">Email :</span>{' '}
-                        charlesma@gmail.com
+                        {data?.data?.hostInfo?.email}
                       </Text>
                     </div>
                     <span

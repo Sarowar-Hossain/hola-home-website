@@ -9,17 +9,15 @@ const ReviewCard = ({ review, i }) => {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-3">
           <Image
-            src={'/reviewer.png'}
-            // src={review?.image}
-            className="w-12 h-12 sm:w-20 sm:h-20"
+            src={review?.dpUrl ? review?.dpUrl : '/reviewer.png'}
+            className="w-12 h-12 sm:w-20 sm:h-20 rounded-full"
             height={80}
             width={80}
             alt=""
           />
           <div>
             <Text className="leading-4 sm:text-xl font-semibold">
-              {/* {review?.review} */}
-              Jhn Dou
+              {review?.name}
             </Text>
             <Text className="text-accent-5">12-12-2023</Text>
           </div>
@@ -29,7 +27,9 @@ const ReviewCard = ({ review, i }) => {
           <Text>{review?.rating}</Text>
         </div>
       </div>
-      <Text className="sm:text-lg font-normal mt-3">{review?.review}</Text>
+      <Text className="sm:text-lg font-normal mt-3">
+        {review?.review.slice(0, 100)}
+      </Text>
     </div>
   )
 }
