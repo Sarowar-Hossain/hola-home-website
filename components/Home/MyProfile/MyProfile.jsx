@@ -13,6 +13,7 @@ import { AuthContext } from 'Context/AuthProvider'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 import CommonLoader from '@components/common/CommonLoader/CommonLoader'
+import { timestampToDate } from '@lib/functions/timestampToDate'
 
 const MyProfile = () => {
   const { user } = useContext(AuthContext)
@@ -46,7 +47,7 @@ const MyProfile = () => {
           phoneNo: response?.data?.phoneNumber,
           email: response?.data?.email,
           dpUrl: response?.data?.dpUrl,
-          dob: response?.data?.dob,
+          dob: timestampToDate(response?.data?.dob),
         })
       } catch (error) {
         console.error('Error fetching user data:', error)
@@ -148,6 +149,7 @@ const MyProfile = () => {
               dob: editedData?.dob,
             }
           )
+          console.log(response)
           toast.success('User updated successfully!')
           setIsNameEdit(false)
           setIsDobEdit(false)
@@ -167,8 +169,6 @@ const MyProfile = () => {
       setValidations({})
     }
   }
-
-  console.log(data)
 
   return (
     <>
@@ -212,10 +212,11 @@ const MyProfile = () => {
                     </div>
                     <input
                       readOnly={`${isNameEdit ? '' : 'readOnly'}`}
-                      className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full  ${isNameEdit
-                        ? 'focus:outline-none  bg-accent-2  rounded-lg ps-4'
-                        : 'bg-white'
-                        }`}
+                      className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full  ${
+                        isNameEdit
+                          ? 'focus:outline-none  bg-accent-2  rounded-lg ps-4'
+                          : 'bg-white'
+                      }`}
                       placeholder="Enter Your Full Name"
                       type="text"
                       value={editedData?.fullName}
@@ -264,10 +265,11 @@ const MyProfile = () => {
                     </div>
                     <input
                       readOnly={`${isDobEdit ? '' : 'readOnly'}`}
-                      className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full ${isDobEdit
-                        ? 'focus:outline-none  bg-accent-2  rounded-lg ps-4'
-                        : 'bg-white'
-                        }`}
+                      className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full ${
+                        isDobEdit
+                          ? 'focus:outline-none  bg-accent-2  rounded-lg ps-4'
+                          : 'bg-white'
+                      }`}
                       placeholder="Provide your date of birth"
                       type="date"
                       value={editedData?.dob}
@@ -320,14 +322,16 @@ const MyProfile = () => {
                         })
                         handleInputChange('phoneNo', value)
                       }}
-                      className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full  ${isPhoneNoEdit &&
+                      className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full  ${
+                        isPhoneNoEdit &&
                         'border-2 focus:outline-none bg-accent-2 border-accent-2  rounded-lg ps-2'
-                        }`}
+                      }`}
                       numberInputProps={{
-                        className: `rounded-md px-4 focus:outline-none ${isPhoneNoEdit
-                          ? 'bg-accent-2 focus:bg-accent-2 '
-                          : 'bg-white'
-                          } `,
+                        className: `rounded-md px-4 focus:outline-none ${
+                          isPhoneNoEdit
+                            ? 'bg-accent-2 focus:bg-accent-2 '
+                            : 'bg-white'
+                        } `,
                       }}
                     />
 
@@ -355,10 +359,11 @@ const MyProfile = () => {
                         ) : (
                           <button
                             onClick={() => setIsEmailEdit(true)}
-                            className={`cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline ${(data?.authType === 'google' ||
-                              data?.authType === 'email') &&
+                            className={`cursor-pointer text-base font-semibold px-3 h-6 rounded-lg underline ${
+                              (data?.authType === 'google' ||
+                                data?.authType === 'email') &&
                               'hidden'
-                              }`}
+                            }`}
                             title="Edit Name"
                           >
                             Edit
@@ -368,10 +373,11 @@ const MyProfile = () => {
                     </div>
                     <input
                       readOnly={`${isEmailEdit ? '' : 'readOnly'}`}
-                      className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full ${isEmailEdit
-                        ? 'focus:outline-none  bg-accent-2  rounded-lg ps-4'
-                        : 'bg-white'
-                        }`}
+                      className={`font-normal caret-primary outline-none text-[#777E8B] mt-3 py-2 w-full ${
+                        isEmailEdit
+                          ? 'focus:outline-none  bg-accent-2  rounded-lg ps-4'
+                          : 'bg-white'
+                      }`}
                       placeholder="user@gmail.com"
                       type="text"
                       value={editedData?.email}
@@ -406,15 +412,16 @@ const MyProfile = () => {
                     isEmailEdit ||
                     imageEdit ||
                     isDobEdit) && (
-                      <Button
-                        loading={loading}
-                        onClick={validateAndSave}
-                        className={`${loading ? 'text-accent-0' : 'text-accent-5'
-                          }`}
-                      >
-                        Save
-                      </Button>
-                    )}
+                    <Button
+                      loading={loading}
+                      onClick={validateAndSave}
+                      className={`${
+                        loading ? 'text-accent-0' : 'text-accent-5'
+                      }`}
+                    >
+                      Save
+                    </Button>
+                  )}
                 </div>
               </div>
               {/* Dp */}
@@ -459,20 +466,34 @@ const MyProfile = () => {
                   </div>
                 </div>
               </div>
-              <div>
-              </div>
+              <div></div>
             </div>
             <div className="lg:ml-16 mx-auto flex items-center">
               <div className="lg:w-[80%] bg-[#F7F8FA] p-8 shadow-lg rounded-lg flex flex-row sm:flex-row gap-7 items-center">
-
                 <div className="mb-1">
-                  <Image src={"/become-landlord.svg"} width={130} height={120} />
+                  <Image
+                    src={'/become-landlord.svg'}
+                    width={130}
+                    height={120}
+                  />
                 </div>
 
                 <div className="sm:text-left">
-                  <h1 className="text-2xl font-bold text-[#484C52] mb-1">Become A Landlord</h1>
-                  <h3 className="text-base text-[#484C52] mb-2">Become a landlord and list your properties on Hola Homes to earn additional money</h3>
-                  <button className="bg-[#fccf12] font-semibold text-[#484C52] px-4 py-2 rounded uppercase text-sm" onClick={()=>router.push('/verification/document-verification')}>Become a Landlord</button>
+                  <h1 className="text-2xl font-bold text-[#484C52] mb-1">
+                    Become A Landlord
+                  </h1>
+                  <h3 className="text-base text-[#484C52] mb-2">
+                    Become a landlord and list your properties on Hola Homes to
+                    earn additional money
+                  </h3>
+                  <button
+                    className="bg-[#fccf12] font-semibold text-[#484C52] px-4 py-2 rounded uppercase text-sm"
+                    onClick={() =>
+                      router.push('/verification/document-verification')
+                    }
+                  >
+                    Become a Landlord
+                  </button>
                 </div>
               </div>
             </div>

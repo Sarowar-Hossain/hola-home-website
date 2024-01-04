@@ -102,59 +102,17 @@ const LoginView = () => {
         }
       })
       .catch((err) => {
+        console.log(err?.message)
         if (err?.message === 'Firebase: Error (auth/wrong-password).') {
-          setError('Wrong password! please check again')
+          setError('invalid password! please check again')
+          toast.error('invalid password! please check again')
+        }
+        if (err?.message === 'Firebase: Error (auth/user-not-found).') {
+          setError('invalid email! please check again')
+          toast.error('invalid email! please check again')
         }
         setLoading(false)
       })
-    // e.preventDefault();
-    // setError(false);
-    // setLoading(true);
-    //   .then((res) => {
-    //     try {
-    //       axios
-    //         .post(
-    //           "https://us-central1-edlighten-cf76e.cloudfunctions.net/manageUsersApis/check-user",
-    //           {
-    //             id: res?.user?.uid,
-    //           },
-    //         )
-    //         .then((response) => {
-    //           setLoading(false);
-    //           setUserData(response?.data);
-    //           if (response?.data?.type !== userStatus) {
-    //             toast.error("Wrong user type. Please check!");
-    //             logOut();
-    //             localStorage.removeItem("userData");
-    //             return;
-    //           } else {
-    //             toast.success("Successfully signed in");
-    //             setCredential({
-    //               email: "",
-    //               password: "",
-    //             });
-    //             setLoading(false);
-    //             closeModal();
-    //             if (response?.data?.isRAISEC) {
-    //               router.push("/dashboard");
-    //             } else {
-    //               router.push("/raisec-test");
-    //             }
-    //           }
-    //         })
-    //         .catch((error) => {
-    //           setLoading(false);
-    //           console.error("Error:", error);
-    //         });
-    //     } catch (error) {
-    //       setLoading(false);
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     setError(true);
-    //     console.error(error.status);
-    //     setLoading(false);
-    //   });
   }
 
   const handleForgotPassword = () => {
@@ -171,10 +129,8 @@ const LoginView = () => {
       >
         <div className="flex flex-col gap-3">
           {error && (
-            <div className="flex items-center gap-1 border border-red-700 bg-red-200 px-1 text-start text-red">
-              <p className="">
-                {error && 'Incorrect Username or Password, Please try again!'}
-              </p>
+            <div className="flex items-center gap-1 border border-red-700 bg-red-200 px-1 text-start text-red bg-orange-600 bg-opacity-20">
+              <p className="">{error}</p>
               <span
                 onClick={() => setError(false)}
                 className="cursor-pointer text-sm text-black"
