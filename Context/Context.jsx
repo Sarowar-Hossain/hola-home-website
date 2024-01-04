@@ -120,6 +120,7 @@ export const GlobalProvider = ({ children }) => {
     setQueryURL,
     isFiltering,
     setIsFiltering,
+
   }
 
   return (

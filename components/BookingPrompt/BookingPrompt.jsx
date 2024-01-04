@@ -21,6 +21,9 @@ const BookingPrompt = ({
   setSelectedChildren,
   loading,
   bookingStatus,
+  pricePerNight,
+  averageRating,
+  totalReview,
 }) => {
   const router = useRouter()
   const [dropdownActive, setDropdownActive] = useState(false)
@@ -32,10 +35,10 @@ const BookingPrompt = ({
     <div className="max-w-[486px] mx-auto rounded-xl px-3 py-10 shadow-md h-[100%] flex flex-col gap-5 booking-prompt">
       <div className="flex justify-between">
         <Text className="text-xl text-[#484C52] font-semibold">
-          $208 <span className="font-normal text-base">night</span>
+          ${pricePerNight} <span className="font-normal text-base">night</span>
         </Text>
         <Text className="flex items-center gap-1">
-          <DarkStar /> 4.85 · 20 reviews
+          <DarkStar /> {averageRating} · {totalReview} reviews
         </Text>
       </div>
       <div className="flex border rounded-md py-2">

@@ -11,10 +11,10 @@ import { GlobalProvider } from 'Context/Context'
 import { SessionProvider } from 'next-auth/react'
 import Head from 'next/head'
 import AuthProvider from 'Context/AuthProvider'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import FilterProvider from 'Context/FilterProvider'
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }) {
   return (

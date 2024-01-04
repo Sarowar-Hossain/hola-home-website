@@ -10,6 +10,7 @@ const FilterProvider = ({ children }) => {
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(500)
   const [stayType, setStayType] = useState('overnight')
+  const [minRating, setMinRating] = useState(4)
   const info = {
     selectedPropertyType,
     setSelectedPropertyType,
@@ -25,6 +26,8 @@ const FilterProvider = ({ children }) => {
     setMinPrice,
     stayType,
     setStayType,
+    minRating,
+    setMinRating,
   }
   return (
     <FilterContext.Provider value={info}>{children}</FilterContext.Provider>

@@ -15,19 +15,11 @@ const FilterModal = () => {
     setUiLoader,
     setFilterQuery,
     setIsThereIsAnyFilterQuery,
-    queryURL,
     setQueryURL,
+    queryURL,
     isFiltering,
     setIsFiltering,
   } = useContext(GlobalContext)
-
-  // const [selectedPropertyType, setSelectedPropertyType] = useState(null)
-  // const [amenitiesSelected, setAmenitiesSelected] = useState([])
-  // const [selectedBedRooms, setSelectedBedRooms] = useState(1)
-  // const [selectedBathRooms, setSelectedBathRooms] = useState(1)
-  // const [minPrice, setMinPrice] = useState(0)
-  // const [maxPrice, setMaxPrice] = useState(500)
-  // const [stayType, setStayType] = useState('overnight')
 
   const {
     selectedPropertyType,
@@ -44,6 +36,8 @@ const FilterModal = () => {
     setMinPrice,
     stayType,
     setStayType,
+    minRating,
+    setMinRating,
   } = useContext(FilterContext)
 
   const handleTypeClick = (t) => {
@@ -62,7 +56,7 @@ const FilterModal = () => {
   const handleStayType = (value) => {
     setStayType(value)
   }
-
+  let queryParams = []
   const handleClearAll = () => {
     setAmenitiesSelected([])
     setStayType(null)
@@ -82,7 +76,7 @@ const FilterModal = () => {
       checkbox.checked = false
     })
     setQueryURL()
-    // closeModal()
+    closeModal()
   }
 
   const handleShowProperties = async () => {
@@ -101,9 +95,10 @@ const FilterModal = () => {
         minBedrooms: selectedBedRooms,
         minBathRooms: selectedBathRooms,
         stayHourly: stayType,
+        minRating: minRating,
       })
       setIsFiltering(true)
-      const queryParams = []
+
       if (selectedPropertyType) {
         queryParams.push(
           `propertyType=${encodeURIComponent(selectedPropertyType)}`
@@ -355,7 +350,11 @@ const FilterModal = () => {
           <div className="flex items-center justify-between">
             <Text>4+ stars</Text>
             <label className="checkbox-container">
-              <input type="checkbox" />
+              <input
+                type="checkbox"
+                value={4}
+                onClick={(e) => setMinRating(e.target.value)}
+              />
               <span className="checkmark mt-[20%]">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                   <path d="M0 0h24v24H0z" fill="none" />
