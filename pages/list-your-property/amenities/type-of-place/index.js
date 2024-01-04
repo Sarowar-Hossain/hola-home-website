@@ -60,7 +60,7 @@ const Index = () => {
         <div>
           <Button
             className="cursor-pointer py-2 md:mr-4 px-6 rounded-md text-base font-medium bg-primary"
-            onClick={() => router.push('/list-your-property/amenities/type-of-place')}
+            onClick={() => router.push('/list-your-property/location')}
           >
             Next
           </Button>
