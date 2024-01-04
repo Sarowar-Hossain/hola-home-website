@@ -25,6 +25,8 @@ const Card = ({ property }) => {
     setCurrentBookmarkItem,
     bookmarkLength,
   } = useContext(GlobalContext)
+
+  console.log(bookmarkList)
   const { user } = useContext(AuthContext)
   const swiperRef = useRef(null)
   const { openModal, setModalView, closeModal } = useUI()
