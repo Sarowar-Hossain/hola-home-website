@@ -90,6 +90,7 @@ const DetailsPage = () => {
   } = useSWR(() => getReviewsURL, fetcher)
 
   const handleBookMark = async (id) => {
+    console.log(id)
     if (!user) {
       toast.error('Please login or create an account!')
       return

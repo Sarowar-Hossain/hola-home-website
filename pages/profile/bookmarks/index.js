@@ -14,11 +14,10 @@ const fetchBookmarks = async () => {
 };
 
 const index = () => {
-  const { data: bookmarkList, isLoading, isError, error } = useQuery({
+  const { data: bookmarkList, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['bookmarks'],
     queryFn: fetchBookmarks,
   });
-
 
   if (isLoading) {
     return (
