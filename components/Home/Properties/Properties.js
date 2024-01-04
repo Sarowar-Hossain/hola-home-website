@@ -45,11 +45,7 @@ const Properties = ({ refetch }) => {
     fetcher
   )
 
-  console.log(queryURL)
-
-  const combinedDataLength =
-    // searchResult?.length || properties?.length ||
-    data?.Data?.length
+  const combinedDataLength = data?.Data?.length
 
   const handleOpenFilters = () => {
     openModal()
@@ -61,7 +57,7 @@ const Properties = ({ refetch }) => {
       {error ? (
         <p>error screen</p>
       ) : (
-        <div className='w-full'>
+        <div className="w-full">
           {isLoading ? (
             <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
               <CardSkeleton data={SkeletonData} />
@@ -112,10 +108,11 @@ const Properties = ({ refetch }) => {
                   </div>
                 </div>
                 <div
-                  className={`${searchSuggestion?.length > 0 && searchSuggestionShow
-                    ? 'inline-block'
-                    : 'hidden'
-                    } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-40  py-6 `}
+                  className={`${
+                    searchSuggestion?.length > 0 && searchSuggestionShow
+                      ? 'inline-block'
+                      : 'hidden'
+                  } bg-white flex flex-col w-2/3 lg:w-2/6 rounded-xl absolute top-12 z-40  py-6 `}
                 >
                   {searchLoader ? (
                     <p>loading...</p>
@@ -125,7 +122,6 @@ const Properties = ({ refetch }) => {
                         return (
                           <Link
                             href={`/properties/${item.id}`}
-                            target="_blank"
                             key={index}
                             className="flex justify-start gap-8 items-center py-2 px-5 hover:bg-accent-2 cursor-pointer border-b"
                           >
@@ -153,8 +149,9 @@ const Properties = ({ refetch }) => {
                   )}
 
                   <div
-                    className={`flex justify-center items-center pt-2 ${searchSuggestion?.length > 8 ? 'inline-block' : 'hidden'
-                      }`}
+                    className={`flex justify-center items-center pt-2 ${
+                      searchSuggestion?.length > 8 ? 'inline-block' : 'hidden'
+                    }`}
                   >
                     <button
                       className={`underline font-medium hover:text-accent-5 `}
@@ -170,7 +167,13 @@ const Properties = ({ refetch }) => {
                   </div>
                 )}
               </div>
-              <div className={`mt-10 ${!data?.Data?.length > 0 ? "flex justify-center items-center" : "grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12"}  px-2 pb-10`}>
+              <div
+                className={`mt-10 ${
+                  !data?.Data?.length > 0
+                    ? 'flex justify-center items-center'
+                    : 'grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12'
+                }  px-2 pb-10`}
+              >
                 {data?.Data?.length > 0 ? (
                   <>
                     {data?.Data?.slice(0, limit).map((property, index) => (

@@ -397,19 +397,6 @@ const DetailsPage = () => {
                         Amenities
                       </Text>
                       <div className="grid grid-cols-3 gap-5 max-w-[405px] mx-auto sm:flex sm:flex-wrap sm:gap-5 sm:max-w-full text-center">
-                        {/* {amenities?.map((d, i) => {
-                          return (
-                            <div
-                              key={i}
-                              className="flex flex-col justify-center items-center gap-1"
-                            >
-                              <span className="bg-slate-100 p-2 rounded w-20 h-20 flex items-center justify-center">
-                                {d?.logo}
-                              </span>
-                              <Text>{d?.title}</Text>
-                            </div>
-                          )
-                        })} */}
 
                         {amenities
                           .filter((item) =>
