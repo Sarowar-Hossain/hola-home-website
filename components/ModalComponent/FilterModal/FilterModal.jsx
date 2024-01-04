@@ -1,6 +1,7 @@
 import { Cross3 } from '@components/icons'
 import { Button, Text, useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
+import { FilterContext } from 'Context/FilterProvider'
 import axios from 'axios'
 import { amenities, types } from 'data/FilterData'
 import React, { useContext, useState } from 'react'
@@ -20,13 +21,30 @@ const FilterModal = () => {
     setIsFiltering,
   } = useContext(GlobalContext)
 
-  const [selectedPropertyType, setSelectedPropertyType] = useState(null)
-  const [amenitiesSelected, setAmenitiesSelected] = useState([])
-  const [selectedBedRooms, setSelectedBedRooms] = useState(1)
-  const [selectedBathRooms, setSelectedBathRooms] = useState(1)
-  const [minPrice, setMinPrice] = useState(0)
-  const [maxPrice, setMaxPrice] = useState(500)
-  const [stayType, setStayType] = useState('overnight')
+  // const [selectedPropertyType, setSelectedPropertyType] = useState(null)
+  // const [amenitiesSelected, setAmenitiesSelected] = useState([])
+  // const [selectedBedRooms, setSelectedBedRooms] = useState(1)
+  // const [selectedBathRooms, setSelectedBathRooms] = useState(1)
+  // const [minPrice, setMinPrice] = useState(0)
+  // const [maxPrice, setMaxPrice] = useState(500)
+  // const [stayType, setStayType] = useState('overnight')
+
+  const {
+    selectedPropertyType,
+    setSelectedPropertyType,
+    amenitiesSelected,
+    setAmenitiesSelected,
+    selectedBedRooms,
+    setSelectedBedRooms,
+    selectedBathRooms,
+    setSelectedBathRooms,
+    maxPrice,
+    setMaxPrice,
+    minPrice,
+    setMinPrice,
+    stayType,
+    setStayType,
+  } = useContext(FilterContext)
 
   const handleTypeClick = (t) => {
     setSelectedPropertyType(t?.name)
