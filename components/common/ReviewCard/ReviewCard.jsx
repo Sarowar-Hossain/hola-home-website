@@ -28,7 +28,7 @@ const ReviewCard = ({ review, i }) => {
         </div>
       </div>
       <Text className="sm:text-lg font-normal mt-3">
-        {review?.review.slice(0, 100)}
+        {review?.review?.slice(0, 100)}
       </Text>
     </div>
   )
