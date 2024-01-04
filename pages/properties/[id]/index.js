@@ -64,7 +64,7 @@ const DetailsPage = () => {
 
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
-  const [selectedAdults, setSelectedAdults] = useState(2)
+  const [selectedAdults, setSelectedAdults] = useState(0)
   const [selectedChildren, setSelectedChildren] = useState(0)
   const [selectedStayType, setSelectedStayType] = useState('')
   const [isDateAvailableDates, setIsDateAvailableDates] = useState(false)
@@ -127,7 +127,7 @@ const DetailsPage = () => {
       setIsDateAvailableDates(true)
     } else {
       if (!startDate || !endDate) {
-        toast.error('Please select your targeted date')
+        CustomErrorToast('Please add dates to view availability')
       } else {
         setLoading(true)
         try {
@@ -233,7 +233,7 @@ const DetailsPage = () => {
                       <span className="text-accent-8 text-[18px]">
                         {data?.data?.averageRating}{' '}
                         <span className="text-accent-4">
-                          ({data?.data?.reviewData?.length} Reviews)
+                          ({data?.data?.totalRating} Reviews)
                         </span>
                       </span>
                     </div>
@@ -397,7 +397,7 @@ const DetailsPage = () => {
                         Amenities
                       </Text>
                       <div className="grid grid-cols-3 gap-5 max-w-[405px] mx-auto sm:flex sm:flex-wrap sm:gap-5 sm:max-w-full text-center">
-                        {amenities?.map((d, i) => {
+                        {/* {amenities?.map((d, i) => {
                           return (
                             <div
                               key={i}
@@ -409,7 +409,26 @@ const DetailsPage = () => {
                               <Text>{d?.title}</Text>
                             </div>
                           )
-                        })}
+                        })} */}
+
+                        {amenities
+                          .filter((item) =>
+                            data?.data?.amenities?.some(
+                              (t) =>
+                                item?.title?.toLowerCase() === t.toLowerCase()
+                            )
+                          )
+                          .map((matchedItem, index) => (
+                            <div
+                              key={index}
+                              className="flex flex-col justify-center items-center gap-1"
+                            >
+                              <span className="bg-slate-100 p-2 rounded w-20 h-20 flex items-center justify-center">
+                                {matchedItem?.logo}
+                              </span>
+                              <Text className='px-1'>{matchedItem?.title}</Text>
+                            </div>
+                          ))}
                       </div>
                     </div>
                     <div className="mt-8 border-b pb-12">
@@ -464,7 +483,7 @@ const DetailsPage = () => {
                   <BookingPrompt
                     pricePerNight={data?.data?.priceOf1Day}
                     averageRating={data?.data?.averageRating}
-                    totalReview={data?.data?.reviewData?.length}
+                    totalReview={data?.data?.totalRating}
                     startDate={startDate}
                     endDate={endDate}
                     selectedAdults={selectedAdults}

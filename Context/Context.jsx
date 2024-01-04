@@ -33,15 +33,6 @@ export const GlobalProvider = ({ children }) => {
   const [isThereIsAnyFilterQuery, setIsThereIsAnyFilterQuery] = useState(false)
   const [queryURL, setQueryURL] = useState()
 
-  const [selectedPropertyType, setSelectedPropertyType] = useState(null)
-  const [amenitiesSelected, setAmenitiesSelected] = useState([])
-  const [selectedBedRooms, setSelectedBedRooms] = useState(1)
-  const [selectedBathRooms, setSelectedBathRooms] = useState(1)
-  const [minPrice, setMinPrice] = useState(0)
-  const [maxPrice, setMaxPrice] = useState(500)
-  const [stayType, setStayType] = useState(null)
-  const [minRating, setMinRating] = useState(4)
-
   // all property data
   const [properties, setProperties] = useState([])
 
@@ -53,7 +44,6 @@ export const GlobalProvider = ({ children }) => {
   })
 
   // user booking filter dropdown
-
   const [isFilterShow, setIsFilterShow] = useState(false)
 
   // Profile states
@@ -128,24 +118,9 @@ export const GlobalProvider = ({ children }) => {
     setFilterQuery,
     queryURL,
     setQueryURL,
-    selectedPropertyType,
-    setSelectedPropertyType,
-    amenitiesSelected,
-    setAmenitiesSelected,
-    selectedBedRooms,
-    setSelectedBedRooms,
-    selectedBathRooms,
-    setSelectedBathRooms,
-    maxPrice,
-    setMaxPrice,
-    minPrice,
-    setMinPrice,
-    stayType,
-    setStayType,
     isFiltering,
     setIsFiltering,
-    minRating,
-    setMinRating,
+
   }
 
   return (

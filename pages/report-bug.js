@@ -1,9 +1,12 @@
 import { Button, useUI } from "@components/ui";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
+import { AuthContext } from "Context/AuthProvider";
 
 function Index() {
+	const { user } = useContext(AuthContext)
+	const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
 	const [isDropdownOpen, setDropdownOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("");
 	const [subError, setSubError] = useState(false);
@@ -27,11 +30,11 @@ function Index() {
 		try {
 			setLoading(true);
 			const response = await axios.post(
-				"https://us-central1-hola-home.cloudfunctions.net/bugReportApi/bug-report",
+				baseUrl + "/bugReportApi/create-bug-report",
 				{
 					bugLocation: selectedOption,
 					message: msg,
-					uid: "",
+					uid: user?.uid || "",
 				},
 			);
 
@@ -104,9 +107,8 @@ function Index() {
 							</p>
 						)}
 						<svg
-							className={`w-2.5 h-2.5 ${
-								isDropdownOpen ? "transform rotate-180" : ""
-							} ms-3`}
+							className={`w-2.5 h-2.5 ${isDropdownOpen ? "transform rotate-180" : ""
+								} ms-3`}
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -124,46 +126,41 @@ function Index() {
 
 					<div
 						id="dropdown"
-						className={`z-10 ${
-							isDropdownOpen ? "" : "hidden"
-						} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[31%] 2xl:w-[24%]`}
+						className={`z-10 ${isDropdownOpen ? "" : "hidden"
+							} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[31%] 2xl:w-[24%]`}
 					>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Home"
-									? "text-yellow-500 "
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Home"
+								? "text-yellow-500 "
+								: ""
+								}`}
 							onClick={() => handleOptionClick("Home")}
 						>
 							Home
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Bookings"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Bookings"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() => handleOptionClick("Bookings")}
 						>
 							Bookings
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Bookmarks"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Bookmarks"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() => handleOptionClick("Bookmarks")}
 						>
 							Bookmarks
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Profile"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Profile"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() => handleOptionClick("Profile")}
 						>
 							Profile
@@ -202,9 +199,8 @@ function Index() {
 			<div className="flex items-center justify-center mt-7 ">
 				<Button
 					onClick={() => handleNextClick()}
-					className={`px-6 py-2 rounded-md text-lg font-medium ${
-						isLoading ? "bg-gray-400" : "bg-primary"
-					} `}
+					className={`px-6 py-2 rounded-md text-lg font-medium ${isLoading ? "bg-gray-400" : "bg-primary"
+						} `}
 					disabled={isLoading}
 				>
 					{isLoading ? "Submitting..." : "Submit"}
