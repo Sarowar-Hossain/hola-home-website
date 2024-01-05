@@ -61,7 +61,6 @@ const Properties = ({ refetch }) => {
           {isLoading ? (
             <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
               <CardSkeleton data={SkeletonData} />
-              {/* <CommonLoader /> */}
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center mb-6 w-full">
