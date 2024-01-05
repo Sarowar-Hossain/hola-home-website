@@ -31,6 +31,9 @@ const MyProfile = () => {
   const [editedData, setEditedData] = useState()
 
   const [validations, setValidations] = useState({})
+
+  console.log(data?.dob)
+
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -47,7 +50,7 @@ const MyProfile = () => {
           phoneNo: response?.data?.phoneNumber,
           email: response?.data?.email,
           dpUrl: response?.data?.dpUrl,
-          dob: timestampToDate(response?.data?.dob),
+          dob: response?.data?.dob && timestampToDate(response?.data?.dob),
         })
       } catch (error) {
         console.error('Error fetching user data:', error)
@@ -276,9 +279,9 @@ const MyProfile = () => {
                       onChange={(e) => {
                         setEditedData({
                           ...editedData,
-                          dob: e.target.value.trim(),
+                          dob: e.target.value,
                         })
-                        handleInputChange('dob', e.target.value.trim())
+                        handleInputChange('dob', e.target.value)
                       }}
                     />
                     {isDobEdit && validations.dob && (

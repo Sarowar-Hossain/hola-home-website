@@ -90,6 +90,11 @@ const LocationProviderModal = () => {
       try {
         setLoading(true)
         const userId = localStorage.getItem('userId')
+        console.log({
+          id: userId,
+          location,
+          coords,
+        })
         const response = await axios.post(
           baseUrl + '/manageUsersApis/update-provided-location',
           {

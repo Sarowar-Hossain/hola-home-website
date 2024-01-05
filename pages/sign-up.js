@@ -127,7 +127,7 @@ const SignUp = () => {
                 name: data?.firstName + ' ' + data?.lastName,
                 email: data?.email,
                 password: data?.password,
-                dob: formatDate(data?.dateOfBirth),
+                dob: data?.dateOfBirth,
             }
             axios
                 .post(baseUrl + '/manageUsersApis/create-user', body)

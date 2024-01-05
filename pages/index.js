@@ -49,7 +49,7 @@ export default function Home() {
         if (!response?.data?.fetchedLocation?.geoPoint) {
           setFetchLocation(true)
         }
-        if ((response?.data?.locationEnteredByUser === "")) {
+        if ((response?.data?.locationEnteredByUser === "" || !response?.data?.locationEnteredByUser)) {
           setFetchLocationManual(true)
         }
       } catch (error) {

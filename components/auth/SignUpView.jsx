@@ -16,10 +16,6 @@ const SignUpView = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const { providerLogin } = useContext(AuthContext)
   const [error, setError] = useState('')
-  const formatDate = (dateString) => {
-    const options = { year: 'numeric', month: 'long', day: 'numeric' }
-    return new Date(dateString).toLocaleDateString('en-US', options)
-  }
   const signUpSchema = z
     .object({
       firstName: z
@@ -144,7 +140,7 @@ const SignUpView = () => {
         name: data?.firstName + ' ' + data?.lastName,
         email: data?.email,
         password: data?.password,
-        dob: formatDate(data?.dateOfBirth),
+        dob: data?.dateOfBirth,
       }
       axios
         .post(baseUrl + '/manageUsersApis/create-user', body)
