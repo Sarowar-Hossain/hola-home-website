@@ -13,8 +13,8 @@ const Cross2 = ({ ...props }) => {
       <path
         d="M14.4941 26.6024L26.6044 14.4956M14.4941 14.4956L26.6044 26.6024"
         stroke="black"
-        stroke-width="1.5"
-        stroke-linecap="round"
+        strokeWidth="1.5"
+        strokeLinecap="round"
       />
     </svg>
   )

@@ -14,9 +14,9 @@ const Success = ({ ...props }) => {
       <path
         d="M38.4202 23.6829L26.8413 35.2618L21.5781 29.9987"
         stroke="white"
-        stroke-width="4"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="4"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )

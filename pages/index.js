@@ -46,10 +46,10 @@ export default function Home() {
             id: user?.uid,
           }
         )
-        if (Object.keys(response?.data?.fetchedLocation).length === 0) {
+        if (!response?.data?.fetchedLocation?.geoPoint) {
           setFetchLocation(true)
         }
-        if ((Object.keys(response?.data?.geoPoint) === 0) || (response?.data?.locationEnteredByUser === "")) {
+        if ((response?.data?.locationEnteredByUser === "")) {
           setFetchLocationManual(true)
         }
       } catch (error) {

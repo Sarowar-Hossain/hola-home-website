@@ -14,9 +14,9 @@ const CrossBookingDetails = ({ ...props }) => {
       <path
         d="M21.5 39.2537L30.25 30.4794L39 39.2537M39 21.7051L30.2483 30.4794L21.5 21.7051"
         stroke="white"
-        stroke-width="2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       />
     </svg>
   )

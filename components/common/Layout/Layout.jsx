@@ -126,7 +126,6 @@ const Modal = dynamic(() => import('@components/ui/Modal'), {
 })
 
 const ModalView = ({ modalView, closeModal }) => {
-  console.log(modalView)
   return (
     <Modal onClose={closeModal}>
       {modalView === 'LOGIN_VIEW' && <LoginView />}
@@ -198,6 +197,8 @@ const navLinks = [
   },
 ]
 const Layout = ({ children }) => {
+  const router = useRouter()
+  console.log(router)
   const { uiLoader } = useContext(GlobalContext)
   const navBarlinks = navLinks.slice(0, 2).map((c) => ({
     label: c.name,
@@ -208,11 +209,11 @@ const Layout = ({ children }) => {
     <>
       <div className={cn(s.root)}>
         <Toaster position="top-center" />
-        <div className="mb-[120px]">
-          <Navbar />
+        <div className={`${router.pathname !== '/404' && 'mb-[120px]'}`}>
+          {router.pathname !== '/404' && <Navbar />}
         </div>
         <main className="fit min-h-screen">{children}</main>
-        <Footer />
+        {router.pathname !== '/404' && <Footer />}
         <ModalUI />
         {uiLoader && <CommonLoader />}
         <SidebarUI links={navBarlinks} />

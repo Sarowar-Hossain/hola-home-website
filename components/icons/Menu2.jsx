@@ -13,7 +13,7 @@ const Menu = ({ ...props }) => {
       <path
         d="M0 5.5H14M0 9.5H14M0 1.5H14"
         stroke="#484C52"
-        stroke-width="1.5"
+        strokeWidth="1.5"
       />
     </svg>
   );
