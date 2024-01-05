@@ -3,7 +3,7 @@ import Link from 'next/link'
 import s from './UserNav.module.css'
 import { useUI } from '@components/ui/context'
 import { ChevronDown, Cross, Globe, Menu, Menu2 } from '@components/icons'
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import {
   Dropdown,
   DropdownTrigger as DropdownTriggerInst,
@@ -20,8 +20,12 @@ import NavDropDown from './NavDropDown'
 import { GlobalContext } from 'Context/Context'
 import { useRouter } from 'next/router'
 import { AuthContext } from 'Context/AuthProvider'
+import axios from 'axios'
+import useSWR from 'swr'
+import Image from 'next/image'
 
 const UserNav = ({ className }) => {
+  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const router = useRouter()
   const {
     openModal,
@@ -40,6 +44,17 @@ const UserNav = ({ className }) => {
   const handleDropDown = () => {
     setIsMenuOpen(!isMenuOpen)
   }
+
+  const fetcher = async (url) => {
+    const response = await axios.post(url, { id: user?.uid })
+    return response.data
+  }
+
+  const { data, error } = useSWR(
+    user?.uid ? `${baseUrl}/manageUsersApis/check-user` : null,
+    fetcher
+  )
+  console.log(data?.dpUrl)
 
   return (
     <nav className={cn(s.root, className)}>
@@ -82,7 +97,19 @@ const UserNav = ({ className }) => {
                 setModalView('LOGIN_VIEW')
               }}
             >
-              <Dp />
+              {data?.dpUrl ? (
+                <>
+                  <Image
+                    src={data?.dpUrl}
+                    alt="profile image"
+                    height={40}
+                    width={40}
+                    className='rounded-full h-10 w-10 object-cover'
+                  />
+                </>
+              ) : (
+                <Dp />
+              )}
             </span>
           </div>
         </li>

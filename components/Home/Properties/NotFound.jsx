@@ -8,7 +8,7 @@ const NotFound = ({ handleOpenFilters }) => {
   const { queryURL, setQueryURL } = useContext(GlobalContext)
   const router = useRouter()
   return (
-    <div className="text-center flex flex-col items-center">
+    <div className="text-center flex flex-col items-center w-full">
       <Image
         src={'/404.png'}
         height={250}

@@ -3,6 +3,7 @@ import { Button, Text } from '@components/ui'
 import DatePicker from 'react-datepicker'
 import React, { useState } from 'react'
 import { useRouter } from 'next/router'
+import Link from 'next/link'
 
 const stayTypes = ['2 hours', '3 hours', '6 hours', '9 hours', 'Night Stay']
 
@@ -21,8 +22,12 @@ const BookingPrompt = ({
   setSelectedChildren,
   loading,
   bookingStatus,
+  pricePerNight,
+  averageRating,
+  totalReview,
 }) => {
   const router = useRouter()
+  const path = router.asPath
   const [dropdownActive, setDropdownActive] = useState(false)
   const handleStay = (s) => {
     setSelectedStayType(s)
@@ -32,10 +37,10 @@ const BookingPrompt = ({
     <div className="max-w-[486px] mx-auto rounded-xl px-3 py-10 shadow-md h-[100%] flex flex-col gap-5 booking-prompt">
       <div className="flex justify-between">
         <Text className="text-xl text-[#484C52] font-semibold">
-          $208 <span className="font-normal text-base">night</span>
+          ${pricePerNight} <span className="font-normal text-base">night</span>
         </Text>
         <Text className="flex items-center gap-1">
-          <DarkStar /> 4.85 · 20 reviews
+          <DarkStar /> {averageRating} · {totalReview} reviews
         </Text>
       </div>
       <div className="flex border rounded-md py-2">
@@ -135,19 +140,6 @@ const BookingPrompt = ({
         >
           <DownArrow2 />
         </span>
-        {/* <select
-          className="outline-none bg-accent-0 w-full"
-          name=""
-          id=""
-          value={selectedStayType}
-          onChange={(e) => setSelectedStayType(e.target.value)}
-        >
-          <option value="2 hours">2 hours</option>
-          <option value="3 hours">3 hours</option>
-          <option value="6 hours">6 hours</option>
-          <option value="9 hours">9 hours</option>
-          <option value="night Stay">night Stay</option>
-        </select> */}
       </div>
       {dropdownActive && (
         <div className="transition-all duration-300 flex flex-col gap-2 border rounded-md custom-radio">
@@ -176,14 +168,26 @@ const BookingPrompt = ({
           ))}
         </div>
       )}
-      <Button
-        loading={loading}
-        className="w-full text-[#484C52]"
-        variant=""
-        onClick={handleBookNow}
-      >
-        Book Now
-      </Button>
+      {bookingStatus?.status === 200 ? (
+        <Link href={`/${path}/booking`}>
+          <Button
+            className="w-full text-[#484C52]"
+            variant=""
+            onClick={() => router.push('/')}
+          >
+            Proceed booking
+          </Button>
+        </Link>
+      ) : (
+        <Button
+          loading={loading}
+          className="w-full text-[#484C52]"
+          variant=""
+          onClick={handleBookNow}
+        >
+          Book Now
+        </Button>
+      )}
       <div className="text-center">
         {bookingStatus?.data && (
           <Text

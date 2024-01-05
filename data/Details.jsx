@@ -1,4 +1,28 @@
-import { ActivityArea, AirConditioning, Baths, BeachAccess, Bedroom, FirePit, Gym, HotTub, Parking, Pool, TV, Villa, Wifi } from "@components/icons"
+import {
+  ActivityArea,
+  AirConditioning,
+  Baths,
+  BeachAccess,
+  Bedroom,
+  CarbonMonoxideAlarm,
+  DedicatedWorkplace,
+  FireExtinguisher,
+  FirePit,
+  FirstAidKit,
+  Gym,
+  HotTub,
+  IndoorFireplace,
+  Kitchen,
+  Parking,
+  Patio,
+  Pool,
+  PoolTable,
+  SmokeDetector,
+  TV,
+  Villa,
+  WashingMachine,
+  Wifi,
+} from '@components/icons'
 
 export const details = [
   {
@@ -63,7 +87,7 @@ export const amenities = [
     logo: <Wifi />,
   },
   {
-    title: 'Beach',
+    title: 'Beach access',
     logo: <BeachAccess />,
   },
   {
@@ -93,5 +117,45 @@ export const amenities = [
   {
     title: 'Activity Area',
     logo: <ActivityArea />,
+  },
+  {
+    title: 'Kitchen',
+    logo: <Kitchen />,
+  },
+  {
+    title: 'Washing Machine',
+    logo: <WashingMachine />,
+  },
+  {
+    title: 'Dedicated Workspace',
+    logo: <DedicatedWorkplace />,
+  },
+  {
+    title: 'Patio',
+    logo: <Patio />,
+  },
+  {
+    title: 'Pool Table',
+    logo: <PoolTable />,
+  },
+  {
+    title: 'Indoor Fireplace',
+    logo: <IndoorFireplace />,
+  },
+  {
+    title: 'First Aid Kit',
+    logo: <FirstAidKit />,
+  },
+  {
+    title: 'Fire Extinguisher',
+    logo: <FireExtinguisher />,
+  },
+  {
+    title: 'Carbon monoxide alarm',
+    logo: <CarbonMonoxideAlarm />,
+  },
+  {
+    title: 'Smoke Detector',
+    logo: <SmokeDetector />,
   },
 ]

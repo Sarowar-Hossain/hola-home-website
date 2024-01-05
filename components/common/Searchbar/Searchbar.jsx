@@ -20,6 +20,8 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
     setIsThereIsAnyFilterQuery,
   } = useContext(GlobalContext)
 
+  console.log(queryURL)
+
   // const baseUrl = 'http://localhost:5001/hola-home/us-central1'
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const apiUrl = `${baseUrl}/propertiesApis?searchTerms=${searchText}`

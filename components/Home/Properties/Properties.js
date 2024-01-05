@@ -45,11 +45,7 @@ const Properties = ({ refetch }) => {
     fetcher
   )
 
-  console.log(queryURL)
-
-  const combinedDataLength =
-    // searchResult?.length || properties?.length ||
-    data?.Data?.length
+  const combinedDataLength = data?.Data?.length
 
   const handleOpenFilters = () => {
     openModal()
@@ -57,23 +53,23 @@ const Properties = ({ refetch }) => {
   }
 
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center w-full">
       {error ? (
         <p>error screen</p>
       ) : (
-        <div>
+        <div className="w-full">
           {isLoading ? (
             <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
               <CardSkeleton data={SkeletonData} />
               {/* <CommonLoader /> */}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center mb-6">
+            <div className="flex flex-col items-center justify-center mb-6 w-full">
               {' '}
               <div className="relative w-full flex flex-col items-center justify-center">
-                <div className="hidden lg:inline-block w-full lg:w-1/2">
+                <div className="hidden lg:inline-block w-full lg:w-1/2 ">
                   {showSearch && (
-                    <div>
+                    <div className="flex justify-between items-center w-full">
                       <Searchbar
                         setSearchText={setSearchText}
                         searchText={searchText}
@@ -126,7 +122,6 @@ const Properties = ({ refetch }) => {
                         return (
                           <Link
                             href={`/properties/${item.id}`}
-                            target="_blank"
                             key={index}
                             className="flex justify-start gap-8 items-center py-2 px-5 hover:bg-accent-2 cursor-pointer border-b"
                           >
@@ -172,7 +167,13 @@ const Properties = ({ refetch }) => {
                   </div>
                 )}
               </div>
-              <div className="mt-10 grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12 px-2 pb-10 ">
+              <div
+                className={`mt-10 ${
+                  !data?.Data?.length > 0
+                    ? 'flex justify-center items-center'
+                    : 'grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-12'
+                }  px-2 pb-10`}
+              >
                 {data?.Data?.length > 0 ? (
                   <>
                     {data?.Data?.slice(0, limit).map((property, index) => (

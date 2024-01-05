@@ -2,14 +2,16 @@ import { Button, useUI } from "@components/ui";
 import { Layout } from "@components/common";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
+import { AuthContext } from "Context/AuthProvider";
 
 function Index() {
+	const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+	const { user } = useContext(AuthContext)
 	const [isDropdownOpen, setDropdownOpen] = useState(false);
 	const [selectedOption, setSelectedOption] = useState("");
 	const [subError, setSubError] = useState(false);
-
 	const [email, setEmail] = useState("");
 	const [emailError, setEmailError] = useState(false);
 	const [msg, setMsg] = useState("");
@@ -53,17 +55,15 @@ function Index() {
 
 		if (!emailHasError && !subHasError && !msgHasError) {
 			setLoading(true);
-
 			const apiData = {
 				email: email,
 				message: msg,
 				subject: selectedOption,
-				uid: "",
+				uid: user?.uid || "",
 			};
-
 			try {
 				const response = await axios.post(
-					"https://us-central1-hola-home.cloudfunctions.net/contactUsApi/create-contact-us",
+					baseUrl + "/contactUsApi/create-contact-us",
 					apiData,
 				);
 
@@ -132,9 +132,8 @@ function Index() {
 							</p>
 						)}
 						<svg
-							className={`w-2.5 h-2.5 ${
-								isDropdownOpen ? "transform rotate-180" : ""
-							} ms-3`}
+							className={`w-2.5 h-2.5 ${isDropdownOpen ? "transform rotate-180" : ""
+								} ms-3`}
 							aria-hidden="true"
 							xmlns="http://www.w3.org/2000/svg"
 							fill="none"
@@ -152,26 +151,23 @@ function Index() {
 
 					<div
 						id="dropdown"
-						className={`z-10 ${
-							isDropdownOpen ? "" : "hidden"
-						} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[28%] 2xl:w-[21%]`}
+						className={`z-10 ${isDropdownOpen ? "" : "hidden"
+							} bg-[#F7F8FA] absolute border-2 border-[#C4C4C4] rounded-lg shadow-xl w-[90%] lg:w-[28%] 2xl:w-[21%]`}
 					>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "General Inquiry"
-									? "text-yellow-500 "
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "General Inquiry"
+								? "text-yellow-500 "
+								: ""
+								}`}
 							onClick={() => handleOptionClick("General Inquiry")}
 						>
 							General Inquiry
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Technical Support"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Technical Support"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() =>
 								handleOptionClick("Technical Support")
 							}
@@ -179,11 +175,10 @@ function Index() {
 							Technical Support
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Customer Support"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Customer Support"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() =>
 								handleOptionClick("Customer Support")
 							}
@@ -191,11 +186,10 @@ function Index() {
 							Customer Support
 						</button>
 						<button
-							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${
-								selectedOption === "Other Inquiry"
-									? "text-yellow-500"
-									: ""
-							}`}
+							className={`block px-4 py-2 hover:bg-yellow-50 text-base font-medium w-full text-left ${selectedOption === "Other Inquiry"
+								? "text-yellow-500"
+								: ""
+								}`}
 							onClick={() => handleOptionClick("Other Inquiry")}
 						>
 							Other Inquiry
@@ -229,11 +223,10 @@ function Index() {
 				{" "}
 				<Button
 					onClick={() => handleNextClick()}
-					className={`px-6 py-2 rounded-md text-lg font-medium ${
-						loading
-							? "bg-gray-400 cursor-not-allowed"
-							: "bg-primary"
-					}`}
+					className={`px-6 py-2 rounded-md text-lg font-medium ${loading
+						? "bg-gray-400 cursor-not-allowed"
+						: "bg-primary"
+						}`}
 					disabled={loading}
 				>
 					{loading ? "Submitting..." : "Submit"}
