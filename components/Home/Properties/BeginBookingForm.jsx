@@ -10,6 +10,7 @@ const BeginBookingInputs = ({
 }) => {
   const titles = ['Mr', 'Mrs', 'Ms']
   const [isPhoneNoFocused, setIsPhoneNoFocused] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
 
   const validateName = (name) => {
     return name.trim() !== '' ? null : 'Name is required'
@@ -99,7 +100,9 @@ const BeginBookingInputs = ({
               className={`w-full placeholder:text-[#484C52] placeholder:font-medium font-medium rounded-lg border border-[#C4C4C4] bg-[#F7F8FA] px-3 py-2 focus:bg-white outline-none ${
                 errors?.dateOfBirth ? 'border-red' : ''
               }`}
-              type="date"
+              type={isFocused ? 'date' : 'text'}
+              onFocus={() => setIsFocused(true)}
+              onBlur={() => setIsFocused(formData?.dateOfBirth !== '')}
               onChange={(e) => {
                 handleInputChange('dateOfBirth', e.target.value)
                 setErrors((prevErrors) => ({

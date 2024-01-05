@@ -126,6 +126,7 @@ const Modal = dynamic(() => import('@components/ui/Modal'), {
 })
 
 const ModalView = ({ modalView, closeModal }) => {
+  console.log(modalView)
   return (
     <Modal onClose={closeModal}>
       {modalView === 'LOGIN_VIEW' && <LoginView />}

@@ -1,12 +1,13 @@
 import { useUI } from '@components/ui'
 import { GlobalContext } from 'Context/Context'
 import axios from 'axios'
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import toast from 'react-hot-toast'
 
 const BookmarkModal = () => {
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   const { closeModal } = useUI()
+  const [loading, setLoading] = useState(false)
   const {
     bookmarkList,
     setBookMarkList,
@@ -28,6 +29,7 @@ const BookmarkModal = () => {
       const userId = localStorage.getItem('userId')
       if (updatedBookmarkIds) {
         try {
+          setLoading(true)
           const response = await axios.post(
             baseUrl + '/manageUsersApis/update-bookmarks',
             {
@@ -36,7 +38,9 @@ const BookmarkModal = () => {
             }
           )
           toast.success('Bookmark removed successfully')
+          setLoading(false)
         } catch (error) {
+          setLoading(false)
           console.log(error)
         }
       }
@@ -57,10 +61,11 @@ const BookmarkModal = () => {
           Cancel
         </button>
         <button
+          disabled={loading}
           onClick={handleRemoveBookmark}
           className=" px-6 py-0.5 rounded-md font-medium bg-primary text-accent-7"
         >
-          Remove
+          {loading ? 'loading...' : 'Remove'}
         </button>
       </div>
     </div>

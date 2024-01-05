@@ -64,9 +64,9 @@ const DetailsPage = () => {
 
   const [startDate, setStartDate] = useState()
   const [endDate, setEndDate] = useState()
-  const [selectedAdults, setSelectedAdults] = useState(0)
+  const [selectedAdults, setSelectedAdults] = useState(1)
   const [selectedChildren, setSelectedChildren] = useState(0)
-  const [selectedStayType, setSelectedStayType] = useState('')
+  const [selectedStayType, setSelectedStayType] = useState('Night Stay')
   const [isDateAvailableDates, setIsDateAvailableDates] = useState(false)
   const [bookmarked, setBookMarked] = useState(false)
   const [profileView, setProfileView] = useState(false)
@@ -90,6 +90,7 @@ const DetailsPage = () => {
   } = useSWR(() => getReviewsURL, fetcher)
 
   const handleBookMark = async (id) => {
+    console.log(id)
     if (!user) {
       toast.error('Please login or create an account!')
       return
@@ -176,7 +177,6 @@ const DetailsPage = () => {
     setModalView('SHARE_VIEW')
   }
 
-  console.log(data)
 
   return (
     <div>
@@ -251,11 +251,10 @@ const DetailsPage = () => {
                       onClick={() => handleBookMark(router?.query?.id)}
                     >
                       <span
-                        className={`${
-                          bookmarkList.includes(router?.query?.id)
-                            ? 'text-yellow-500'
-                            : 'text-transparent'
-                        }`}
+                        className={`${bookmarkList.includes(router?.query?.id)
+                          ? 'text-yellow-500'
+                          : 'text-transparent'
+                          }`}
                       >
                         <Save />
                       </span>
@@ -270,7 +269,7 @@ const DetailsPage = () => {
                     loop={true}
                     slidesPerView={1}
                     pagination={{ clickable: true }}
-                    // autoplay={{ delay: 1000 }}
+                  // autoplay={{ delay: 1000 }}
                   >
                     {data?.data?.imageUrlList?.map((image, index) => (
                       <SwiperSlide key={index}>
