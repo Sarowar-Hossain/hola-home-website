@@ -137,7 +137,7 @@ const Share = () => {
             <div
               onClick={() => handleBookMark(property)}
               className={`absolute ${
-                bookmarkList.some((item) => item.id === property?.id)
+                bookmarkList.some((item) => item?.id === property?.id)
                   ? 'text-[#FCCF12]'
                   : 'text-white'
               } right-3 top-3 z-10 cursor-pointer`}

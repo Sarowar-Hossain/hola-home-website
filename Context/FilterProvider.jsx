@@ -9,8 +9,8 @@ const FilterProvider = ({ children }) => {
   const [selectedBathRooms, setSelectedBathRooms] = useState(1)
   const [minPrice, setMinPrice] = useState(0)
   const [maxPrice, setMaxPrice] = useState(500)
-  const [stayType, setStayType] = useState('overnight')
-  const [minRating, setMinRating] = useState(4)
+  const [stayType, setStayType] = useState()
+  const [minRating, setMinRating] = useState(0)
   const info = {
     selectedPropertyType,
     setSelectedPropertyType,

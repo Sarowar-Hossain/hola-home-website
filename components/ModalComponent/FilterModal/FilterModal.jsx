@@ -40,10 +40,17 @@ const FilterModal = () => {
     setMinRating,
   } = useContext(FilterContext)
 
-  const handleTypeClick = (t) => {
-    setSelectedPropertyType(t?.name)
-  }
+  const handleTypeClick = (name) => {
+    // if (selectedPropertyType === name) {
+    //   setSelectedPropertyType(null);
+    // } else {
+    //   setSelectedPropertyType(name);
+    // }
+    setSelectedPropertyType(name);
+  };
+  
 
+  console.log(selectedPropertyType)
   const handleAmenitiesClick = (name) => {
     const isAlreadySelected = amenitiesSelected.includes(name)
     if (isAlreadySelected) {
@@ -143,11 +150,16 @@ const FilterModal = () => {
         const regex = /&stayHourly=[^&]*/g
         setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex, ''))
       }
+      if (minRating) {
+        queryParams.push(`minRating=${minRating}`)
+        const regex = /&minRating=[^&]*/g
+        setQueryURL((prevQueryURL) => prevQueryURL?.replace(regex, ''))
+      }
 
       const newQuery = queryParams.length > 0 ? `&${queryParams.join('&')}` : ''
       setQueryURL((prevQueryURL) => prevQueryURL + newQuery)
 
-      console.log(queryURL)
+  
 
       setIsThereIsAnyFilterQuery(true)
       setUiLoader(false)
@@ -208,7 +220,7 @@ const FilterModal = () => {
           <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4">
             {types?.map((t, i) => (
               <div
-                onClick={() => handleTypeClick(t)}
+                onClick={() => handleTypeClick(t?.name)}
                 key={i}
                 className={`w-[110px] h-[100px] hover:bg-[#FFF8DB] flex flex-col justify-center items-center border-2 hover:border-[#FCCF12] rounded-md transition-all duration-150 cursor-pointer ${
                   selectedPropertyType === t?.name
