@@ -19,7 +19,7 @@ const PlaceCard = ({ Icon, title }) => {
     
     return (
         <div className="w-1/2 sm:w-1/2 md:w-1/3 lg:w-1/4 p-2 sm:p-4 flex-shrink-0 flex-col flex-wrap ">
-            <div className="cursor-pointer px-3 py-6 border border-[#484C52] rounded-md flex flex-col items-center justify-center" style={{ borderColor: isSelected ? '#F9C900' : '#484C52', backgroundColor: isSelected ? '#FFF8DB' : '' }} onClick={handleCardClick}>
+            <div className="h-40 cursor-pointer px-3 py-6 border border-[#484C52] rounded-md flex flex-col items-center justify-center" style={{ borderColor: isSelected ? '#F9C900' : '#484C52', backgroundColor: isSelected ? '#FFF8DB' : '' }} onClick={handleCardClick}>
                 <Icon className="w-12 h-12" />
                 <h1 className="mt-2 text-[#484C52] text-center">{title}</h1>
             </div>
