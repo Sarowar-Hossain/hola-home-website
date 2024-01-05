@@ -26,6 +26,7 @@ export const GlobalProvider = ({ children }) => {
   const [searchSuggestion, setSearchSuggestion] = useState([])
   const [searchSuggestionShow, setSearchSuggestionShow] = useState(false)
   const [searchResult, setSearchResult] = useState([])
+  const [searchText, setSearchText] = useState(null)
 
   //filter sate
   const [isFiltering, setIsFiltering] = useState(false)
@@ -120,7 +121,8 @@ export const GlobalProvider = ({ children }) => {
     setQueryURL,
     isFiltering,
     setIsFiltering,
-
+    searchText,
+    setSearchText,
   }
 
   return (

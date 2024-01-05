@@ -31,8 +31,10 @@ const Properties = ({ refetch }) => {
     isThereIsAnyFilterQuery,
     queryURL,
     isFiltering,
+    searchText,
+    setSearchText,
   } = useContext(GlobalContext)
-  const [searchText, setSearchText] = useState(null)
+  // const [searchText, setSearchText] = useState(null)
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
   // const baseUrl = 'http://localhost:5001/hola-home/us-central1'
   const urlWithoutQuery = `${baseUrl}/propertiesApis?limit=${limit}`
@@ -51,7 +53,8 @@ const Properties = ({ refetch }) => {
     openModal()
     setModalView('FILTERS_VIEW')
   }
-
+  console.log(queryURL);
+  
   return (
     <div className="flex items-center justify-center w-full">
       {error ? (

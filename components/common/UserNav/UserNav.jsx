@@ -54,7 +54,7 @@ const UserNav = ({ className }) => {
     user?.uid ? `${baseUrl}/manageUsersApis/check-user` : null,
     fetcher
   )
-  console.log(data?.dpUrl)
+  // console.log(data?.dpUrl)
 
   return (
     <nav className={cn(s.root, className)}>

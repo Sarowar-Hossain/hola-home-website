@@ -28,7 +28,9 @@ const Navbar = ({ links }) => {
               <Link
                 href={l.path}
                 key={index}
-                className=" hover:text-white text-[#484C52]"
+                className={`${
+                  router?.pathname === l.path ? 'text-white' : 'text-[#484C52]'
+                } hover:text-white `}
               >
                 {l.name}
               </Link>

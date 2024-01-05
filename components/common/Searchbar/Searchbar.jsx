@@ -4,8 +4,9 @@ import s from './Searchbar.module.css'
 import { useRouter } from 'next/router'
 import { GlobalContext } from 'Context/Context'
 import useSWR from 'swr'
+import { Cross } from '@components/icons'
 
-const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
+const Searchbar = ({ className, id = 'search' }) => {
   const router = useRouter()
 
   const {
@@ -18,9 +19,11 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
     queryURL,
     setQueryURL,
     setIsThereIsAnyFilterQuery,
+    setSearchText,
+    searchText,
   } = useContext(GlobalContext)
 
-  console.log(queryURL)
+  // console.log(queryURL)
 
   // const baseUrl = 'http://localhost:5001/hola-home/us-central1'
   const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
@@ -76,7 +79,7 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
       setSearchSuggestionShow(false)
       // setSearchResult(apiSearchResult?.Data)
 
-      setQueryURL((prevQueryURL) => prevQueryURL+`&searchTerms=${searchText}`)
+      setQueryURL((prevQueryURL) => prevQueryURL + `&searchTerms=${searchText}`)
       if (queryURL) {
         setIsThereIsAnyFilterQuery(true)
       }
@@ -99,18 +102,45 @@ const Searchbar = ({ className, id = 'search', setSearchText, searchText }) => {
     }
   }
 
+  const handleCleanText = () => {
+    setSearchText('')
+    setSearchSuggestionShow(false)
+    setSearchSuggestion([])
+    setQueryURL()
+  }
+
   return (
     <div className={cn(s.root, className)}>
       <div className="mx-8">
-        <input
+        {/* <input
           type="text"
           id={id}
           className={s.input}
           placeholder="Start your search"
           defaultValue={searchText}
           onKeyUp={handleKeyUp}
+        /> */}
+        <input
+          type="text"
+          id={id}
+          className={s.input}
+          placeholder="Start your search"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          onKeyUp={handleKeyUp}
         />
       </div>
+      {searchText?.length > 0 ? (
+        <div
+          onClick={handleCleanText}
+          className="absolute right-20 md:right-24  top-2 cursor-pointer p-0.5 bg-white rounded-full"
+        >
+          <Cross />
+        </div>
+      ) : (
+        ''
+      )}
+
       <div
         onClick={handleSearchResult}
         className={`absolute inset-y-0 right-8  pr-3 flex items-center my-1.5 me-2 cursor-pointer py-[10px] px-[10px] bg-[#FCCF12] rounded-full`}
