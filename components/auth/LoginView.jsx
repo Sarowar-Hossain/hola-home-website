@@ -127,7 +127,7 @@ const LoginView = () => {
         onSubmit={handleSignIn}
         className="mx-auto mt-12 sm:px-5 w-full max-w-md"
       >
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 login-container">
           <input
             onChange={(e) =>
               setCredential({ ...credential, email: e.target.value })

@@ -40,7 +40,7 @@ const LoginModal = ({ closeModal }) => {
               {uiView === 'SIGN_UP_VIEW' && <SignUp />}
             </div>
           </div>
-          <div className="hidden lg:max-w-[350px] 2xl:max-w-[400px] ms-5 flex-col items-center justify-center rounded-xl bg-[#FCCF12] lg:flex px-5">
+          <div className="hidden lg:max-w-[350px] 2xl:max-w-[400px] ms-5 flex-col items-center justify-center rounded-xl bg-[#169282] lg:flex px-5">
             <Image
               src="/auth_banner.png"
               height={400}

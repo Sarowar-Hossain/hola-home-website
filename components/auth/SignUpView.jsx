@@ -238,7 +238,7 @@ const SignUpView = () => {
                   {...register('dateOfBirth')}
                   id="dateOfBirth"
                   placeholder="Enter your date of birth"
-                  className="w-full rounded border-2 border-[#E6E6E6] bg-white px-1 py-2 focus:bg-white outline-none"
+                  className="w-full rounded border-2 border-[#E6E6E6] bg-transparent px-1 py-2 outline-none"
                   type="date"
                 />
                 {errors.dateOfBirth && (

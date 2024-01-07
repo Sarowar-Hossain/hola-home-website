@@ -51,7 +51,7 @@ const Button = forwardRef((props, buttonRef) => {
     >
       {loading && (
         <i className="mr-2 flex text-accent-0 animate-spin">
-          <Loader2 />
+          <Loader2 className='text-[#484C52]' />
         </i>
       )}
       {children}

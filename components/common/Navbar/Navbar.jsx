@@ -29,15 +29,15 @@ const Navbar = ({ links }) => {
                 href={l.path}
                 key={index}
                 className={`${
-                  router?.pathname === l.path ? 'text-white' : 'text-[#484C52]'
-                } hover:text-white `}
+                  router?.pathname === l.path ? 'underline underline-offset-4' : 'text-[#484C52]'
+                } hover:text-black text-lg`}
               >
                 {l.name}
               </Link>
             ))}
             {router?.pathname === '/' && (
               <p
-                className="font-medium hover:text-white text-[#484C52] flex items-center cursor-pointer gap-2"
+                className="font-medium hover:text-black text-[#484C52] flex items-center cursor-pointer gap-2 text-lg"
                 onClick={() => {
                   showSearch ? setShowSearch(false) : setShowSearch(true)
                 }}
